@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { ColorPalette, Shadow } from '@/constants/design-tokens';
+import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
 
 export default function DesignSystemScreen() {
@@ -51,6 +51,12 @@ export default function DesignSystemScreen() {
       <ThemedView style={styles.section}>
         <ThemedText type="h3">Spacing & Layout</ThemedText>
         <SpacingShowcase />
+      </ThemedView>
+
+      {/* Border Radius Section */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="h3">Border Radius</ThemedText>
+        <BorderRadiusShowcase />
       </ThemedView>
 
       {/* Shadow Section */}
@@ -255,6 +261,49 @@ function SpacingShowcase() {
   );
 }
 
+function BorderRadiusShowcase() {
+  const { theme } = useTheme();
+  const borderRadiusLevels = [
+    { name: 'none', value: BorderRadius.none, description: 'No border radius' },
+    { name: 'sm', value: BorderRadius.sm, description: 'Small border radius' },
+    { name: 'base', value: BorderRadius.base, description: 'Base border radius' },
+    { name: 'md', value: BorderRadius.md, description: 'Medium border radius' },
+    { name: 'lg', value: BorderRadius.lg, description: 'Large border radius' },
+    { name: 'xl', value: BorderRadius.xl, description: 'Extra large border radius' },
+    { name: '2xl', value: BorderRadius['2xl'], description: '2xl border radius' },
+    { name: '3xl', value: BorderRadius['3xl'], description: '3xl border radius' },
+    { name: 'full', value: BorderRadius.full, description: 'Full border radius (circular)' },
+  ];
+
+  return (
+    <ThemedView>
+      {borderRadiusLevels.map((level) => (
+        <View key={level.name} style={styles.borderRadiusItem}>
+          <View
+            style={[
+              styles.borderRadiusBox,
+              {
+                backgroundColor: theme.background.elevated,
+                borderRadius: level.value,
+                borderWidth: 1,
+                borderColor: theme.border.default,
+              }
+            ]}
+          >
+            <ThemedText type="h6">{level.name}</ThemedText>
+            <ThemedText type="caption" style={styles.borderRadiusDescription}>
+              {level.description}
+            </ThemedText>
+            <ThemedText type="caption" style={styles.borderRadiusValue}>
+              {level.value}px
+            </ThemedText>
+          </View>
+        </View>
+      ))}
+    </ThemedView>
+  );
+}
+
 function ShadowShowcase() {
   const { theme } = useTheme();
   const shadowLevels = [
@@ -390,5 +439,26 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     fontSize: 10,
     fontFamily: 'monospace',
+  },
+  borderRadiusItem: {
+    marginBottom: 16,
+  },
+  borderRadiusBox: {
+    padding: 16,
+    minHeight: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  borderRadiusDescription: {
+    marginTop: 4,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  borderRadiusValue: {
+    marginTop: 4,
+    opacity: 0.5,
+    fontSize: 10,
+    fontFamily: 'monospace',
+    textAlign: 'center',
   },
 });
