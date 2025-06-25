@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 
 import { Collapsible } from '@/components/collapsible';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -251,6 +251,28 @@ function ShadowShowcase() {
     { name: '2xl', shadow: Shadow['2xl'], description: 'Maximum shadow for dropdowns' },
   ];
 
+  const createPlatformShadow = (shadowConfig: any) => {
+    return Platform.select({
+      ios: {
+        shadowColor: theme.shadow.color,
+        shadowOffset: shadowConfig.shadowOffset,
+        shadowOpacity: shadowConfig.shadowOpacity,
+        shadowRadius: shadowConfig.shadowRadius,
+      },
+      android: {
+        elevation: shadowConfig.elevation,
+        shadowColor: theme.shadow.androidColor,
+      },
+      web: {
+        boxShadow: `${shadowConfig.shadowOffset.width}px ${shadowConfig.shadowOffset.height}px ${shadowConfig.shadowRadius}px rgba(0,0,0,${shadowConfig.shadowOpacity})`,
+      } as any,
+      default: {
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.1)',
+      },
+    });
+  };
+
   return (
     <ThemedView>
       {shadowLevels.map((level) => (
@@ -260,11 +282,7 @@ function ShadowShowcase() {
               styles.shadowBox,
               {
                 backgroundColor: theme.background.elevated,
-                shadowColor: theme.shadow.color,
-                shadowOffset: level.shadow.shadowOffset,
-                shadowOpacity: level.shadow.shadowOpacity,
-                shadowRadius: level.shadow.shadowRadius,
-                elevation: level.shadow.elevation,
+                ...createPlatformShadow(level.shadow),
               }
             ]}
           >
