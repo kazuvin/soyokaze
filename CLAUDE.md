@@ -46,7 +46,7 @@ The app uses Expo Router with file-based routing:
 
 - `/components/` - Reusable UI components with themed variants
 - `/components/ui/` - Platform-specific UI components (iOS/Android variants)
-- `/constants/Colors.ts` - Light/dark theme color definitions
+- `/constants/colors.ts` - Light/dark theme color definitions
 - `/hooks/` - Custom React hooks for color scheme and theming
 - `/assets/` - Static assets (fonts, images, icons)
 

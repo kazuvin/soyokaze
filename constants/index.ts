@@ -5,9 +5,9 @@
  */
 
 // Design Tokens
-export * from './DesignTokens';
-export * from './Theme';
-export * from './Styles';
+export * from './design-tokens';
+export * from './theme';
+export * from './styles';
 
 // Legacy Support
-export { Colors } from './Colors';
+export { Colors } from './colors';

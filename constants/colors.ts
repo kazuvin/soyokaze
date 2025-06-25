@@ -2,7 +2,7 @@
  * Legacy Colors Configuration
  * 
  * This file maintains backward compatibility while utilizing the new design system.
- * For new components, use Theme.ts and DesignTokens.ts directly.
+ * For new components, use theme.ts and design-tokens.ts directly.
  */
 
 import { LightTheme, DarkTheme } from './theme';
