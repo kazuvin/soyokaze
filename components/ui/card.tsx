@@ -1,17 +1,24 @@
 import { View, type ViewProps } from "react-native";
-import { ComponentStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
+import { ThemedText } from "@/components/themed-text";
+import { Spacing, BorderRadius, Shadow } from "@/constants/design-tokens";
 
 export type CardVariant = "elevated" | "flat" | "outlined";
 
 export type CardProps = ViewProps & {
   variant?: CardVariant;
-  padding?: "none" | "small" | "medium" | "large";
 };
+
+export type CardHeaderProps = ViewProps;
+
+export type CardTitleProps = ViewProps & {
+  children: React.ReactNode;
+};
+
+export type CardContentProps = ViewProps;
 
 export function Card({
   variant = "elevated",
-  padding = "medium",
   style,
   children,
   ...rest
@@ -22,42 +29,67 @@ export function Card({
     switch (variant) {
       case "elevated":
         return {
-          ...ComponentStyles.cardElevated,
+          borderRadius: BorderRadius.xl,
           backgroundColor: theme.background.elevated,
+          ...Shadow.lg,
         };
       case "flat":
         return {
-          ...ComponentStyles.cardFlat,
+          borderRadius: BorderRadius.lg,
           backgroundColor: theme.background.elevated,
+          borderWidth: 1,
           borderColor: theme.border.primary,
         };
       case "outlined":
         return {
-          ...ComponentStyles.cardFlat,
+          borderRadius: BorderRadius.lg,
           backgroundColor: "transparent",
+          borderWidth: 1,
           borderColor: theme.border.primary,
         };
-      default:
-        return {};
-    }
-  };
-
-  const getPaddingOverride = () => {
-    switch (padding) {
-      case "none":
-        return { padding: 0 };
-      case "small":
-        return { padding: 12 };
-      case "large":
-        return { padding: 24 };
-      case "medium":
       default:
         return {};
     }
   };
 
   return (
-    <View style={[getVariantStyles(), getPaddingOverride(), style]} {...rest}>
+    <View style={[getVariantStyles(), style]} {...rest}>
+      {children}
+    </View>
+  );
+}
+
+export function CardHeader({
+  style,
+  children,
+  ...rest
+}: CardHeaderProps) {
+  return (
+    <View style={[{ paddingTop: Spacing[6], paddingHorizontal: Spacing[6], paddingBottom: Spacing[4] }, style]} {...rest}>
+      {children}
+    </View>
+  );
+}
+
+export function CardTitle({
+  style,
+  children,
+  ...rest
+}: CardTitleProps) {
+  return (
+    <View style={[style]} {...rest}>
+      <ThemedText type="h6">{children}</ThemedText>
+    </View>
+  );
+}
+
+export function CardContent({
+  style,
+  children,
+  ...rest
+}: CardContentProps) {
+  return (
+    <View style={[{ paddingHorizontal: Spacing[6], paddingBottom: Spacing[6] }, style]} {...rest}>
       {children}
     </View>
   );

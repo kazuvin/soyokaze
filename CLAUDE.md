@@ -75,6 +75,13 @@ The app uses Expo Router with file-based routing:
 - Color scheme detection via `useColorScheme` hook
 - Platform-specific styling with `Platform.select()`
 
+#### Design System Integration
+
+- **ALWAYS use design system tokens**: Import spacing, border radius, shadows, and other design tokens from `@/constants/design-tokens`
+- **Avoid hard-coded values**: Use `Spacing[4]`, `BorderRadius.lg`, `Shadow.base` instead of numeric values
+- **Consistent styling**: Use design tokens for all UI components to maintain consistency across the app
+- Example: `paddingHorizontal: Spacing[6]` instead of `paddingHorizontal: 24`
+
 #### Path Aliases
 
 - `@/*` maps to the project root for cleaner imports
