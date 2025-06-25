@@ -1,7 +1,7 @@
 import { View, type ViewProps } from "react-native";
-import { ComponentStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
+import { Spacing, BorderRadius, Shadow } from "@/constants/design-tokens";
 
 export type CardVariant = "elevated" | "flat" | "outlined";
 
@@ -29,19 +29,22 @@ export function Card({
     switch (variant) {
       case "elevated":
         return {
-          ...ComponentStyles.cardElevated,
+          borderRadius: BorderRadius.xl,
           backgroundColor: theme.background.elevated,
+          ...Shadow.lg,
         };
       case "flat":
         return {
-          ...ComponentStyles.cardFlat,
+          borderRadius: BorderRadius.lg,
           backgroundColor: theme.background.elevated,
+          borderWidth: 1,
           borderColor: theme.border.primary,
         };
       case "outlined":
         return {
-          ...ComponentStyles.cardFlat,
+          borderRadius: BorderRadius.lg,
           backgroundColor: "transparent",
+          borderWidth: 1,
           borderColor: theme.border.primary,
         };
       default:
@@ -62,7 +65,7 @@ export function CardHeader({
   ...rest
 }: CardHeaderProps) {
   return (
-    <View style={[{ paddingBottom: 16 }, style]} {...rest}>
+    <View style={[{ paddingTop: Spacing[6], paddingHorizontal: Spacing[6], paddingBottom: Spacing[4] }, style]} {...rest}>
       {children}
     </View>
   );
@@ -86,7 +89,7 @@ export function CardContent({
   ...rest
 }: CardContentProps) {
   return (
-    <View style={[{ padding: 16 }, style]} {...rest}>
+    <View style={[{ paddingHorizontal: Spacing[6], paddingBottom: Spacing[6] }, style]} {...rest}>
       {children}
     </View>
   );
