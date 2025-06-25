@@ -86,15 +86,21 @@ export function Button({
         width: baseStyle.minHeight,
         height: baseStyle.minHeight,
         maxHeight: baseStyle.minHeight,
+        paddingVertical: 0,
         paddingHorizontal: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
       };
     }
 
-    // 通常のボタンでも高さを固定
+    // 通常のボタンでも高さを固定し、中央揃えを確実にする
     return {
       ...baseStyle,
       height: baseStyle.minHeight,
       maxHeight: baseStyle.minHeight,
+      paddingVertical: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
     };
   };
 
