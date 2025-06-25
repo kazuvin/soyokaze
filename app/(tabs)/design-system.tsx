@@ -5,7 +5,7 @@ import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -201,39 +201,57 @@ function CardShowcase() {
       <ThemedText type="h6">Variants</ThemedText>
       <View style={styles.cardGrid}>
         <Card variant="elevated" style={styles.cardExample}>
-          <ThemedText type="h6">Elevated Card</ThemedText>
-          <ThemedText type="body">Card with shadow elevation</ThemedText>
+          <CardHeader>
+            <CardTitle>Elevated Card</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ThemedText type="body">Card with shadow elevation</ThemedText>
+          </CardContent>
         </Card>
         
         <Card variant="flat" style={styles.cardExample}>
-          <ThemedText type="h6">Flat Card</ThemedText>
-          <ThemedText type="body">Card with background color</ThemedText>
+          <CardHeader>
+            <CardTitle>Flat Card</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ThemedText type="body">Card with background color</ThemedText>
+          </CardContent>
         </Card>
         
         <Card variant="outlined" style={styles.cardExample}>
-          <ThemedText type="h6">Outlined Card</ThemedText>
-          <ThemedText type="body">Card with border outline</ThemedText>
+          <CardHeader>
+            <CardTitle>Outlined Card</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ThemedText type="body">Card with border outline</ThemedText>
+          </CardContent>
         </Card>
       </View>
       
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Padding Options</ThemedText>
-      <View style={styles.cardGrid}>
-        <Card padding="small" style={styles.cardExample}>
-          <ThemedText type="caption">Small Padding</ThemedText>
-        </Card>
-        
-        <Card padding="medium" style={styles.cardExample}>
-          <ThemedText type="caption">Medium Padding</ThemedText>
-        </Card>
-        
-        <Card padding="large" style={styles.cardExample}>
-          <ThemedText type="caption">Large Padding</ThemedText>
-        </Card>
-        
-        <Card padding="none" style={[styles.cardExample, { padding: 8 }]}>
-          <ThemedText type="caption">No Padding</ThemedText>
-        </Card>
-      </View>
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Structured Card Example</ThemedText>
+      <Card variant="elevated" style={styles.cardExample}>
+        <CardHeader>
+          <CardTitle>User Profile</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ThemedText type="body">This is an example of a structured card using the new Card components.</ThemedText>
+          <ThemedText type="caption" style={{ marginTop: 8 }}>Created with CardHeader, CardTitle, and CardContent</ThemedText>
+        </CardContent>
+      </Card>
+      
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Header Only Card</ThemedText>
+      <Card variant="outlined" style={styles.cardExample}>
+        <CardHeader>
+          <CardTitle>Simple Header Card</CardTitle>
+        </CardHeader>
+      </Card>
+      
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Content Only Card</ThemedText>
+      <Card variant="flat" style={styles.cardExample}>
+        <CardContent>
+          <ThemedText type="body">This card only has content without a header.</ThemedText>
+        </CardContent>
+      </Card>
     </ThemedView>
   );
 }

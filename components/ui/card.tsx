@@ -1,17 +1,24 @@
 import { View, type ViewProps } from "react-native";
 import { ComponentStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
+import { ThemedText } from "@/components/themed-text";
 
 export type CardVariant = "elevated" | "flat" | "outlined";
 
 export type CardProps = ViewProps & {
   variant?: CardVariant;
-  padding?: "none" | "small" | "medium" | "large";
 };
+
+export type CardHeaderProps = ViewProps;
+
+export type CardTitleProps = ViewProps & {
+  children: React.ReactNode;
+};
+
+export type CardContentProps = ViewProps;
 
 export function Card({
   variant = "elevated",
-  padding = "medium",
   style,
   children,
   ...rest
@@ -42,22 +49,44 @@ export function Card({
     }
   };
 
-  const getPaddingOverride = () => {
-    switch (padding) {
-      case "none":
-        return { padding: 0 };
-      case "small":
-        return { padding: 12 };
-      case "large":
-        return { padding: 24 };
-      case "medium":
-      default:
-        return {};
-    }
-  };
-
   return (
-    <View style={[getVariantStyles(), getPaddingOverride(), style]} {...rest}>
+    <View style={[getVariantStyles(), style]} {...rest}>
+      {children}
+    </View>
+  );
+}
+
+export function CardHeader({
+  style,
+  children,
+  ...rest
+}: CardHeaderProps) {
+  return (
+    <View style={[{ paddingBottom: 16 }, style]} {...rest}>
+      {children}
+    </View>
+  );
+}
+
+export function CardTitle({
+  style,
+  children,
+  ...rest
+}: CardTitleProps) {
+  return (
+    <View style={[style]} {...rest}>
+      <ThemedText type="h6">{children}</ThemedText>
+    </View>
+  );
+}
+
+export function CardContent({
+  style,
+  children,
+  ...rest
+}: CardContentProps) {
+  return (
+    <View style={[{ padding: 16 }, style]} {...rest}>
       {children}
     </View>
   );
