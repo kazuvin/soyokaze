@@ -7,7 +7,8 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { ColorPalette } from '@/constants/design-tokens';
+import { ColorPalette, Shadow } from '@/constants/design-tokens';
+import { useTheme } from '@/hooks/use-theme';
 
 export default function DesignSystemScreen() {
   return (
@@ -50,6 +51,12 @@ export default function DesignSystemScreen() {
       <ThemedView style={styles.section}>
         <ThemedText type="h3">Spacing & Layout</ThemedText>
         <SpacingShowcase />
+      </ThemedView>
+
+      {/* Shadow Section */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="h3">Shadows</ThemedText>
+        <ShadowShowcase />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -233,6 +240,48 @@ function SpacingShowcase() {
   );
 }
 
+function ShadowShowcase() {
+  const theme = useTheme();
+  const shadowLevels = [
+    { name: 'sm', shadow: Shadow.sm, description: 'Subtle shadow for small elements' },
+    { name: 'base', shadow: Shadow.base, description: 'Default shadow for cards' },
+    { name: 'md', shadow: Shadow.md, description: 'Medium shadow for elevated content' },
+    { name: 'lg', shadow: Shadow.lg, description: 'Large shadow for modals' },
+    { name: 'xl', shadow: Shadow.xl, description: 'Extra large shadow for overlays' },
+    { name: '2xl', shadow: Shadow['2xl'], description: 'Maximum shadow for dropdowns' },
+  ];
+
+  return (
+    <ThemedView>
+      {shadowLevels.map((level) => (
+        <View key={level.name} style={styles.shadowItem}>
+          <View
+            style={[
+              styles.shadowBox,
+              {
+                ...level.shadow,
+                shadowColor: theme.shadow.color,
+                backgroundColor: theme.background.elevated,
+              }
+            ]}
+          >
+            <ThemedText type="h6">{level.name}</ThemedText>
+            <ThemedText type="caption" style={styles.shadowDescription}>
+              {level.description}
+            </ThemedText>
+            <ThemedText type="caption" style={styles.shadowValues}>
+              offset: {level.shadow.shadowOffset.width}, {level.shadow.shadowOffset.height} |{' '}
+              opacity: {level.shadow.shadowOpacity} |{' '}
+              radius: {level.shadow.shadowRadius} |{' '}
+              elevation: {level.shadow.elevation}
+            </ThemedText>
+          </View>
+        </View>
+      ))}
+    </ThemedView>
+  );
+}
+
 const styles = StyleSheet.create({
   headerImage: {
     color: '#0ea5e9',
@@ -308,5 +357,24 @@ const styles = StyleSheet.create({
   },
   cardExample: {
     marginBottom: 8,
+  },
+  shadowItem: {
+    marginBottom: 20,
+  },
+  shadowBox: {
+    padding: 16,
+    borderRadius: 8,
+    minHeight: 80,
+    justifyContent: 'center',
+  },
+  shadowDescription: {
+    marginTop: 4,
+    opacity: 0.7,
+  },
+  shadowValues: {
+    marginTop: 4,
+    opacity: 0.5,
+    fontSize: 10,
+    fontFamily: 'monospace',
   },
 });
