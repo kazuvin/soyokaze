@@ -241,7 +241,7 @@ function SpacingShowcase() {
 }
 
 function ShadowShowcase() {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const shadowLevels = [
     { name: 'sm', shadow: Shadow.sm, description: 'Subtle shadow for small elements' },
     { name: 'base', shadow: Shadow.base, description: 'Default shadow for cards' },
