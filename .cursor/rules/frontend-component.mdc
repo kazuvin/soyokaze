@@ -1,0 +1,105 @@
+---
+description: 
+globs: *.tsx
+alwaysApply: false
+---
+
+# コンポーネント定義ルール
+
+## 基本方針
+
+### コンポーネント定義
+- 全てのコンポーネントは `function` 定義を使用する
+- アロー関数ではなく関数宣言を優先する
+
+### 型定義
+- 型定義は `type` で統一する
+- `interface` は使用しない
+
+### スタイリング
+- Tailwind CSS を使用する
+- `packages/web/tailwind.config.ts` を参照して適切なクラスを使用する
+
+## ディレクトリ構成
+
+### UI コンポーネント (`/app/components/ui`)
+```
+components/
+└── ui/
+    ├── button.tsx
+    ├── input.tsx
+    └── ...
+```
+
+### レイアウトコンポーネント (`/app/components/layout`)
+```
+components/
+└── layout/
+    ├── app-bar.tsx
+    ├── sidebar.tsx
+    └── ...
+```
+
+### 機能別コンポーネント (`/app/features`)
+```
+features/
+└── auth/
+    ├── components/
+    │   ├── login-form.tsx
+    │   ├── signup-form.tsx
+    │   └── ...
+    ├── hooks/
+    │   ├── use-login.ts
+    │   ├── use-signup.ts
+    │   └── ...
+    ├── utils/
+    │   ├── is-login-user.ts
+    │   ├── validate-password.ts
+    │   └── ...
+    └── schemas/
+        ├── form.ts
+        ├── api.ts
+        └── ...
+```
+
+### API サービス (`/app/services`)
+```
+services/
+├── auth/
+│   ├── index.ts
+│   └── schemas.ts
+├── user/
+│   ├── index.ts
+│   └── schemas.ts
+├── posts/
+│   ├── index.ts
+│   └── schemas.ts
+└── base.ts
+```
+
+base.ts に api 呼び出し用の関数を定義してあるので、各 API リクエスト関数は base から import して利用すること。
+
+## ファイル命名規則
+
+### エクスポート用 index ファイル
+- 各ディレクトリに `index.ts` を配置し、外部からのインポートを統一する
+
+### テストファイル
+- テスト対象ファイル名に `.test.ts` または `.test.tsx` を付与する
+
+### Storybook ファイル
+- コンポーネントファイル名に `.stories.tsx` を付与する
+
+### API スキーマファイル
+- API リクエスト/レスポンスの型定義は `schemas.ts` に配置する
+
+## 共通ルール
+
+### 型定義の場所
+- コンポーネント固有の型：同一ファイル内で定義
+- 共通型：適切な `schemas` ディレクトリに配置
+- API 関連型：`services` の `schemas.ts` に配置
+
+### テストカバレッジ
+- 全ての関数、フック、ユーティリティにテストを作成する
+- コンポーネントは必要に応じてテストを作成する
