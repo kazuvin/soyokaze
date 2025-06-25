@@ -168,6 +168,21 @@ function ButtonShowcase() {
         <Button title="Disabled" disabled onPress={() => {}} />
       </View>
       
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Icons</ThemedText>
+      <View style={styles.buttonRow}>
+        <Button title="Search" icon="magnifyingglass" onPress={() => {}} />
+        <Button title="Save" icon="heart" variant="secondary" onPress={() => {}} />
+        <Button title="Delete" icon="trash" variant="outline" onPress={() => {}} />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Icon Only</ThemedText>
+      <View style={styles.buttonRow}>
+        <Button icon="plus" iconOnly size="small" onPress={() => {}} />
+        <Button icon="gear" iconOnly size="medium" onPress={() => {}} />
+        <Button icon="star" iconOnly size="large" onPress={() => {}} />
+        <Button icon="heart" iconOnly variant="outline" onPress={() => {}} />
+      </View>
+      
       <ThemedText type="h6" style={{ marginTop: 16 }}>Full Width</ThemedText>
       <Button title="Full Width Button" fullWidth onPress={() => {}} />
     </ThemedView>
