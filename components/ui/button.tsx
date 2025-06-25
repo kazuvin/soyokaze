@@ -84,11 +84,18 @@ export function Button({
       return {
         ...baseStyle,
         width: baseStyle.minHeight,
+        height: baseStyle.minHeight,
+        maxHeight: baseStyle.minHeight,
         paddingHorizontal: 0,
       };
     }
 
-    return baseStyle;
+    // 通常のボタンでも高さを固定
+    return {
+      ...baseStyle,
+      height: baseStyle.minHeight,
+      maxHeight: baseStyle.minHeight,
+    };
   };
 
   const getTextColor = () => {
