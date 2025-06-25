@@ -66,6 +66,12 @@ export const LightTheme = {
     iconSelected: ColorPalette.primary[600],
     tint: ColorPalette.primary[600],
   },
+
+  // Shadow Colors
+  shadow: {
+    color: "rgba(0, 0, 0, 0.15)",
+    androidColor: "rgba(0, 0, 0, 0.3)",
+  },
 } as const;
 
 // Dark Theme
@@ -125,6 +131,12 @@ export const DarkTheme = {
     iconDefault: ColorPalette.neutral[400],
     iconSelected: "#ffffff",
     tint: "#ffffff",
+  },
+
+  // Shadow Colors
+  shadow: {
+    color: "rgba(0, 0, 0, 0.25)",
+    androidColor: "rgba(0, 0, 0, 0.4)",
   },
 } as const;
 
