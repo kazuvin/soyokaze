@@ -133,15 +133,32 @@ The app uses Expo Router with file-based routing:
 
 ### Working with Issues and Pull Requests
 
-1. **Create Working Branch**: `git checkout -b feature/feature-name` from main
+1. **Issue対応の開始**: 最新のmainブランチから新しい作業ブランチを作成
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b feature/feature-name
+   ```
 2. **Implement Changes**: Follow the component patterns and architecture guidelines
 3. **Test Implementation**: Run `npm run lint` and test the app
 4. **Commit Changes**: Use descriptive commit messages following repository style
 5. **Push and Create PR**: `git push origin feature-name` then create PR via GitHub CLI
+   - **PR言語**: Pull Requestのタイトルと説明は日本語で記述する
+   - **PR Template**: 変更内容、テスト計画、影響範囲を明確に記述する
 6. **Automated Testing**: GitHub Actions will automatically:
    - Run linting and tests
    - Create Expo Go preview for mobile testing (if EAS is configured)
    - Post preview QR code in PR comments
+
+#### Pull Request Guidelines
+
+- **タイトル**: 変更内容を簡潔に日本語で記述
+- **説明**: 以下の項目を含める
+  - 変更の概要と目的
+  - 実装した機能や修正した問題
+  - テスト方法と確認事項
+  - 影響範囲やブレイクングチェンジの有無
+- **ベースブランチ**: 常にmainブランチを基準とする
 
 ### Expo Go Preview System
 
