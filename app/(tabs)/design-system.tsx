@@ -259,9 +259,12 @@ function ShadowShowcase() {
             style={[
               styles.shadowBox,
               {
-                ...level.shadow,
-                shadowColor: theme.shadow.color,
                 backgroundColor: theme.background.elevated,
+                shadowColor: theme.shadow.color,
+                shadowOffset: level.shadow.shadowOffset,
+                shadowOpacity: level.shadow.shadowOpacity,
+                shadowRadius: level.shadow.shadowRadius,
+                elevation: level.shadow.elevation,
               }
             ]}
           >
