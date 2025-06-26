@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -149,6 +150,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Text Inputs">
+        <TextInputShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -454,6 +458,101 @@ function DialogShowcase() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </ThemedView>
+  );
+}
+
+function TextInputShowcase() {
+  const [baseValue, setBaseValue] = useState('');
+  const [borderlessValue, setBorderlessValue] = useState('');
+  const [errorValue, setErrorValue] = useState('');
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Variants</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          placeholder="Base variant"
+          variant="base"
+          value={baseValue}
+          onChangeText={setBaseValue}
+        />
+        <TextInput
+          placeholder="Borderless variant"
+          variant="borderless"
+          value={borderlessValue}
+          onChangeText={setBorderlessValue}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Sizes</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          placeholder="Small size"
+          size="small"
+        />
+        <TextInput
+          placeholder="Medium size (default)"
+          size="medium"
+        />
+        <TextInput
+          placeholder="Large size"
+          size="large"
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Labels</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          label="Name"
+          placeholder="Enter your name"
+        />
+        <TextInput
+          label="Email"
+          placeholder="Enter your email"
+          variant="borderless"
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Error State</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          label="Password"
+          placeholder="Enter password"
+          value={errorValue}
+          onChangeText={setErrorValue}
+          error="Password must be at least 8 characters"
+          secureTextEntry
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Icons</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          placeholder="Search..."
+          leadingIcon="magnifyingglass"
+        />
+        <TextInput
+          placeholder="Password"
+          trailingIcon="eye"
+          onTrailingIconPress={() => console.log('Toggle password visibility')}
+          secureTextEntry
+        />
+        <TextInput
+          placeholder="Clear input"
+          leadingIcon="person"
+          trailingIcon="xmark.circle.fill"
+          onTrailingIconPress={() => setBorderlessValue('')}
+          value={borderlessValue}
+          onChangeText={setBorderlessValue}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Full Width</ThemedText>
+      <TextInput
+        placeholder="Full width input"
+        fullWidth
+      />
     </ThemedView>
   );
 }
