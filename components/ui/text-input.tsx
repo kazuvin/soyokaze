@@ -60,9 +60,9 @@ export function TextInput({
     }[size];
 
     const iconPadding = {
-      small: Spacing[7],
-      medium: Spacing[8],
-      large: Spacing[9],
+      small: Spacing[8],
+      medium: Spacing[9],
+      large: Spacing[10],
     }[size];
 
     switch (size) {
