@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Collapsible } from '@/components/collapsible';
@@ -6,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -144,6 +146,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Cards">
         <CardShowcase />
+      </Collapsible>
+      <Collapsible title="Dialogs">
+        <DialogShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -359,6 +364,96 @@ function ShadowShowcase() {
           </View>
         </View>
       ))}
+    </ThemedView>
+  );
+}
+
+function DialogShowcase() {
+  const [basicDialogOpen, setBasicDialogOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [customDialogOpen, setCustomDialogOpen] = useState(false);
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Dialog</ThemedText>
+      <Dialog open={basicDialogOpen} onOpenChange={setBasicDialogOpen}>
+        <DialogTrigger>
+          <Button 
+            title="Open Basic Dialog" 
+            onPress={() => setBasicDialogOpen(true)} 
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Basic Dialog</DialogTitle>
+            <DialogDescription>
+              This is a basic dialog example with a title and description.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose>
+              <Button title="Close" variant="outline" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Confirmation Dialog</ThemedText>
+      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+        <DialogTrigger>
+          <Button 
+            title="Delete Item" 
+            variant="outline"
+            onPress={() => setConfirmDialogOpen(true)} 
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this item? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose>
+              <Button title="Cancel" variant="outline" />
+            </DialogClose>
+            <DialogClose onPress={() => console.log('Item deleted')}>
+              <Button title="Delete" variant="primary" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Dialog</ThemedText>
+      <Dialog open={customDialogOpen} onOpenChange={setCustomDialogOpen}>
+        <DialogTrigger>
+          <Button 
+            title="Open Custom Dialog" 
+            variant="secondary"
+            onPress={() => setCustomDialogOpen(true)} 
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogClose />
+          <DialogHeader>
+            <DialogTitle>Custom Dialog with Close Button</DialogTitle>
+            <DialogDescription>
+              This dialog has a close button in the header and demonstrates custom styling.
+            </DialogDescription>
+          </DialogHeader>
+          <View style={{ paddingVertical: 16 }}>
+            <ThemedText type="body">
+              You can add any custom content here. The dialog will automatically handle backdrop clicks and the close button.
+            </ThemedText>
+          </View>
+          <DialogFooter>
+            <DialogClose>
+              <Button title="Got it" variant="primary" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </ThemedView>
   );
 }
