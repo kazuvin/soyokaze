@@ -1,8 +1,10 @@
-import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps } from "react-native";
+import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps, TouchableOpacity } from "react-native";
 import { TypographyStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { ColorPalette, Spacing, BorderRadius } from "@/constants/design-tokens";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import type { SymbolName } from "@/components/ui/icon-symbol";
 
 export type TextInputVariant = "base" | "borderless";
 export type TextInputSize = "small" | "medium" | "large";
@@ -13,6 +15,9 @@ export type TextInputProps = RNTextInputProps & {
   label?: string;
   error?: string;
   fullWidth?: boolean;
+  leadingIcon?: SymbolName;
+  trailingIcon?: SymbolName;
+  onTrailingIconPress?: () => void;
 };
 
 export function TextInput({
@@ -21,6 +26,9 @@ export function TextInput({
   label,
   error,
   fullWidth = false,
+  leadingIcon,
+  trailingIcon,
+  onTrailingIconPress,
   style,
   ...rest
 }: TextInputProps) {
@@ -45,18 +53,34 @@ export function TextInput({
   };
 
   const getSizeStyles = () => {
+    const basePadding = {
+      small: Spacing[3],
+      medium: Spacing[3],
+      large: Spacing[4],
+    }[size];
+
+    const iconPadding = {
+      small: Spacing[8],
+      medium: Spacing[10],
+      large: Spacing[12],
+    }[size];
+
     switch (size) {
       case "small":
         return {
           minHeight: 32,
-          paddingHorizontal: Spacing[3],
+          paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
+          paddingLeft: leadingIcon ? iconPadding : basePadding,
+          paddingRight: trailingIcon ? iconPadding : basePadding,
           paddingVertical: Spacing[2],
           fontSize: TypographyStyles.bodySmall.fontSize,
         };
       case "large":
         return {
           minHeight: 48,
-          paddingHorizontal: Spacing[4],
+          paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
+          paddingLeft: leadingIcon ? iconPadding : basePadding,
+          paddingRight: trailingIcon ? iconPadding : basePadding,
           paddingVertical: Spacing[3],
           fontSize: TypographyStyles.bodyLarge.fontSize,
         };
@@ -64,7 +88,9 @@ export function TextInput({
       default:
         return {
           minHeight: 40,
-          paddingHorizontal: Spacing[3],
+          paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
+          paddingLeft: leadingIcon ? iconPadding : basePadding,
+          paddingRight: trailingIcon ? iconPadding : basePadding,
           paddingVertical: Spacing[2.5],
           fontSize: TypographyStyles.body.fontSize,
         };
@@ -83,6 +109,18 @@ export function TextInput({
     }
   };
 
+  const getIconSize = () => {
+    switch (size) {
+      case "small":
+        return 16;
+      case "large":
+        return 20;
+      case "medium":
+      default:
+        return 18;
+    }
+  };
+
   return (
     <View style={[fullWidth && { width: "100%" }]}>
       {label && (
@@ -98,20 +136,66 @@ export function TextInput({
           {label}
         </ThemedText>
       )}
-      <RNTextInput
+      <View
         style={[
           {
             borderRadius: BorderRadius.md,
-            color: theme.text.primary,
+            flexDirection: "row",
+            alignItems: "center",
+            position: "relative",
             ...getSizeStyles(),
             ...getVariantStyles(),
           },
           fullWidth && { width: "100%" },
-          style,
         ]}
-        placeholderTextColor={theme.text.secondary}
-        {...rest}
-      />
+      >
+        {leadingIcon && (
+          <IconSymbol
+            name={leadingIcon}
+            size={getIconSize()}
+            color={theme.text.secondary}
+            style={{
+              position: "absolute",
+              left: Spacing[3],
+              zIndex: 1,
+            }}
+          />
+        )}
+        <RNTextInput
+          style={[
+            {
+              flex: 1,
+              color: theme.text.primary,
+              fontSize: getSizeStyles().fontSize,
+              paddingLeft: getSizeStyles().paddingLeft,
+              paddingRight: getSizeStyles().paddingRight,
+              paddingVertical: getSizeStyles().paddingVertical,
+              minHeight: getSizeStyles().minHeight,
+            },
+            style,
+          ]}
+          placeholderTextColor={theme.text.secondary}
+          {...rest}
+        />
+        {trailingIcon && (
+          <TouchableOpacity
+            onPress={onTrailingIconPress}
+            style={{
+              position: "absolute",
+              right: Spacing[3],
+              padding: Spacing[1],
+              zIndex: 1,
+            }}
+            disabled={!onTrailingIconPress}
+          >
+            <IconSymbol
+              name={trailingIcon}
+              size={getIconSize()}
+              color={theme.text.secondary}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       {error && (
         <ThemedText
           style={[

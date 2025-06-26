@@ -526,6 +526,28 @@ function TextInputShowcase() {
         />
       </View>
 
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Icons</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <TextInput
+          placeholder="Search..."
+          leadingIcon="magnifyingglass"
+        />
+        <TextInput
+          placeholder="Password"
+          trailingIcon="eye"
+          onTrailingIconPress={() => console.log('Toggle password visibility')}
+          secureTextEntry
+        />
+        <TextInput
+          placeholder="Clear input"
+          leadingIcon="person"
+          trailingIcon="xmark.circle.fill"
+          onTrailingIconPress={() => setBorderlessValue('')}
+          value={borderlessValue}
+          onChangeText={setBorderlessValue}
+        />
+      </View>
+
       <ThemedText type="h6" style={{ marginTop: 16 }}>Full Width</ThemedText>
       <TextInput
         placeholder="Full width input"
