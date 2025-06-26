@@ -60,38 +60,35 @@ export function TextInput({
     }[size];
 
     const iconPadding = {
-      small: Spacing[8],
-      medium: Spacing[10],
-      large: Spacing[12],
+      small: Spacing[6],
+      medium: Spacing[7],
+      large: Spacing[8],
     }[size];
 
     switch (size) {
       case "small":
         return {
-          minHeight: 32,
+          height: 32,
           paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
           paddingLeft: leadingIcon ? iconPadding : basePadding,
           paddingRight: trailingIcon ? iconPadding : basePadding,
-          paddingVertical: Spacing[2],
           fontSize: TypographyStyles.bodySmall.fontSize,
         };
       case "large":
         return {
-          minHeight: 48,
+          height: 48,
           paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
           paddingLeft: leadingIcon ? iconPadding : basePadding,
           paddingRight: trailingIcon ? iconPadding : basePadding,
-          paddingVertical: Spacing[3],
           fontSize: TypographyStyles.bodyLarge.fontSize,
         };
       case "medium":
       default:
         return {
-          minHeight: 40,
+          height: 40,
           paddingHorizontal: leadingIcon || trailingIcon ? 0 : basePadding,
           paddingLeft: leadingIcon ? iconPadding : basePadding,
           paddingRight: trailingIcon ? iconPadding : basePadding,
-          paddingVertical: Spacing[2.5],
           fontSize: TypographyStyles.body.fontSize,
         };
     }
@@ -143,7 +140,7 @@ export function TextInput({
             flexDirection: "row",
             alignItems: "center",
             position: "relative",
-            ...getSizeStyles(),
+            height: getSizeStyles().height,
             ...getVariantStyles(),
           },
           fullWidth && { width: "100%" },
@@ -169,8 +166,8 @@ export function TextInput({
               fontSize: getSizeStyles().fontSize,
               paddingLeft: getSizeStyles().paddingLeft,
               paddingRight: getSizeStyles().paddingRight,
-              paddingVertical: getSizeStyles().paddingVertical,
-              minHeight: getSizeStyles().minHeight,
+              height: getSizeStyles().height,
+              textAlignVertical: "center",
             },
             style,
           ]}
@@ -182,7 +179,7 @@ export function TextInput({
             onPress={onTrailingIconPress}
             style={{
               position: "absolute",
-              right: Spacing[3],
+              right: Spacing[2],
               padding: Spacing[1],
               zIndex: 1,
             }}
