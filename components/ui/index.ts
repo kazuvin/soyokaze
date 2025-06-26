@@ -2,6 +2,7 @@
  * UI Components Exports
  */
 
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
 export { Button } from './button';
 export { Card } from './card';
 export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './dialog';

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { TextInput } from '@/components/ui/text-input';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -153,6 +154,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Text Inputs">
         <TextInputShowcase />
+      </Collapsible>
+      <Collapsible title="Accordions">
+        <AccordionShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -553,6 +557,89 @@ function TextInputShowcase() {
         placeholder="Full width input"
         fullWidth
       />
+    </ThemedView>
+  );
+}
+
+function AccordionShowcase() {
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Single Accordion</ThemedText>
+      <Accordion type="single" collapsible defaultValue="item-1">
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern and follows accessibility best practices.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>Is it styled?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It comes with built-in styles that match the design system theme.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>Is it animated?</AccordionTrigger>
+          <AccordionContent>
+            Yes. The accordion includes smooth animations for expand and collapse transitions.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Multiple Accordion</ThemedText>
+      <Accordion type="multiple" defaultValue={["multiple-1", "multiple-2"]}>
+        <AccordionItem value="multiple-1">
+          <AccordionTrigger>Can I open multiple items?</AccordionTrigger>
+          <AccordionContent>
+            Yes. With type=&quot;multiple&quot;, you can open multiple accordion items at the same time.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="multiple-2">
+          <AccordionTrigger>Does it work with React Native?</AccordionTrigger>
+          <AccordionContent>
+            Yes. This accordion component is built specifically for React Native and works seamlessly with Expo.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="multiple-3">
+          <AccordionTrigger>Is it customizable?</AccordionTrigger>
+          <AccordionContent>
+            Absolutely. You can customize styling, animations, and behavior to match your app&apos;s needs.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>With Custom Content</ThemedText>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="custom-1">
+          <AccordionTrigger>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconSymbol name="questionmark.circle" size={16} />
+              <ThemedText type="bodyMedium" style={{ fontWeight: '500' }}>
+                Custom Trigger Content
+              </ThemedText>
+            </View>
+          </AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 12 }}>
+              <ThemedText type="body">
+                You can add custom content to both the trigger and content areas.
+              </ThemedText>
+              <Button 
+                title="Action Button" 
+                size="small" 
+                variant="outline"
+                onPress={() => console.log('Button pressed in accordion')}
+              />
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="custom-2" disabled>
+          <AccordionTrigger>Disabled Item</AccordionTrigger>
+          <AccordionContent>
+            This content won&apos;t be shown because the item is disabled.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </ThemedView>
   );
 }
