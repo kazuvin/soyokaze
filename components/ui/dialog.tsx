@@ -246,7 +246,7 @@ export function DialogClose({ onPress, children }: DialogCloseProps) {
       onPress={handlePress}
       style={{
         position: "absolute",
-        top: variant === "slide" ? Spacing[12] : Spacing[4],
+        top: variant === "slide" ? Spacing[6] : Spacing[4],
         right: Spacing[4],
         padding: Spacing[2],
         zIndex: 1000,
