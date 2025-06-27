@@ -91,13 +91,15 @@ export function DialogContent({
             {
               flex: 1,
               backgroundColor: theme.background.default,
-              padding: Spacing[6],
+              position: "relative",
             },
             style,
           ]}
           {...rest}
         >
-          {children}
+          <View style={{ flex: 1, padding: Spacing[6] }}>
+            {children}
+          </View>
         </View>
       </Modal>
     );
@@ -224,7 +226,7 @@ export function DialogFooter({
 }
 
 export function DialogClose({ onPress, children }: DialogCloseProps) {
-  const { onOpenChange } = React.useContext(DialogContext);
+  const { onOpenChange, variant } = React.useContext(DialogContext);
   
   const handlePress = () => {
     onOpenChange(false);
@@ -244,9 +246,10 @@ export function DialogClose({ onPress, children }: DialogCloseProps) {
       onPress={handlePress}
       style={{
         position: "absolute",
-        top: Spacing[4],
+        top: variant === "slide" ? Spacing[12] : Spacing[4],
         right: Spacing[4],
         padding: Spacing[2],
+        zIndex: 1000,
       }}
     >
       <IconSymbol name="xmark" size={20} />
