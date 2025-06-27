@@ -376,7 +376,7 @@ function DialogShowcase() {
   const [basicDialogOpen, setBasicDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
-  const [noOverlayDialogOpen, setNoOverlayDialogOpen] = useState(false);
+  const [slideDialogOpen, setSlideDialogOpen] = useState(false);
 
   return (
     <ThemedView style={styles.componentSection}>
@@ -430,26 +430,26 @@ function DialogShowcase() {
         </DialogContent>
       </Dialog>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>No Overlay Dialog</ThemedText>
-      <Dialog open={noOverlayDialogOpen} onOpenChange={setNoOverlayDialogOpen} variant="no-overlay">
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Slide Dialog</ThemedText>
+      <Dialog open={slideDialogOpen} onOpenChange={setSlideDialogOpen} variant="slide">
         <DialogTrigger>
           <Button 
-            title="Open No Overlay Dialog" 
+            title="Open Slide Dialog" 
             variant="ghost"
-            onPress={() => setNoOverlayDialogOpen(true)} 
+            onPress={() => setSlideDialogOpen(true)} 
           />
         </DialogTrigger>
         <DialogContent>
           <DialogClose />
           <DialogHeader>
-            <DialogTitle>No Overlay Dialog</DialogTitle>
+            <DialogTitle>Slide Dialog</DialogTitle>
             <DialogDescription>
-              This dialog has no background overlay and must be closed with the button.
+              This dialog slides up from the bottom of the screen like a modal.
             </DialogDescription>
           </DialogHeader>
           <View style={{ paddingVertical: 16 }}>
             <ThemedText type="body">
-              Since there&apos;s no overlay, clicking outside won&apos;t close this dialog. Use the close button or footer buttons to dismiss it.
+              This is a full-screen modal that slides in from the bottom. It&apos;s perfect for forms, settings, or detailed content.
             </ThemedText>
           </View>
           <DialogFooter>

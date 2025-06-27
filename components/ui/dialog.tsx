@@ -16,7 +16,7 @@ export type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
-  variant?: "default" | "no-overlay";
+  variant?: "default" | "slide";
 };
 
 export type DialogContentProps = ViewProps & {
@@ -47,7 +47,7 @@ export type DialogCloseProps = {
 const DialogContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  variant?: "default" | "no-overlay";
+  variant?: "default" | "slide";
 }>({
   open: false,
   onOpenChange: () => {},
@@ -78,30 +78,28 @@ export function DialogContent({
     onOpenChange(false);
   };
 
-  if (variant === "no-overlay") {
+  if (variant === "slide") {
     return (
       <Modal
         visible={open}
-        transparent
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => onOpenChange(false)}
       >
         <View
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            padding: Spacing[4],
+            backgroundColor: theme.background.default,
           }}
         >
           <View
             style={[
               {
                 backgroundColor: theme.background.elevated,
-                borderRadius: BorderRadius.xl,
+                borderTopLeftRadius: BorderRadius.xl,
+                borderTopRightRadius: BorderRadius.xl,
                 padding: Spacing[6],
-                minWidth: 280,
-                maxWidth: "90%",
+                flex: 1,
+                marginTop: 50,
                 ...Shadow.lg,
               },
               style,
