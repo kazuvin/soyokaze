@@ -83,7 +83,7 @@ export function DialogContent({
       <Modal
         visible={open}
         animationType="slide"
-        presentationStyle="fullScreen"
+        presentationStyle="pageSheet"
         onRequestClose={() => onOpenChange(false)}
       >
         <View
