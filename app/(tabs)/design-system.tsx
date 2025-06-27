@@ -376,6 +376,7 @@ function DialogShowcase() {
   const [basicDialogOpen, setBasicDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
+  const [noOverlayDialogOpen, setNoOverlayDialogOpen] = useState(false);
 
   return (
     <ThemedView style={styles.componentSection}>
@@ -424,6 +425,36 @@ function DialogShowcase() {
             </DialogClose>
             <DialogClose onPress={() => console.log('Item deleted')}>
               <Button title="Delete" variant="primary" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>No Overlay Dialog</ThemedText>
+      <Dialog open={noOverlayDialogOpen} onOpenChange={setNoOverlayDialogOpen} variant="no-overlay">
+        <DialogTrigger>
+          <Button 
+            title="Open No Overlay Dialog" 
+            variant="ghost"
+            onPress={() => setNoOverlayDialogOpen(true)} 
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogClose />
+          <DialogHeader>
+            <DialogTitle>No Overlay Dialog</DialogTitle>
+            <DialogDescription>
+              This dialog has no background overlay and must be closed with the button.
+            </DialogDescription>
+          </DialogHeader>
+          <View style={{ paddingVertical: 16 }}>
+            <ThemedText type="body">
+              Since there&apos;s no overlay, clicking outside won&apos;t close this dialog. Use the close button or footer buttons to dismiss it.
+            </ThemedText>
+          </View>
+          <DialogFooter>
+            <DialogClose>
+              <Button title="Close" variant="primary" />
             </DialogClose>
           </DialogFooter>
         </DialogContent>

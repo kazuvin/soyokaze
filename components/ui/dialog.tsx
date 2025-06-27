@@ -16,6 +16,7 @@ export type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
+  variant?: "default" | "no-overlay";
 };
 
 export type DialogContentProps = ViewProps & {
@@ -46,14 +47,16 @@ export type DialogCloseProps = {
 const DialogContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  variant?: "default" | "no-overlay";
 }>({
   open: false,
   onOpenChange: () => {},
+  variant: "default",
 });
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, variant = "default" }: DialogProps) {
   return (
-    <DialogContext.Provider value={{ open, onOpenChange }}>
+    <DialogContext.Provider value={{ open, onOpenChange, variant }}>
       {children}
     </DialogContext.Provider>
   );
@@ -69,11 +72,48 @@ export function DialogContent({
   ...rest
 }: DialogContentProps) {
   const { theme } = useTheme();
-  const { open, onOpenChange } = React.useContext(DialogContext);
+  const { open, onOpenChange, variant } = React.useContext(DialogContext);
 
   const handleBackdropPress = () => {
     onOpenChange(false);
   };
+
+  if (variant === "no-overlay") {
+    return (
+      <Modal
+        visible={open}
+        transparent
+        animationType="fade"
+        onRequestClose={() => onOpenChange(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: Spacing[4],
+          }}
+        >
+          <View
+            style={[
+              {
+                backgroundColor: theme.background.elevated,
+                borderRadius: BorderRadius.xl,
+                padding: Spacing[6],
+                minWidth: 280,
+                maxWidth: "90%",
+                ...Shadow.lg,
+              },
+              style,
+            ]}
+            {...rest}
+          >
+            {children}
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
