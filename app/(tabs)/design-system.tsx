@@ -376,6 +376,7 @@ function DialogShowcase() {
   const [basicDialogOpen, setBasicDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
+  const [slideDialogOpen, setSlideDialogOpen] = useState(false);
 
   return (
     <ThemedView style={styles.componentSection}>
@@ -424,6 +425,36 @@ function DialogShowcase() {
             </DialogClose>
             <DialogClose onPress={() => console.log('Item deleted')}>
               <Button title="Delete" variant="primary" />
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Slide Dialog</ThemedText>
+      <Dialog open={slideDialogOpen} onOpenChange={setSlideDialogOpen} variant="slide">
+        <DialogTrigger>
+          <Button 
+            title="Open Slide Dialog" 
+            variant="ghost"
+            onPress={() => setSlideDialogOpen(true)} 
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogClose />
+          <DialogHeader>
+            <DialogTitle>Slide Dialog</DialogTitle>
+            <DialogDescription>
+              This dialog slides up from the bottom of the screen like a modal.
+            </DialogDescription>
+          </DialogHeader>
+          <View style={{ paddingVertical: 16 }}>
+            <ThemedText type="body">
+              This is a full-screen modal that slides in from the bottom. It&apos;s perfect for forms, settings, or detailed content.
+            </ThemedText>
+          </View>
+          <DialogFooter>
+            <DialogClose>
+              <Button title="Close" variant="primary" />
             </DialogClose>
           </DialogFooter>
         </DialogContent>

@@ -16,6 +16,7 @@ export type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
+  variant?: "default" | "slide";
 };
 
 export type DialogContentProps = ViewProps & {
@@ -46,14 +47,16 @@ export type DialogCloseProps = {
 const DialogContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  variant?: "default" | "slide";
 }>({
   open: false,
   onOpenChange: () => {},
+  variant: "default",
 });
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, variant = "default" }: DialogProps) {
   return (
-    <DialogContext.Provider value={{ open, onOpenChange }}>
+    <DialogContext.Provider value={{ open, onOpenChange, variant }}>
       {children}
     </DialogContext.Provider>
   );
@@ -69,11 +72,38 @@ export function DialogContent({
   ...rest
 }: DialogContentProps) {
   const { theme } = useTheme();
-  const { open, onOpenChange } = React.useContext(DialogContext);
+  const { open, onOpenChange, variant } = React.useContext(DialogContext);
 
   const handleBackdropPress = () => {
     onOpenChange(false);
   };
+
+  if (variant === "slide") {
+    return (
+      <Modal
+        visible={open}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => onOpenChange(false)}
+      >
+        <View
+          style={[
+            {
+              flex: 1,
+              backgroundColor: theme.background.default,
+              position: "relative",
+            },
+            style,
+          ]}
+          {...rest}
+        >
+          <View style={{ flex: 1, padding: Spacing[6] }}>
+            {children}
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
@@ -196,7 +226,7 @@ export function DialogFooter({
 }
 
 export function DialogClose({ onPress, children }: DialogCloseProps) {
-  const { onOpenChange } = React.useContext(DialogContext);
+  const { onOpenChange, variant } = React.useContext(DialogContext);
   
   const handlePress = () => {
     onOpenChange(false);
@@ -216,9 +246,10 @@ export function DialogClose({ onPress, children }: DialogCloseProps) {
       onPress={handlePress}
       style={{
         position: "absolute",
-        top: Spacing[4],
+        top: variant === "slide" ? Spacing[6] : Spacing[4],
         right: Spacing[4],
         padding: Spacing[2],
+        zIndex: 1000,
       }}
     >
       <IconSymbol name="xmark" size={20} />
