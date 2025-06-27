@@ -83,31 +83,21 @@ export function DialogContent({
       <Modal
         visible={open}
         animationType="slide"
+        presentationStyle="fullScreen"
         onRequestClose={() => onOpenChange(false)}
       >
         <View
-          style={{
-            flex: 1,
-            backgroundColor: theme.background.default,
-          }}
+          style={[
+            {
+              flex: 1,
+              backgroundColor: theme.background.default,
+              padding: Spacing[6],
+            },
+            style,
+          ]}
+          {...rest}
         >
-          <View
-            style={[
-              {
-                backgroundColor: theme.background.elevated,
-                borderTopLeftRadius: BorderRadius.xl,
-                borderTopRightRadius: BorderRadius.xl,
-                padding: Spacing[6],
-                flex: 1,
-                marginTop: 50,
-                ...Shadow.lg,
-              },
-              style,
-            ]}
-            {...rest}
-          >
-            {children}
-          </View>
+          {children}
         </View>
       </Modal>
     );
