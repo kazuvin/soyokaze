@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListSeparator } from '@/components/ui/list';
+import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListSeparator, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -748,6 +748,39 @@ function ListShowcase() {
               onPress={() => console.log('Toggle theme')} 
             />
           </ListItemAction>
+        </ListItem>
+      </List>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>List with Labels (Section Headers)</ThemedText>
+      <List variant="elevated" style={{ marginTop: 8 }}>
+        <ListLabel>General Settings</ListLabel>
+        <ListItem>
+          <ListItemIcon name="gear" />
+          <ListItemText primary="App Settings" secondary="Configure application preferences" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon name="bell" />
+          <ListItemText primary="Notifications" secondary="Manage notification settings" />
+        </ListItem>
+        
+        <ListLabel>Account</ListLabel>
+        <ListItem>
+          <ListItemIcon name="person" />
+          <ListItemText primary="Profile" secondary="Edit your profile information" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon name="lock" />
+          <ListItemText primary="Privacy" secondary="Privacy and security settings" />
+        </ListItem>
+        
+        <ListLabel variant="secondary">Help & Support</ListLabel>
+        <ListItem>
+          <ListItemIcon name="questionmark.circle" />
+          <ListItemText primary="FAQ" secondary="Frequently asked questions" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon name="envelope" />
+          <ListItemText primary="Contact Us" secondary="Get in touch with support" />
         </ListItem>
       </List>
 

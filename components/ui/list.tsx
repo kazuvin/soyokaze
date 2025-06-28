@@ -46,6 +46,11 @@ export type ListSeparatorProps = ViewProps & {
   marginVertical?: number;
 };
 
+export type ListLabelProps = ViewProps & {
+  children: string;
+  variant?: 'default' | 'secondary';
+};
+
 // Main List component
 export function List({
   children,
@@ -267,38 +272,45 @@ export function ListSeparator({
   variant = 'solid',
   color,
   height = 1,
-  marginVertical = 0,
+  marginVertical = 8,
   style,
   ...rest
 }: ListSeparatorProps) {
   const { theme } = useTheme();
 
   const getSeparatorStyle = () => {
+    const baseColor = color || theme.border.default;
     const baseStyle = {
       height,
       marginVertical,
-      backgroundColor: color || theme.border.default,
+      marginHorizontal: Spacing[4],
     };
 
     switch (variant) {
       case 'dashed':
-        // React Native doesn't support dashed borders directly, 
-        // so we'll use a more opaque color to simulate it
+        // For dashed effect, use border instead of background
         return {
           ...baseStyle,
-          backgroundColor: color || theme.border.default,
-          opacity: 0.6,
+          borderTopWidth: height,
+          borderTopColor: baseColor,
+          borderStyle: 'dashed' as const,
+          height: 0,
         };
       case 'dotted':
-        // Similarly for dotted, we'll use opacity
+        // For dotted effect, use border instead of background
         return {
           ...baseStyle,
-          backgroundColor: color || theme.border.default,
-          opacity: 0.4,
+          borderTopWidth: height,
+          borderTopColor: baseColor,
+          borderStyle: 'dotted' as const,
+          height: 0,
         };
       case 'solid':
       default:
-        return baseStyle;
+        return {
+          ...baseStyle,
+          backgroundColor: baseColor,
+        };
     }
   };
 
@@ -310,5 +322,59 @@ export function ListSeparator({
       ]}
       {...rest}
     />
+  );
+}
+
+// ListLabel component for section headers
+export function ListLabel({
+  children,
+  variant = 'default',
+  style,
+  ...rest
+}: ListLabelProps) {
+  const { theme } = useTheme();
+
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'secondary':
+        return {
+          color: theme.text.secondary,
+          fontSize: 12,
+          fontWeight: '500' as const,
+        };
+      case 'default':
+      default:
+        return {
+          color: theme.text.secondary,
+          fontSize: 14,
+          fontWeight: '600' as const,
+        };
+    }
+  };
+
+  return (
+    <View
+      style={[
+        {
+          paddingVertical: Spacing[2],
+          paddingHorizontal: Spacing[4],
+          marginTop: Spacing[3],
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <ThemedText
+        style={[
+          {
+            textTransform: 'uppercase',
+            letterSpacing: 0.5,
+          },
+          getVariantStyles(),
+        ]}
+      >
+        {children}
+      </ThemedText>
+    </View>
   );
 }
