@@ -9,7 +9,7 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import type { SymbolName } from '@/components/ui/icon-symbol';
 import { useTheme } from '@/hooks/use-theme';
-import { Spacing, BorderRadius } from '@/constants/design-tokens';
+import { Spacing, BorderRadius, ColorPalette } from '@/constants/design-tokens';
 
 // Type definitions
 export type ListProps = ViewProps & {
@@ -173,7 +173,7 @@ export function ListItemText({
       {...rest}
     >
       <ThemedText
-        type="body"
+        type="bodyLarge"
         style={[
           {
             color: theme.text.primary,
@@ -191,7 +191,7 @@ export function ListItemText({
           type="bodySmall"
           style={[
             {
-              color: theme.text.secondary,
+              color: ColorPalette.neutral[500],
             },
           ]}
           numberOfLines={1}
