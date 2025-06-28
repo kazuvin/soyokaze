@@ -4,58 +4,81 @@ This document describes the design system implementation for the Soyokaze applic
 
 ## Overview
 
-The design system provides a comprehensive set of design tokens, components, and utilities to ensure consistency across the application. It includes support for light and dark themes, responsive design, and accessibility.
+The design system provides a comprehensive set of design tokens, UI components, and utilities to ensure consistency across the application. Built with React Native and Expo, it includes full support for light and dark themes, cross-platform compatibility (iOS, Android, Web), and strong TypeScript integration.
+
+### Key Features
+
+- **Comprehensive Design Tokens**: Color palettes, typography, spacing, shadows, and more
+- **Production-Ready Components**: Button, Card, TextInput, Dialog, List, Tabs, and utilities
+- **Theme System**: Automatic light/dark mode with semantic color mapping
+- **Cross-Platform**: Consistent behavior across iOS, Android, and Web
+- **Type Safety**: Full TypeScript support with design token types
+- **Accessibility**: Proper touch targets, contrast ratios, and semantic markup
 
 ## Design Tokens
 
+The design system uses a comprehensive token system defined in `/constants/design-tokens.ts`.
+
 ### Color Palette
 
-The color system is based on a comprehensive palette with semantic meanings:
+The color system includes complete scales (50-950) for:
 
-- **Primary**: Main brand colors (blue scale)
-- **Secondary**: Neutral colors for backgrounds and borders
-- **Accent**: Purple scale for highlights and special elements
-- **Semantic**: Success (green), Warning (yellow), Error (red)
-- **Neutral**: Grayscale for text and backgrounds
+- **Primary**: Blue scale for brand colors and primary actions
+- **Secondary**: Zinc/neutral scale for backgrounds and subtle elements
+- **Accent**: Purple/magenta scale for highlights and special elements
+- **Semantic Colors**:
+  - **Success**: Green scale for positive states
+  - **Warning**: Amber/yellow scale for caution states
+  - **Error**: Red scale for error states
+- **Neutral**: True neutral grayscale for text and backgrounds
 
 ### Typography
 
-Typography scale includes:
+Typography tokens include:
 
-- **Headings**: h1 (48px) to h6 (18px)
-- **Body Text**: bodyLarge (18px), body (16px), bodySmall (14px)
-- **Labels**: label (14px), caption (12px)
-- **Special**: button text, link text, code text
+- **Font Families**: System (primary), SpaceMono (monospace)
+- **Font Sizes**: xs (12px) to 9xl (128px) - comprehensive scale
+- **Font Weights**: thin (100) to black (900)
+- **Line Heights**: none (1) to loose (2)
+- **Letter Spacing**: tighter (-0.05) to widest (0.1)
 
 ### Spacing
 
-Consistent spacing scale from 0 to 96 (in 4px increments):
+Comprehensive spacing scale from 0 to 96:
 - Base unit: 4px
-- Common values: 4, 8, 12, 16, 20, 24, 32, 48px
+- Scale: 0.5 (2px), 1 (4px), 1.5 (6px), 2 (8px), etc.
+- Extended values up to 96 (384px)
 
 ### Other Tokens
 
-- **Border Radius**: sm (2px) to 3xl (24px)
-- **Shadows**: Elevation system with 6 levels
-- **Opacity**: Standard opacity values
-- **Z-Index**: Layering system
+- **Border Radius**: none (0) to full (9999px)
+- **Shadows**: 6-level elevation system with React Native shadow properties
+- **Opacity**: 0 to 100 in 5-10% increments
+- **Z-Index**: Layering values from 0 to 50
+- **Breakpoints**: Responsive design breakpoints xs to 2xl
 
 ## Theme System
 
+The theme system is defined in `/constants/theme.ts` with semantic color mappings.
+
 ### Light Theme
-- Background: Light neutral colors
-- Text: Dark colors for contrast
-- Brand: Primary blue colors
+- **Background**: Light neutral colors (50-200 range)
+- **Text**: Dark colors for optimal contrast (neutral 900-500)
+- **Borders**: Subtle neutral borders (200-300 range)
+- **Brand**: Primary blue-600 for actions
+- **Icons**: Neutral 700-400 range
 
 ### Dark Theme
-- Background: Dark neutral colors  
-- Text: Light colors for contrast
-- Brand: Lighter blue for accessibility
+- **Background**: Dark neutral colors (950-800 range)
+- **Text**: Light colors for contrast (neutral 50-400)
+- **Borders**: Dark neutral borders (800-700 range)
+- **Brand**: Primary blue-400 for accessibility
+- **Icons**: Neutral 200-600 range
 
-### Usage
+### Theme Hook Usage
 
 ```typescript
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/hooks/use-theme';
 
 function MyComponent() {
   const { theme, colorScheme } = useTheme();
@@ -68,11 +91,21 @@ function MyComponent() {
 }
 ```
 
+### Semantic Color Categories
+
+- **Background**: primary, secondary, tertiary, elevated, overlay
+- **Text**: primary, secondary, tertiary, disabled, inverse, link, success, warning, error
+- **Border**: primary, secondary, focus, error, success, warning
+- **Brand**: primary, secondary, accent
+- **Icon**: primary, secondary, tertiary, inverse, brand
+- **Tab**: background, backgroundActive, iconDefault, iconSelected, tint
+- **Shadow**: color, androidColor
+
 ## Components
 
 ### ThemedText
 
-Enhanced text component with design system integration:
+Enhanced text component with design system integration (unchanged):
 
 ```typescript
 <ThemedText type="h1">Main Heading</ThemedText>
@@ -80,38 +113,137 @@ Enhanced text component with design system integration:
 <ThemedText type="caption">Small text</ThemedText>
 ```
 
-Available types: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`, `body`, `bodyLarge`, `bodySmall`, `label`, `caption`, `link`, `code`
-
 ### ThemedView
 
 Background-aware container component (unchanged from original implementation).
 
 ### Button
 
-Consistent button component with variants:
+Fully implemented button component with comprehensive variant system:
 
 ```typescript
 <Button title="Primary Action" variant="primary" size="large" />
-<Button title="Secondary" variant="secondary" />
+<Button title="Secondary" variant="secondary" icon="star" />
 <Button title="Outline" variant="outline" size="small" />
+<Button icon="plus" variant="ghost" /> {/* Icon only */}
+<Button title="Loading" loading />
 ```
 
-Variants: `primary`, `secondary`, `outline`, `ghost`
-Sizes: `small`, `medium`, `large`
+**Variants**: `primary`, `secondary`, `outline`, `ghost`  
+**Sizes**: `small`, `medium`, `large`  
+**Features**: Icons (leading/icon-only), loading states, disabled states, full width
 
 ### Card
 
-Container component with elevation and styling:
+Container component with sub-components and elevation:
 
 ```typescript
-<Card variant="elevated" padding="large">
-  <ThemedText type="h3">Card Title</ThemedText>
-  <ThemedText type="body">Card content</ThemedText>
+<Card variant="elevated">
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <Text>Card content</Text>
+  </CardContent>
 </Card>
 ```
 
-Variants: `elevated`, `flat`, `outlined`
-Padding: `none`, `small`, `medium`, `large`
+**Variants**: `elevated`, `flat`, `outlined`  
+**Sub-components**: `CardHeader`, `CardTitle`, `CardContent`
+
+### TextInput
+
+Form input component with validation support:
+
+```typescript
+<TextInput
+  label="Email"
+  placeholder="Enter email"
+  leadingIcon="mail"
+  error="Invalid email"
+  size="large"
+/>
+```
+
+**Variants**: `base`, `borderless`  
+**Sizes**: `small`, `medium`, `large`  
+**Features**: Labels, icons, error states, validation
+
+### Dialog
+
+Modal dialog system with context management:
+
+```typescript
+<Dialog>
+  <DialogTrigger>
+    <Button title="Open Dialog" />
+  </DialogTrigger>
+  <DialogContent variant="slide">
+    <DialogHeader>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogDescription>Are you sure?</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose>
+        <Button title="Cancel" variant="outline" />
+      </DialogClose>
+      <Button title="Confirm" variant="primary" />
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+**Variants**: `default`, `slide`  
+**Features**: Context-based state, backdrop handling, accessibility
+
+### List Components
+
+Flexible list system for data display:
+
+```typescript
+<List variant="elevated">
+  <ListLabel>Section Header</ListLabel>
+  <ListItem onPress={() => {}}>
+    <ListItemIcon name="person" />
+    <ListItemText primary="John Doe" secondary="john@example.com" />
+    <ListItemAction>
+      <Button icon="chevron-right" variant="ghost" />
+    </ListItemAction>
+  </ListItem>
+</List>
+```
+
+**Variants**: `default`, `elevated`, `outlined`  
+**Sub-components**: `ListItem`, `ListItemText`, `ListItemIcon`, `ListItemAction`, `ListLabel`
+
+### Tabs
+
+Tabbed interface with horizontal scrolling:
+
+```typescript
+<Tabs defaultValue="tab1">
+  <TabsList>
+    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+    <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+  </TabsList>
+  <TabsContent value="tab1">
+    <Text>Content 1</Text>
+  </TabsContent>
+  <TabsContent value="tab2">
+    <Text>Content 2</Text>
+  </TabsContent>
+</Tabs>
+```
+
+### IconSymbol
+
+Cross-platform icon system:
+
+```typescript
+<IconSymbol name="star" size={24} color={theme.icon.primary} />
+```
+
+**Features**: SF Symbols on iOS, Material Icons fallback, consistent naming
 
 ### Spacing
 
@@ -124,19 +256,29 @@ Utility component for consistent spacing:
 
 ## Utility Styles
 
-Pre-built style utilities available in `constants/Styles.ts`:
+Pre-built style utilities available in `/constants/styles.ts`:
 
 ### Typography Styles
-- `TypographyStyles.h1` to `TypographyStyles.h6`
-- `TypographyStyles.body`, `TypographyStyles.bodyLarge`, etc.
+- **Heading Styles**: `TypographyStyles.h1` to `TypographyStyles.h6`
+- **Body Text**: `TypographyStyles.body`, `TypographyStyles.bodyLarge`, `TypographyStyles.bodySmall`
+- **UI Text**: `TypographyStyles.button`, `TypographyStyles.label`, `TypographyStyles.caption`
+- **Special**: `TypographyStyles.link`, `TypographyStyles.code`
 
 ### Layout Styles
-- `LayoutStyles.flexRow`, `LayoutStyles.flexCenter`
-- `LayoutStyles.container`, `LayoutStyles.screen`
+- **Flex Utilities**: `LayoutStyles.flexRow`, `LayoutStyles.flexColumn`, `LayoutStyles.flexCenter`
+- **Flex Variants**: `LayoutStyles.flexBetween`, `LayoutStyles.flexStart`, `LayoutStyles.flexEnd`
+- **Containers**: `LayoutStyles.container`, `LayoutStyles.section`, `LayoutStyles.screen`
+- **Positioning**: `LayoutStyles.absolute`, `LayoutStyles.relative`
 
 ### Component Styles
-- `ComponentStyles.buttonBase`, `ComponentStyles.inputBase`
-- `ComponentStyles.card`, `ComponentStyles.listItem`
+- **Form Elements**: `ComponentStyles.buttonBase`, `ComponentStyles.inputBase`, `ComponentStyles.inputContainer`
+- **Containers**: `ComponentStyles.card`, `ComponentStyles.listItem`, `ComponentStyles.section`
+- **Interactive**: `ComponentStyles.touchable`, `ComponentStyles.pressable`
+
+### Animation Styles
+- **Transitions**: `AnimationStyles.fadeIn`, `AnimationStyles.slideIn`
+- **Easing**: Pre-configured easing curves for smooth animations
+- **Duration**: Standard animation durations (fast, normal, slow)
 
 ## Migration Guide
 
@@ -144,58 +286,145 @@ Pre-built style utilities available in `constants/Styles.ts`:
 
 Old:
 ```typescript
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 const textColor = Colors.light.text;
 ```
 
 New:
 ```typescript
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/hooks/use-theme';
 const { theme } = useTheme();
 const textColor = theme.text.primary;
 ```
 
-### Typography Migration
+### Design Token Usage
 
-Old:
+Old (hardcoded values):
 ```typescript
-<ThemedText type="title">Title</ThemedText>
+style={{
+  padding: 16,
+  borderRadius: 8,
+  shadowOpacity: 0.1
+}}
 ```
 
-New:
+New (design tokens):
 ```typescript
-<ThemedText type="h2">Title</ThemedText>
+import { Spacing, BorderRadius, Shadow } from '@/constants/design-tokens';
+
+style={{
+  padding: Spacing[4],
+  borderRadius: BorderRadius.lg,
+  ...Shadow.base
+}}
+```
+
+### Component Pattern
+
+Old (custom styling):
+```typescript
+<TouchableOpacity style={{ padding: 12, backgroundColor: '#007AFF' }}>
+  <Text style={{ color: 'white', fontSize: 16 }}>Button</Text>
+</TouchableOpacity>
+```
+
+New (design system component):
+```typescript
+<Button title="Button" variant="primary" size="medium" />
 ```
 
 ## File Structure
 
 ```
 constants/
-├── DesignTokens.ts    # Core design tokens
-├── Theme.ts           # Light/dark theme definitions
-├── Styles.ts          # Utility styles
-├── Colors.ts          # Legacy compatibility
-└── index.ts           # Exports
+├── design-tokens.ts   # Core design tokens (colors, typography, spacing, etc.)
+├── theme.ts           # Light/dark theme definitions
+├── styles.ts          # Utility styles (typography, layout, component, animation)
+├── colors.ts          # Legacy compatibility
+└── index.ts           # Unified exports
 
 components/ui/
-├── Button.tsx         # Button component
-├── Card.tsx           # Card component
-├── Spacing.tsx        # Spacing utility
-└── index.ts           # Exports
+├── button.tsx         # Button component with variants
+├── card.tsx           # Card component with sub-components
+├── text-input.tsx     # Form input component
+├── dialog.tsx         # Modal dialog system
+├── list.tsx           # List components
+├── tabs.tsx           # Tabbed interface
+├── spacing.tsx        # Spacing utility
+├── icon-symbol.tsx    # Cross-platform icon system
+└── index.ts           # Component exports
+
+components/layouts/
+├── header.tsx         # Header layout component
+└── index.ts           # Layout exports
 
 hooks/
-└── useTheme.ts        # Theme hook
+├── use-theme.ts       # Theme and color scheme hook
+├── use-color-scheme.ts # Cross-platform color scheme detection
+└── use-theme-color.ts # Theme-aware color utility
 ```
 
 ## Best Practices
 
-1. **Use Design Tokens**: Always use tokens instead of hardcoded values
-2. **Theme Awareness**: Use `useTheme` hook for theme-aware components
-3. **Semantic Colors**: Use semantic color names (text.primary vs specific hex values)
-4. **Consistent Spacing**: Use the spacing scale for all margins/padding
-5. **Typography Hierarchy**: Use appropriate heading levels for content structure
-6. **Component Composition**: Build complex UIs by composing simple components
+1. **Use Design Tokens**: Always import and use tokens from `@/constants/design-tokens`
+   ```typescript
+   import { Spacing, BorderRadius, Shadow } from '@/constants/design-tokens';
+   ```
+
+2. **Theme Awareness**: Use `useTheme()` hook for all theme-dependent styling
+   ```typescript
+   const { theme } = useTheme();
+   ```
+
+3. **Semantic Colors**: Use semantic color names for maintainability
+   ```typescript
+   color: theme.text.primary  // ✅ Good
+   color: '#000000'          // ❌ Avoid
+   ```
+
+4. **Consistent Spacing**: Use the spacing scale for all dimensions
+   ```typescript
+   margin: Spacing[4]        // ✅ Good
+   margin: 16               // ❌ Avoid
+   ```
+
+5. **Typography Hierarchy**: Use utility styles for consistent typography
+   ```typescript
+   import { TypographyStyles } from '@/constants/styles';
+   style={TypographyStyles.h2}
+   ```
+
+6. **Component Composition**: Prefer design system components over custom styling
+   ```typescript
+   <Card variant="elevated">    // ✅ Good
+     <CardHeader>
+       <CardTitle>Title</CardTitle>
+     </CardHeader>
+   </Card>
+   ```
+
+7. **Icon Consistency**: Use `IconSymbol` for cross-platform icon support
+   ```typescript
+   <IconSymbol name="star" size={24} />
+   ```
+
+8. **Touch Targets**: Ensure minimum 44px touch targets for accessibility
+   - All interactive components handle this automatically
+
+## Type Safety
+
+The design system provides full TypeScript support:
+
+- **Design Token Types**: All token values are type-checked
+- **Component Props**: Strict typing for variants, sizes, and props
+- **Theme Types**: Semantic color and spacing types
+- **Icon Names**: Constrained to available symbol names
 
 ## Backward Compatibility
 
-The legacy `Colors` export is maintained for existing components. New components should use the theme system directly for better type safety and flexibility.
+Legacy imports are maintained for compatibility:
+- `Colors` export from `/constants/colors.ts`
+- Original `ThemedText` and `ThemedView` components
+- Existing color scheme hooks
+
+New components should use the updated design system for better type safety and consistency.
