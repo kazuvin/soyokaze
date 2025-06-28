@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
@@ -150,6 +151,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Tabs">
+        <TabsShowcase />
       </Collapsible>
       <Collapsible title="Text Inputs">
         <TextInputShowcase />
@@ -584,6 +588,120 @@ function TextInputShowcase() {
         placeholder="Full width input"
         fullWidth
       />
+    </ThemedView>
+  );
+}
+
+function TabsShowcase() {
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Tabs Example</ThemedText>
+      <Tabs defaultValue="overview" style={{ marginTop: 8 }}>
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <ThemedText type="body">
+            This is the overview content. The Tab component provides a clean way to organize content into sections.
+          </ThemedText>
+        </TabsContent>
+        <TabsContent value="details">
+          <ThemedText type="body">
+            This is the details content. You can switch between tabs by tapping on the triggers above.
+          </ThemedText>
+        </TabsContent>
+        <TabsContent value="settings">
+          <ThemedText type="body">
+            This is the settings content. The active tab has a dark badge style while inactive tabs have a light style.
+          </ThemedText>
+        </TabsContent>
+      </Tabs>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Many Tabs with Horizontal Scroll</ThemedText>
+      <Tabs defaultValue="tab1" style={{ marginTop: 8 }}>
+        <TabsList>
+          <TabsTrigger value="tab1">タブ1</TabsTrigger>
+          <TabsTrigger value="tab2">タブ2</TabsTrigger>
+          <TabsTrigger value="tab3">タブ3</TabsTrigger>
+          <TabsTrigger value="tab4">タブ4</TabsTrigger>
+          <TabsTrigger value="tab5">タブ5</TabsTrigger>
+          <TabsTrigger value="tab6">タブ6</TabsTrigger>
+          <TabsTrigger value="tab7">Very Long Tab Name</TabsTrigger>
+          <TabsTrigger value="tab8">Tab 8</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">
+          <ThemedText type="body">コンテンツ 1 - 横スクロールが動作することを確認できます。</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab2">
+          <ThemedText type="body">コンテンツ 2 - タブが多い場合の動作を確認。</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab3">
+          <ThemedText type="body">コンテンツ 3</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab4">
+          <ThemedText type="body">コンテンツ 4</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab5">
+          <ThemedText type="body">コンテンツ 5</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab6">
+          <ThemedText type="body">コンテンツ 6</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab7">
+          <ThemedText type="body">コンテンツ 7 - 長いタブ名の場合</ThemedText>
+        </TabsContent>
+        <TabsContent value="tab8">
+          <ThemedText type="body">コンテンツ 8</ThemedText>
+        </TabsContent>
+      </Tabs>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Controlled Tabs</ThemedText>
+      <Tabs defaultValue="home" style={{ marginTop: 8 }}>
+        <TabsList>
+          <TabsTrigger value="home">Home</TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="messages">Messages</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+        </TabsList>
+        <TabsContent value="home">
+          <Card variant="flat" style={{ marginTop: 8 }}>
+            <CardContent>
+              <ThemedText type="body">
+                Welcome to your home dashboard. Here you can see an overview of your recent activity.
+              </ThemedText>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="profile">
+          <Card variant="flat" style={{ marginTop: 8 }}>
+            <CardContent>
+              <ThemedText type="body">
+                Manage your profile settings and personal information here.
+              </ThemedText>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="messages">
+          <Card variant="flat" style={{ marginTop: 8 }}>
+            <CardContent>
+              <ThemedText type="body">
+                Your messages and conversations appear in this section.
+              </ThemedText>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="notifications">
+          <Card variant="flat" style={{ marginTop: 8 }}>
+            <CardContent>
+              <ThemedText type="body">
+                Check your latest notifications and alerts here.
+              </ThemedText>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </ThemedView>
   );
 }
