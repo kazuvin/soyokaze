@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Animated, ScrollView } from 'react-native';
 
 import { Collapsible } from '@/components/collapsible';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -12,8 +12,9 @@ import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel }
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { ColorPalette, Shadow, BorderRadius } from '@/constants/design-tokens';
+import { ColorPalette, Shadow, BorderRadius, Spacing } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
+import { Header } from '@/components/layouts';
 
 export default function DesignSystemScreen() {
   return (
@@ -50,6 +51,12 @@ export default function DesignSystemScreen() {
       <ThemedView style={styles.section}>
         <ThemedText type="h3">Components</ThemedText>
         <ComponentShowcase />
+      </ThemedView>
+
+      {/* Header Section */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="h3">Header Layout</ThemedText>
+        <HeaderShowcase />
       </ThemedView>
 
       {/* Spacing Section */}
@@ -911,6 +918,89 @@ function TabsShowcase() {
   );
 }
 
+function HeaderShowcase() {
+  const scrollY = new Animated.Value(0);
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Header</ThemedText>
+      <View style={styles.headerDemo}>
+        <Header title="Basic Header" />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Header with Actions</ThemedText>
+      <View style={styles.headerDemo}>
+        <Header
+          title="Settings"
+          leftElement={
+            <Button icon="chevron.left" iconOnly size="small" variant="ghost" onPress={() => {}} />
+          }
+          rightElement={
+            <Button title="Save" size="small" onPress={() => {}} />
+          }
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Fixed Header with Blur Effect</ThemedText>
+      <ThemedText type="caption" style={{ marginBottom: 8 }}>
+        Scroll the content below to see the blur effect in action
+      </ThemedText>
+      <View style={styles.blurDemoContainer}>
+        <Header
+          title="Fixed Header"
+          fixed
+          scrollY={scrollY}
+          blurThreshold={20}
+          blurIntensity={60}
+          leftElement={
+            <Button icon="line.horizontal.3" iconOnly size="small" variant="ghost" onPress={() => {}} />
+          }
+          rightElement={
+            <Button icon="magnifyingglass" iconOnly size="small" variant="ghost" onPress={() => {}} />
+          }
+        />
+        <ScrollView
+          style={styles.scrollContent}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false }
+          )}
+          scrollEventThrottle={16}
+        >
+          <View style={styles.scrollPadding} />
+          {Array.from({ length: 20 }, (_, i) => (
+            <Card key={i} variant="flat" style={styles.scrollCard}>
+              <CardContent>
+                <ThemedText type="body">
+                  Scroll item {i + 1} - Keep scrolling to see the header blur effect
+                </ThemedText>
+              </CardContent>
+            </Card>
+          ))}
+        </ScrollView>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Header Variants</ThemedText>
+      <View style={styles.headerVariants}>
+        <View style={styles.headerDemo}>
+          <ThemedText type="caption">With Border</ThemedText>
+          <Header title="With Border" showBorder={true} />
+        </View>
+        
+        <View style={styles.headerDemo}>
+          <ThemedText type="caption">Without Border</ThemedText>
+          <Header title="No Border" showBorder={false} />
+        </View>
+        
+        <View style={styles.headerDemo}>
+          <ThemedText type="caption">Without Shadow</ThemedText>
+          <Header title="No Shadow" showShadow={false} />
+        </View>
+      </View>
+    </ThemedView>
+  );
+}
+
 const styles = StyleSheet.create({
   headerImage: {
     color: '#0ea5e9',
@@ -1026,5 +1116,33 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'monospace',
     textAlign: 'center',
+  },
+  headerDemo: {
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 8,
+    overflow: 'hidden',
+    marginBottom: 12,
+  },
+  headerVariants: {
+    marginTop: 8,
+  },
+  blurDemoContainer: {
+    height: 300,
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  scrollContent: {
+    flex: 1,
+  },
+  scrollPadding: {
+    height: Spacing[16], // Add padding to account for fixed header
+  },
+  scrollCard: {
+    marginHorizontal: 16,
+    marginBottom: 8,
   },
 });
