@@ -87,7 +87,6 @@ export function TabsList({ children, style, ...rest }: TabsListProps) {
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{
-        paddingHorizontal: Spacing[4],
         gap: Spacing[2],
         alignItems: 'center',
       }}
