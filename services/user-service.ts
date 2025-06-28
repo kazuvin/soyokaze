@@ -1,7 +1,7 @@
-import { executeQuery, fetchQuery } from '@/src/database/query';
-import { CreateUserSchema, UpdateUserSchema, UserSchema } from '@/src/models/user';
-import type { User, CreateUserData, UpdateUserData } from '@/src/models/user';
-import type { DatabaseError } from '@/src/database/query';
+import { executeQuery, fetchQuery } from '@/database/query';
+import { CreateUserSchema, UpdateUserSchema, UserSchema } from '@/models/user';
+import type { User, CreateUserData, UpdateUserData } from '@/models/user';
+import type { DatabaseError } from '@/database/query';
 
 export async function createUser(userData: CreateUserData): Promise<User> {
   const validatedData = CreateUserSchema.parse(userData);

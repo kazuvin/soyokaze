@@ -52,9 +52,9 @@ The app uses Expo Router with file-based routing:
 
 ### Data Layer Structure
 
-- `/src/database/` - SQLite database initialization, schema definitions, and common query functions
-- `/src/models/` - Zod schema definitions for data validation and type generation
-- `/src/services/` - Service layer for database operations (CRUD functions)
+- `/database/` - SQLite database initialization, schema definitions, and common query functions
+- `/models/` - Zod schema definitions for data validation and type generation
+- `/services/` - Service layer for database operations (CRUD functions)
 
 ### Development Patterns
 
@@ -94,13 +94,13 @@ The app uses Expo Router with file-based routing:
 
 #### Database Development Guidelines
 
-- **Schema-First Design**: Always define Zod schemas in `/src/models/` before implementing services
+- **Schema-First Design**: Always define Zod schemas in `/models/` before implementing services
 - **Type Safety**: Use Zod schema inference for TypeScript types - avoid creating separate type files
 - **Function-Based Services**: Use exported functions instead of classes for service implementations
-- **Common Query Functions**: Use shared `executeQuery` and `fetchQuery` functions from `/src/database/query.ts`
+- **Common Query Functions**: Use shared `executeQuery` and `fetchQuery` functions from `/database/query.ts`
 - **Error Handling**: Define error types in common query module for consistency
 - **Sync-Ready Architecture**: Include `synced` and `last_modified` fields for future online synchronization
-- **Database Initialization**: Always use the centralized database initialization from `/src/database/index.ts`
+- **Database Initialization**: Always use the centralized database initialization from `/database/index.ts`
 
 ## Key Dependencies
 
