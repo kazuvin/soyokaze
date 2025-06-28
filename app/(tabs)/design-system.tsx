@@ -14,7 +14,7 @@ import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius, Spacing } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
-import { Header } from '@/layouts';
+import { Header } from '@/components/layouts';
 
 export default function DesignSystemScreen() {
   return (

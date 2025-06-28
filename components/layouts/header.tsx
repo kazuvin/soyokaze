@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur';
 
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing, BorderRadius, Shadow, ZIndex } from '@/constants/design-tokens';
+import { Spacing, Shadow, ZIndex } from '@/constants/design-tokens';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
