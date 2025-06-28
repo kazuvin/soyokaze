@@ -50,6 +50,13 @@ The app uses Expo Router with file-based routing:
 - `/hooks/` - Custom React hooks for color scheme and theming
 - `/assets/` - Static assets (fonts, images, icons)
 
+### Data Layer Structure
+
+- `/src/database/` - SQLite database initialization and schema definitions
+- `/src/models/` - Zod schema definitions for data validation
+- `/src/services/` - Service layer for database operations (CRUD)
+- `/src/types/` - TypeScript type definitions for data structures
+
 ### Development Patterns
 
 #### Component Definitions and File Naming
@@ -86,6 +93,15 @@ The app uses Expo Router with file-based routing:
 
 - `@/*` maps to the project root for cleaner imports
 
+#### Database Development Guidelines
+
+- **Schema-First Design**: Always define Zod schemas in `/src/models/` before implementing services
+- **Type Safety**: Use Zod schema inference for TypeScript types to ensure consistency
+- **Service Layer Pattern**: Implement all database operations through service classes in `/src/services/`
+- **Error Handling**: Use consistent error types defined in `/src/types/database.ts`
+- **Sync-Ready Architecture**: Include `synced` and `last_modified` fields for future online synchronization
+- **Database Initialization**: Always use the centralized database initialization from `/src/database/index.ts`
+
 ## Key Dependencies
 
 ### Core Framework
@@ -107,6 +123,12 @@ The app uses Expo Router with file-based routing:
 - TypeScript with strict mode enabled
 - ESLint with Expo configuration
 - Metro bundler for web builds
+
+### Data Management
+
+- `expo-sqlite` for local SQLite database management
+- `zod` for schema validation and type safety
+- Local data storage with sync-ready architecture for future online capabilities
 
 ## Platform Considerations
 
