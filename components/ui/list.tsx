@@ -272,7 +272,7 @@ export function ListSeparator({
   variant = 'solid',
   color,
   height = 1,
-  marginVertical = 8,
+  marginVertical = 0,
   style,
   ...rest
 }: ListSeparatorProps) {
@@ -283,7 +283,7 @@ export function ListSeparator({
     const baseStyle = {
       height,
       marginVertical,
-      marginHorizontal: Spacing[4],
+      width: '100%',
     };
 
     switch (variant) {
