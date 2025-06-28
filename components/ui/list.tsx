@@ -177,7 +177,7 @@ export function ListItemText({
         style={[
           {
             color: theme.text.primary,
-            marginBottom: secondary ? 2 : 0,
+            marginBottom: secondary ? 1 : 0,
           },
         ]}
         numberOfLines={1}
