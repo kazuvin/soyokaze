@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { SCHEMA_STATEMENTS } from './schema';
-import type { DatabaseError } from '@/src/services/user-service';
+import type { DatabaseError } from './query';
 
 const DATABASE_NAME = 'soyokaze.db';
 
