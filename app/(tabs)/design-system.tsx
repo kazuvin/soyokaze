@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListSeparator } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -151,6 +152,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Lists">
+        <ListShowcase />
       </Collapsible>
       <Collapsible title="Tabs">
         <TabsShowcase />
@@ -588,6 +592,182 @@ function TextInputShowcase() {
         placeholder="Full width input"
         fullWidth
       />
+    </ThemedView>
+  );
+}
+
+function ListShowcase() {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const navigationItems = [
+    { id: '1', icon: 'house' as const, title: 'ホーム', description: 'メインダッシュボード' },
+    { id: '2', icon: 'gear' as const, title: '設定', description: 'アプリの設定を変更' },
+    { id: '3', icon: 'person' as const, title: 'プロフィール', description: 'アカウント情報' },
+    { id: '4', icon: 'bell' as const, title: '通知', description: '通知設定を管理' },
+    { id: '5', icon: 'questionmark.circle' as const, title: 'ヘルプ', description: 'よくある質問' },
+  ];
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic List</ThemedText>
+      <List style={{ marginTop: 8 }}>
+        <ListItem>
+          <ListItemIcon name="house" />
+          <ListItemText primary="ホーム" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon name="gear" />
+          <ListItemText primary="設定" secondary="アプリの設定を変更" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon name="person" />
+          <ListItemText primary="プロフィール" />
+          <ListItemAction>
+            <Button variant="ghost" size="small" title="編集" />
+          </ListItemAction>
+        </ListItem>
+      </List>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>List Variants</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <List variant="default">
+          <ListItem>
+            <ListItemText primary="Default List" secondary="Standard appearance" />
+          </ListItem>
+        </List>
+        
+        <List variant="elevated">
+          <ListItem>
+            <ListItemText primary="Elevated List" secondary="With shadow effect" />
+          </ListItem>
+        </List>
+        
+        <List variant="outlined">
+          <ListItem>
+            <ListItemText primary="Outlined List" secondary="With border outline" />
+          </ListItem>
+        </List>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Interactive List with Navigation</ThemedText>
+      <List variant="elevated" style={{ marginTop: 8 }}>
+        {navigationItems.map((item, index) => (
+          <React.Fragment key={item.id}>
+            <ListItem
+              onPress={() => {
+                setSelectedItem(item.id);
+                console.log(`Selected: ${item.title}`);
+              }}
+            >
+              <ListItemIcon name={item.icon} />
+              <ListItemText 
+                primary={item.title} 
+                secondary={item.description} 
+              />
+              <ListItemAction>
+                <IconSymbol 
+                  name="chevron.right" 
+                  size={16} 
+                  color={selectedItem === item.id ? '#0ea5e9' : '#a1a1aa'} 
+                />
+              </ListItemAction>
+            </ListItem>
+            {index < navigationItems.length - 1 && <ListSeparator />}
+          </React.Fragment>
+        ))}
+      </List>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>List with Custom Separators</ThemedText>
+      <List variant="outlined" style={{ marginTop: 8 }}>
+        <ListItem>
+          <ListItemIcon name="star" />
+          <ListItemText primary="Favorites" secondary="Your starred items" />
+        </ListItem>
+        <ListSeparator variant="solid" />
+        <ListItem>
+          <ListItemIcon name="clock" />
+          <ListItemText primary="Recent" secondary="Recently accessed" />
+        </ListItem>
+        <ListSeparator variant="dashed" />
+        <ListItem>
+          <ListItemIcon name="folder" />
+          <ListItemText primary="Documents" secondary="File storage" />
+        </ListItem>
+        <ListSeparator variant="dotted" />
+        <ListItem>
+          <ListItemIcon name="trash" />
+          <ListItemText primary="Trash" secondary="Deleted items" />
+        </ListItem>
+      </List>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>List with Actions</ThemedText>
+      <List variant="default" style={{ marginTop: 8 }}>
+        <ListItem>
+          <ListItemIcon name="envelope" />
+          <ListItemText 
+            primary="Email Notifications" 
+            secondary="Receive notifications via email" 
+          />
+          <ListItemAction>
+            <Button 
+              variant="outline" 
+              size="small" 
+              title="On" 
+              onPress={() => console.log('Toggle email')} 
+            />
+          </ListItemAction>
+        </ListItem>
+        <ListSeparator />
+        <ListItem>
+          <ListItemIcon name="speaker.wave.2" />
+          <ListItemText 
+            primary="Sound Effects" 
+            secondary="Play sounds for actions" 
+          />
+          <ListItemAction>
+            <Button 
+              variant="ghost" 
+              size="small" 
+              title="Off" 
+              onPress={() => console.log('Toggle sound')} 
+            />
+          </ListItemAction>
+        </ListItem>
+        <ListSeparator />
+        <ListItem>
+          <ListItemIcon name="moon" />
+          <ListItemText 
+            primary="Dark Mode" 
+            secondary="Use dark theme" 
+          />
+          <ListItemAction>
+            <Button 
+              variant="primary" 
+              size="small" 
+              title="Auto" 
+              onPress={() => console.log('Toggle theme')} 
+            />
+          </ListItemAction>
+        </ListItem>
+      </List>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Disabled Items</ThemedText>
+      <List variant="elevated" style={{ marginTop: 8 }}>
+        <ListItem onPress={() => console.log('Active item')}>
+          <ListItemIcon name="checkmark.circle" color="#22c55e" />
+          <ListItemText primary="Active Item" secondary="This item is interactive" />
+        </ListItem>
+        <ListSeparator />
+        <ListItem disabled>
+          <ListItemIcon name="xmark.circle" />
+          <ListItemText primary="Disabled Item" secondary="This item is not available" />
+        </ListItem>
+        <ListSeparator />
+        <ListItem onPress={() => console.log('Another active item')}>
+          <ListItemIcon name="info.circle" color="#0ea5e9" />
+          <ListItemText primary="Another Active Item" secondary="This one works too" />
+        </ListItem>
+      </List>
     </ThemedView>
   );
 }
