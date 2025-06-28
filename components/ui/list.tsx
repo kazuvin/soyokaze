@@ -39,12 +39,6 @@ export type ListItemActionProps = ViewProps & {
   children: React.ReactNode;
 };
 
-export type ListSeparatorProps = ViewProps & {
-  variant?: 'solid' | 'dashed' | 'dotted';
-  color?: string;
-  height?: number;
-  marginVertical?: number;
-};
 
 export type ListLabelProps = ViewProps & {
   children: string;
@@ -267,63 +261,6 @@ export function ListItemAction({
   );
 }
 
-// ListSeparator component with various styles
-export function ListSeparator({
-  variant = 'solid',
-  color,
-  height = 1,
-  marginVertical = 0,
-  style,
-  ...rest
-}: ListSeparatorProps) {
-  const { theme } = useTheme();
-
-  const getSeparatorStyle = () => {
-    const baseColor = color || theme.border.default;
-    const baseStyle = {
-      height,
-      marginVertical,
-      width: '100%',
-    };
-
-    switch (variant) {
-      case 'dashed':
-        // For dashed effect, use border instead of background
-        return {
-          ...baseStyle,
-          borderTopWidth: height,
-          borderTopColor: baseColor,
-          borderStyle: 'dashed' as const,
-          height: 0,
-        };
-      case 'dotted':
-        // For dotted effect, use border instead of background
-        return {
-          ...baseStyle,
-          borderTopWidth: height,
-          borderTopColor: baseColor,
-          borderStyle: 'dotted' as const,
-          height: 0,
-        };
-      case 'solid':
-      default:
-        return {
-          ...baseStyle,
-          backgroundColor: baseColor,
-        };
-    }
-  };
-
-  return (
-    <View
-      style={[
-        getSeparatorStyle(),
-        style,
-      ]}
-      {...rest}
-    />
-  );
-}
 
 // ListLabel component for section headers
 export function ListLabel({

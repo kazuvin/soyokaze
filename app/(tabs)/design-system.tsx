@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListSeparator, ListLabel } from '@/components/ui/list';
+import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -672,28 +672,24 @@ function ListShowcase() {
                 />
               </ListItemAction>
             </ListItem>
-            {index < navigationItems.length - 1 && <ListSeparator />}
           </React.Fragment>
         ))}
       </List>
 
-      <ThemedText type="h6" style={{ marginTop: 24 }}>List with Custom Separators</ThemedText>
+      <ThemedText type="h6" style={{ marginTop: 24 }}>List without Separators</ThemedText>
       <List variant="outlined" style={{ marginTop: 8 }}>
         <ListItem>
           <ListItemIcon name="star" />
           <ListItemText primary="Favorites" secondary="Your starred items" />
         </ListItem>
-        <ListSeparator variant="solid" />
         <ListItem>
           <ListItemIcon name="clock" />
           <ListItemText primary="Recent" secondary="Recently accessed" />
         </ListItem>
-        <ListSeparator variant="dashed" />
         <ListItem>
           <ListItemIcon name="folder" />
           <ListItemText primary="Documents" secondary="File storage" />
         </ListItem>
-        <ListSeparator variant="dotted" />
         <ListItem>
           <ListItemIcon name="trash" />
           <ListItemText primary="Trash" secondary="Deleted items" />
@@ -717,7 +713,6 @@ function ListShowcase() {
             />
           </ListItemAction>
         </ListItem>
-        <ListSeparator />
         <ListItem>
           <ListItemIcon name="speaker.wave.2" />
           <ListItemText 
@@ -733,7 +728,6 @@ function ListShowcase() {
             />
           </ListItemAction>
         </ListItem>
-        <ListSeparator />
         <ListItem>
           <ListItemIcon name="moon" />
           <ListItemText 
@@ -790,12 +784,10 @@ function ListShowcase() {
           <ListItemIcon name="checkmark.circle" color="#22c55e" />
           <ListItemText primary="Active Item" secondary="This item is interactive" />
         </ListItem>
-        <ListSeparator />
         <ListItem disabled>
           <ListItemIcon name="xmark.circle" />
           <ListItemText primary="Disabled Item" secondary="This item is not available" />
         </ListItem>
-        <ListSeparator />
         <ListItem onPress={() => console.log('Another active item')}>
           <ListItemIcon name="info.circle" color="#0ea5e9" />
           <ListItemText primary="Another Active Item" secondary="This one works too" />
