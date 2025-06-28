@@ -23,6 +23,8 @@ This is a cross-platform mobile application built with Expo and React Native, us
 
 ### EAS (Expo Application Services) Commands
 
+**Note**: These EAS commands are documented but not yet implemented in package.json. Add them when setting up EAS:
+
 - `npm run build:development` - Create development build with EAS
 - `npm run build:preview` - Create preview build with EAS
 - `npm run build:production` - Create production build with EAS
@@ -40,14 +42,22 @@ The app uses Expo Router with file-based routing:
 - `/app/(tabs)/_layout.tsx` - Tab navigation layout
 - `/app/(tabs)/index.tsx` - Home tab screen
 - `/app/(tabs)/explore.tsx` - Explore tab screen
+- `/app/(tabs)/design-system.tsx` - Design system showcase tab
 - `/app/+not-found.tsx` - 404 error screen
 
 ### Component Structure
 
 - `/components/` - Reusable UI components with themed variants
-- `/components/ui/` - Platform-specific UI components (iOS/Android variants)
-- `/constants/colors.ts` - Light/dark theme color definitions
-- `/hooks/` - Custom React hooks for color scheme and theming
+  - `/components/ui/` - Design system UI components (Button, Card, etc.)
+  - `/components/layouts/` - Layout components (Header, etc.)
+- `/constants/` - Design tokens, themes, and configuration
+  - `design-tokens.ts` - Core design system tokens
+  - `theme.ts` - Light/dark theme configurations
+  - `colors.ts` - Legacy color definitions
+  - `styles.ts` - Common style utilities
+- `/hooks/` - Custom React hooks
+  - `use-theme.ts` - Theme and color scheme management
+  - `use-color-scheme.ts` - Cross-platform color scheme detection
 - `/assets/` - Static assets (fonts, images, icons)
 
 ### Data Layer Structure
@@ -76,10 +86,11 @@ The app uses Expo Router with file-based routing:
 
 #### Theming System
 
-- Uses `@react-navigation/native` theme provider
-- Custom themed components (`ThemedView`, `ThemedText`) that adapt to light/dark mode
-- Color scheme detection via `useColorScheme` hook
-- Platform-specific styling with `Platform.select()`
+- **Theme Provider**: Uses custom theme system built on `useColorScheme` hook
+- **Design Tokens**: Comprehensive token system in `/constants/design-tokens.ts`
+- **Theme Hook**: `useTheme()` provides current theme object and color scheme
+- **Themed Components**: `ThemedView`, `ThemedText` adapt to light/dark mode
+- **Platform Support**: Cross-platform color scheme detection with web fallbacks
 
 #### Design System Integration
 
@@ -106,17 +117,19 @@ The app uses Expo Router with file-based routing:
 
 ### Core Framework
 
-- Expo SDK ~53.0 with new architecture enabled
+- Expo SDK ~53.0.12 with new architecture enabled
 - React Native 0.79.4 with React 19.0.0
-- Expo Router ~5.1 for navigation
+- Expo Router ~5.1.0 for navigation
 
 ### UI/UX Libraries
 
-- `@react-navigation/bottom-tabs` for tab navigation
-- `expo-blur` for iOS blur effects
-- `expo-haptics` for tactile feedback
-- `expo-symbols` for system icons
-- `react-native-reanimated` for animations
+- `@react-navigation/bottom-tabs` (~7.3.10) for tab navigation
+- `expo-blur` (~14.1.5) for iOS blur effects
+- `expo-haptics` (~14.1.4) for tactile feedback
+- `expo-symbols` (~0.4.5) for SF Symbols
+- `expo-vector-icons` (^14.1.0) for icon library
+- `react-native-reanimated` (~3.17.4) for animations
+- `react-native-gesture-handler` (~2.24.0) for gestures
 
 ### Development Tools
 
@@ -126,8 +139,8 @@ The app uses Expo Router with file-based routing:
 
 ### Data Management
 
-- `expo-sqlite` for local SQLite database management
-- `zod` for schema validation and type safety
+- `expo-sqlite` (~15.2.12) for local SQLite database management
+- `zod` (^3.25.67) for schema validation and type safety
 - Local data storage with sync-ready architecture for future online capabilities
 
 ## Platform Considerations
@@ -152,11 +165,12 @@ The app uses Expo Router with file-based routing:
 
 ## Configuration Files
 
-- `app.json` - Expo configuration with platform-specific settings and EAS updates
-- `eas.json` - EAS build and update profiles configuration
+- `app.json` - Expo configuration with platform-specific settings
+- `eas.json` - EAS build and update profiles configuration (when EAS is set up)
 - `tsconfig.json` - TypeScript configuration with path aliases
 - `eslint.config.js` - ESLint configuration using Expo presets
 - `package.json` - Dependencies and scripts
+- `expo-env.d.ts` - Expo TypeScript environment declarations
 
 ## GitHub Workflow
 

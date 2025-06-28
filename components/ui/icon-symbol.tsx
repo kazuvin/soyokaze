@@ -9,7 +9,8 @@ type IconMapping = Record<
   SymbolViewProps["name"],
   ComponentProps<typeof MaterialIcons>["name"]
 >;
-type IconSymbolName = keyof typeof MAPPING;
+export type SymbolName = keyof typeof MAPPING;
+type IconSymbolName = SymbolName;
 
 /**
  * Add your SF Symbols to Material Icons mappings here.
