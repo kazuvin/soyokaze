@@ -1,6 +1,11 @@
 import { getDatabase } from '@/src/database';
 import { CreateUserSchema, UpdateUserSchema, UserSchema } from '@/src/models/user';
-import type { User, CreateUserData, UpdateUserData, DatabaseError } from '@/src/types/database';
+import type { User, CreateUserData, UpdateUserData } from '@/src/models/user';
+
+export type DatabaseError = {
+  message: string;
+  code?: string;
+};
 
 export class UserService {
   private static async executeQuery<T>(
