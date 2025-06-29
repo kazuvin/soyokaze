@@ -158,6 +158,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
             borderRadius: BorderRadius.base,
             backgroundColor: isSelectedPrevDate ? theme.brand.primary : 'transparent',
             position: 'relative',
+            paddingBottom: hasJournalPrevEntry ? Spacing[2] : 0,
           }}
         >
           <ThemedText style={{
@@ -203,6 +204,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
             borderWidth: isTodayDate && !isSelectedDate ? 1 : 0,
             borderColor: theme.brand.primary,
             position: 'relative',
+            paddingBottom: hasJournalEntry ? Spacing[2] : 0,
           }}
         >
           <ThemedText style={{
@@ -256,6 +258,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
             borderRadius: BorderRadius.base,
             backgroundColor: isSelectedNextDate ? theme.brand.primary : 'transparent',
             position: 'relative',
+            paddingBottom: hasJournalNextEntry ? Spacing[2] : 0,
           }}
         >
           <ThemedText style={{
