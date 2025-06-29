@@ -152,7 +152,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           }}
           style={{
             flex: 1,
-            aspectRatio: 1,
+            aspectRatio: 1.2,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
@@ -195,7 +195,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           onPress={() => onDateSelect?.(date)}
           style={{
             flex: 1,
-            aspectRatio: 1,
+            aspectRatio: 1.2,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
@@ -250,7 +250,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           }}
           style={{
             flex: 1,
-            aspectRatio: 1,
+            aspectRatio: 1.2,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
