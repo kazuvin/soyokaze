@@ -5,7 +5,7 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Calendar } from '@/features/journal';
+import { Calendar, WeeklyCalendar } from '@/features/journal';
 
 export default function HomeScreen() {
   const mockJournalDates = [
@@ -31,6 +31,14 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
+      </ThemedView>
+      
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">今週のカレンダー</ThemedText>
+        <WeeklyCalendar
+          onDateClick={handleDateClick}
+          journalDates={mockJournalDates}
+        />
       </ThemedView>
       
       <ThemedView style={styles.stepContainer}>
