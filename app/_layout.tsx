@@ -9,8 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useOnboarding } from "@/hooks/use-onboarding";
-import { OnboardingWalkthrough } from "@/components/onboarding-walkthrough";
+import { useOnboarding, OnboardingWalkthrough } from "@/features/onboarding";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
