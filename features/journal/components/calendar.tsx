@@ -194,6 +194,37 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
       );
     }
 
+    // 次月の日付で最後の週を埋める
+    const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+    const nextMonthDays = totalCells - (firstDay + daysInMonth);
+    
+    for (let day = 1; day <= nextMonthDays; day++) {
+      const nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, day);
+      
+      days.push(
+        <TouchableOpacity
+          key={`next-${day}`}
+          onPress={() => onDateSelect?.(nextMonth)}
+          style={{
+            flex: 1,
+            aspectRatio: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: BorderRadius.base,
+            backgroundColor: 'transparent',
+          }}
+        >
+          <ThemedText style={{
+            fontSize: Typography.fontSize.base,
+            fontWeight: Typography.fontWeight.normal,
+            color: theme.text.disabled,
+          }}>
+            {day}
+          </ThemedText>
+        </TouchableOpacity>
+      );
+    }
+
     // 週ごとに分ける
     const weeks = [];
     for (let i = 0; i < days.length; i += 7) {
