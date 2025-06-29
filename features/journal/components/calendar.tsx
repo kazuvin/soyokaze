@@ -133,15 +133,34 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
     const days = [];
 
     // 前月の日付で空白を埋める
+    const prevMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
+    const prevMonthDays = getDaysInMonth(prevMonth);
+    
     for (let i = 0; i < firstDay; i++) {
+      const dayNumber = prevMonthDays - firstDay + i + 1;
+      const prevMonthDate = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), dayNumber);
+      
       days.push(
-        <View
-          key={`empty-${i}`}
+        <TouchableOpacity
+          key={`prev-${dayNumber}`}
+          onPress={() => onDateSelect?.(prevMonthDate)}
           style={{
             flex: 1,
             aspectRatio: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: BorderRadius.base,
+            backgroundColor: 'transparent',
           }}
-        />
+        >
+          <ThemedText style={{
+            fontSize: Typography.fontSize.base,
+            fontWeight: Typography.fontWeight.normal,
+            color: theme.text.disabled,
+          }}>
+            {dayNumber}
+          </ThemedText>
+        </TouchableOpacity>
       );
     }
 
