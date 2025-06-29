@@ -9,14 +9,16 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useOnboarding, OnboardingWalkthrough } from "@/features/onboarding";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const { isOnboardingCompleted, isLoading, completeOnboarding } = useOnboarding();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  if (!loaded) {
+  if (!loaded || isLoading) {
     // Async font loading only occurs in development.
     return null;
   }
@@ -28,6 +30,10 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      
+      {!isOnboardingCompleted && (
+        <OnboardingWalkthrough onComplete={completeOnboarding} />
+      )}
     </ThemeProvider>
   );
 }
