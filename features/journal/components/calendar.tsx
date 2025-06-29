@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useTheme } from "@/hooks/use-theme";
 import { Spacing, BorderRadius, Typography, ColorPalette } from "@/constants/design-tokens";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export type CalendarProps = {
   selectedDate?: Date;
@@ -14,10 +14,28 @@ export type CalendarProps = {
 export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: CalendarProps) {
   const { theme } = useTheme();
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  
-  const screenWidth = Dimensions.get('window').width;
-  const calendarWidth = screenWidth - (Spacing[4] * 2);
-  const dayWidth = (calendarWidth - (Spacing[2] * 6)) / 7;
+  const [screenData, setScreenData] = useState(() => {
+    const { width } = Dimensions.get('window');
+    const calendarWidth = width - (Spacing[4] * 2);
+    const dayWidth = (calendarWidth - (Spacing[2] * 6)) / 7;
+    return { screenWidth: width, calendarWidth, dayWidth };
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      const calendarWidth = window.width - (Spacing[4] * 2);
+      const dayWidth = (calendarWidth - (Spacing[2] * 6)) / 7;
+      setScreenData({ 
+        screenWidth: window.width, 
+        calendarWidth, 
+        dayWidth 
+      });
+    });
+
+    return () => subscription?.remove();
+  }, []);
+
+  const { dayWidth } = screenData;
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
