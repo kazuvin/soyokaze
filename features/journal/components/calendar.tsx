@@ -202,7 +202,7 @@ export function Calendar({ onDateClick, journalDates = [] }: CalendarProps) {
           <View style={{
             width: isTodayDate ? 32 : 'auto',
             height: isTodayDate ? 32 : 'auto',
-            borderRadius: isTodayDate ? BorderRadius.full : 0,
+            borderRadius: isTodayDate ? BorderRadius.lg : 0,
             backgroundColor: isTodayDate ? theme.brand.primary : 'transparent',
             alignItems: 'center',
             justifyContent: 'center',
