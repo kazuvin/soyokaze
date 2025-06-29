@@ -1,12 +1,22 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Calendar } from '@/features/journal';
 
 export default function HomeScreen() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  
+  const mockJournalDates = [
+    new Date(2024, 11, 15),
+    new Date(2024, 11, 20),
+    new Date(2024, 11, 25),
+  ];
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -20,6 +30,21 @@ export default function HomeScreen() {
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
       </ThemedView>
+      
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">カレンダー</ThemedText>
+        <Calendar
+          selectedDate={selectedDate}
+          onDateSelect={setSelectedDate}
+          journalDates={mockJournalDates}
+        />
+        {selectedDate && (
+          <ThemedText>
+            選択された日付: {selectedDate.toLocaleDateString('ja-JP')}
+          </ThemedText>
+        )}
+      </ThemedView>
+      
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
