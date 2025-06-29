@@ -11,6 +11,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
+import { Textarea } from '@/components/ui/textarea';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius, Spacing } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -168,6 +169,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Text Inputs">
         <TextInputShowcase />
+      </Collapsible>
+      <Collapsible title="Textareas">
+        <TextareaShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -914,6 +918,101 @@ function TabsShowcase() {
           </Card>
         </TabsContent>
       </Tabs>
+    </ThemedView>
+  );
+}
+
+function TextareaShowcase() {
+  const [baseValue, setBaseValue] = useState('');
+  const [borderlessValue, setBorderlessValue] = useState('');
+  const [errorValue, setErrorValue] = useState('');
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Variants</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Textarea
+          placeholder="Base variant textarea"
+          variant="base"
+          value={baseValue}
+          onChangeText={setBaseValue}
+        />
+        <Textarea
+          placeholder="Borderless variant textarea"
+          variant="borderless"
+          value={borderlessValue}
+          onChangeText={setBorderlessValue}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Sizes</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Textarea
+          placeholder="Small textarea"
+          size="small"
+          rows={3}
+        />
+        <Textarea
+          placeholder="Medium textarea (default)"
+          size="medium"
+          rows={4}
+        />
+        <Textarea
+          placeholder="Large textarea"
+          size="large"
+          rows={5}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Labels</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Textarea
+          label="Description"
+          placeholder="Enter description"
+          rows={3}
+        />
+        <Textarea
+          label="Comments"
+          placeholder="Leave your comments"
+          variant="borderless"
+          rows={4}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Error State</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Textarea
+          label="Feedback"
+          placeholder="Please provide feedback"
+          value={errorValue}
+          onChangeText={setErrorValue}
+          error="This field is required"
+          rows={3}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Different Row Counts</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Textarea
+          placeholder="2 rows"
+          rows={2}
+        />
+        <Textarea
+          placeholder="6 rows"
+          rows={6}
+        />
+        <Textarea
+          placeholder="8 rows"
+          rows={8}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Full Width</ThemedText>
+      <Textarea
+        placeholder="Full width textarea"
+        fullWidth
+        rows={4}
+      />
     </ThemedView>
   );
 }
