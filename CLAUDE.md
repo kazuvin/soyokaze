@@ -48,7 +48,7 @@ The app uses Expo Router with file-based routing:
 ### Component Structure
 
 - `/components/` - Reusable UI components with themed variants
-  - `/components/ui/` - Design system UI components (Button, Card, etc.)
+  - `/components/ui/` - Design system UI components (Button, Card, TextArea, etc.)
   - `/components/layouts/` - Layout components (Header, etc.)
 - `/constants/` - Design tokens, themes, and configuration
   - `design-tokens.ts` - Core design system tokens
@@ -59,12 +59,29 @@ The app uses Expo Router with file-based routing:
   - `use-theme.ts` - Theme and color scheme management
   - `use-color-scheme.ts` - Cross-platform color scheme detection
 - `/assets/` - Static assets (fonts, images, icons)
+- `/features/` - Feature-based code organization
+  - `/features/onboarding/` - User onboarding flow components and hooks
+  - `/features/journal/` - Journal and calendar related components
 
 ### Data Layer Structure
 
 - `/database/` - SQLite database initialization, schema definitions, and common query functions
 - `/models/` - Zod schema definitions for data validation and type generation
 - `/services/` - Service layer for database operations (CRUD functions)
+
+### Feature Organization
+
+The app follows a feature-based architecture pattern:
+
+- **Onboarding Feature** (`/features/onboarding/`)
+  - Components: `OnboardingWalkthrough` with step-by-step user introduction
+  - Hooks: `useOnboarding` for onboarding state management
+  - Integration: Automatically triggered for new users on app launch
+
+- **Journal Feature** (`/features/journal/`)
+  - Components: `Calendar` component for date selection and journal entry visualization
+  - Functionality: Monthly calendar view, date selection, journal entry markers
+  - Integration: Calendar component available for use across the app
 
 ### Development Patterns
 
@@ -74,15 +91,23 @@ The app uses Expo Router with file-based routing:
 - Use `type` for type definitions, avoid `interface`
 - Components should follow the pattern established in existing files
 - **File Naming Convention**: Use kebab-case for all file names consistently
-  - UI components: `button.tsx`, `input.tsx`, `app-bar.tsx`
-  - Feature components: `login-form.tsx`, `signup-form.tsx`
-  - Hooks: `use-login.ts`, `use-signup.ts`
+  - UI components: `button.tsx`, `input.tsx`, `textarea.tsx`, `calendar.tsx`
+  - Feature components: `login-form.tsx`, `signup-form.tsx`, `onboarding-walkthrough.tsx`
+  - Hooks: `use-login.ts`, `use-signup.ts`, `use-onboarding.ts`
   - Utilities: `is-login-user.ts`, `validate-password.ts`
   - Constants: `design-tokens.ts`
 - Each directory should have an `index.ts` file for unified exports
 - Test files: `component-name.test.tsx`
 - Storybook files: `component-name.stories.tsx`
 - API schemas: `schemas.ts` in service directories
+
+#### Feature Development Guidelines
+
+- **Feature Structure**: Organize features under `/features/` directory with clear separation of concerns
+- **Component Exports**: Each feature should export components through `index.ts` files for clean imports
+- **Reusability**: Design components to be reusable across different parts of the application
+- **Feature Integration**: Features should be easily integrable into existing app screens and flows
+- **State Management**: Use React hooks for local state management within features
 
 #### Theming System
 
@@ -218,4 +243,20 @@ The repository includes automated Expo Go previews for pull requests:
 - `feature/*` - New features and enhancements
 - `bugfix/*` - Bug fixes
 - `hotfix/*` - Critical production fixes
+- `docs/*` - Documentation updates
+
+### Current Features
+
+#### Implemented Components
+
+- **UI Components**: Button, Card, Dialog, TextInput, TextArea, List, Tabs, Spacing utilities
+- **Layout Components**: Header, themed view/text components
+- **Icon System**: SF Symbols integration for iOS, cross-platform icon support
+
+#### Features
+
+- **Onboarding System**: Complete user onboarding flow with step-by-step walkthrough
+- **Journal Calendar**: Interactive calendar component with date selection and journal entry markers
+- **Design System**: Comprehensive design token system with light/dark theme support
+- **Database Layer**: SQLite integration with Zod schema validation for type-safe data operations
 
