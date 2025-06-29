@@ -1,6 +1,5 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
-import { useState } from 'react';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -9,13 +8,16 @@ import { ThemedView } from '@/components/themed-view';
 import { Calendar } from '@/features/journal';
 
 export default function HomeScreen() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  
   const mockJournalDates = [
+    new Date(), // 今日の日付
     new Date(2024, 11, 15),
     new Date(2024, 11, 20),
     new Date(2024, 11, 25),
   ];
+
+  const handleDateClick = (date: Date) => {
+    console.log('クリックされた日付:', date.toLocaleDateString('ja-JP'));
+  };
 
   return (
     <ParallaxScrollView
@@ -34,15 +36,9 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">カレンダー</ThemedText>
         <Calendar
-          selectedDate={selectedDate}
-          onDateSelect={setSelectedDate}
+          onDateClick={handleDateClick}
           journalDates={mockJournalDates}
         />
-        {selectedDate && (
-          <ThemedText>
-            選択された日付: {selectedDate.toLocaleDateString('ja-JP')}
-          </ThemedText>
-        )}
       </ThemedView>
       
       <ThemedView style={styles.stepContainer}>
