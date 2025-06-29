@@ -9,6 +9,7 @@ export { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel }
 export { Spacing } from './spacing';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export { TextInput } from './text-input';
+export { Textarea } from './textarea';
 
 // Re-export existing components
 export { IconSymbol } from './icon-symbol';
