@@ -140,26 +140,44 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
       const dayNumber = prevMonthDays - firstDay + i + 1;
       const prevMonthDate = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), dayNumber);
       
+      const isSelectedPrevDate = isSelected(prevMonthDate);
+      const hasJournalPrevEntry = hasJournal(prevMonthDate);
+      
       days.push(
         <TouchableOpacity
           key={`prev-${dayNumber}`}
-          onPress={() => onDateSelect?.(prevMonthDate)}
+          onPress={() => {
+            setCurrentMonth(prevMonth);
+            onDateSelect?.(prevMonthDate);
+          }}
           style={{
             flex: 1,
             aspectRatio: 1,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
-            backgroundColor: 'transparent',
+            backgroundColor: isSelectedPrevDate ? theme.brand.primary : 'transparent',
+            position: 'relative',
           }}
         >
           <ThemedText style={{
             fontSize: Typography.fontSize.base,
-            fontWeight: Typography.fontWeight.normal,
-            color: theme.text.disabled,
+            fontWeight: isSelectedPrevDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
+            color: isSelectedPrevDate ? '#ffffff' : theme.text.disabled,
           }}>
             {dayNumber}
           </ThemedText>
+          
+          {hasJournalPrevEntry && (
+            <View style={{
+              position: 'absolute',
+              bottom: Spacing[1],
+              width: Spacing[1],
+              height: Spacing[1],
+              borderRadius: BorderRadius.full,
+              backgroundColor: isSelectedPrevDate ? '#ffffff' : theme.brand.primary,
+            }} />
+          )}
         </TouchableOpacity>
       );
     }
@@ -219,27 +237,45 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
     
     for (let day = 1; day <= nextMonthDays; day++) {
       const nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, day);
+      const nextMonthObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+      const isSelectedNextDate = isSelected(nextMonth);
+      const hasJournalNextEntry = hasJournal(nextMonth);
       
       days.push(
         <TouchableOpacity
           key={`next-${day}`}
-          onPress={() => onDateSelect?.(nextMonth)}
+          onPress={() => {
+            setCurrentMonth(nextMonthObj);
+            onDateSelect?.(nextMonth);
+          }}
           style={{
             flex: 1,
             aspectRatio: 1,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
-            backgroundColor: 'transparent',
+            backgroundColor: isSelectedNextDate ? theme.brand.primary : 'transparent',
+            position: 'relative',
           }}
         >
           <ThemedText style={{
             fontSize: Typography.fontSize.base,
-            fontWeight: Typography.fontWeight.normal,
-            color: theme.text.disabled,
+            fontWeight: isSelectedNextDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
+            color: isSelectedNextDate ? '#ffffff' : theme.text.disabled,
           }}>
             {day}
           </ThemedText>
+          
+          {hasJournalNextEntry && (
+            <View style={{
+              position: 'absolute',
+              bottom: Spacing[1],
+              width: Spacing[1],
+              height: Spacing[1],
+              borderRadius: BorderRadius.full,
+              backgroundColor: isSelectedNextDate ? '#ffffff' : theme.brand.primary,
+            }} />
+          )}
         </TouchableOpacity>
       );
     }

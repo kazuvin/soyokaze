@@ -12,6 +12,7 @@ export default function HomeScreen() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   
   const mockJournalDates = [
+    new Date(), // 今日の日付
     new Date(2024, 11, 15),
     new Date(2024, 11, 20),
     new Date(2024, 11, 25),
