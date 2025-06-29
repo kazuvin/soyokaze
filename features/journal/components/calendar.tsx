@@ -1,9 +1,9 @@
-import { View, TouchableOpacity, Dimensions } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useTheme } from "@/hooks/use-theme";
 import { Spacing, BorderRadius, Typography, ColorPalette } from "@/constants/design-tokens";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export type CalendarProps = {
   selectedDate?: Date;
@@ -14,28 +14,6 @@ export type CalendarProps = {
 export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: CalendarProps) {
   const { theme } = useTheme();
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [screenData, setScreenData] = useState(() => {
-    const { width } = Dimensions.get('window');
-    const calendarWidth = width - (Spacing[4] * 2);
-    const dayWidth = (calendarWidth - (Spacing[2] * 6)) / 7;
-    return { screenWidth: width, calendarWidth, dayWidth };
-  });
-
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', ({ window }) => {
-      const calendarWidth = window.width - (Spacing[4] * 2);
-      const dayWidth = (calendarWidth - (Spacing[2] * 6)) / 7;
-      setScreenData({ 
-        screenWidth: window.width, 
-        calendarWidth, 
-        dayWidth 
-      });
-    });
-
-    return () => subscription?.remove();
-  }, []);
-
-  const { dayWidth } = screenData;
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -124,7 +102,6 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
   const renderDayHeaders = () => (
     <View style={{
       flexDirection: 'row',
-      justifyContent: 'space-between',
       paddingHorizontal: Spacing[2],
       marginBottom: Spacing[2],
     }}>
@@ -132,7 +109,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
         <View
           key={day}
           style={{
-            width: dayWidth,
+            flex: 1,
             alignItems: 'center',
           }}
         >
@@ -161,8 +138,8 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
         <View
           key={`empty-${i}`}
           style={{
-            width: dayWidth,
-            height: dayWidth,
+            flex: 1,
+            aspectRatio: 1,
           }}
         />
       );
@@ -180,8 +157,8 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           key={day}
           onPress={() => onDateSelect?.(date)}
           style={{
-            width: dayWidth,
-            height: dayWidth,
+            flex: 1,
+            aspectRatio: 1,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
@@ -225,7 +202,6 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           key={`week-${i / 7}`}
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
             paddingHorizontal: Spacing[2],
             marginBottom: Spacing[1],
           }}
