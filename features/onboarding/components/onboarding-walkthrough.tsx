@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   View,
   Dimensions,
   ScrollView,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Animated,
 } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -56,11 +57,29 @@ export function OnboardingWalkthrough({ onComplete }: OnboardingWalkthroughProps
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const { theme } = useTheme();
+  
+  // Animated values for dot indicators
+  const dotAnimations = useRef(
+    slides.map((_, index) => new Animated.Value(index === 0 ? 1 : 0))
+  ).current;
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
-    setCurrentIndex(slideIndex);
+    if (slideIndex !== currentIndex) {
+      setCurrentIndex(slideIndex);
+    }
   };
+
+  // Animate dots when currentIndex changes
+  useEffect(() => {
+    dotAnimations.forEach((anim, index) => {
+      Animated.timing(anim, {
+        toValue: index === currentIndex ? 1 : 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    });
+  }, [currentIndex, dotAnimations]);
 
   const goToNextSlide = () => {
     if (currentIndex < slides.length - 1) {
@@ -172,20 +191,34 @@ export function OnboardingWalkthrough({ onComplete }: OnboardingWalkthroughProps
           gap: Spacing[2],
         }}
       >
-        {slides.map((_, index) => (
-          <View
-            key={index}
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: BorderRadius.full,
-              backgroundColor:
-                index === currentIndex
-                  ? theme.brand.primary
-                  : ColorPalette.neutral[300],
-            }}
-          />
-        ))}
+        {slides.map((_, index) => {
+          const animatedValue = dotAnimations[index];
+          const width = animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [8, 24],
+          });
+          const opacity = animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.4, 1],
+          });
+          const backgroundColor = animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [ColorPalette.neutral[300], theme.brand.primary],
+          });
+
+          return (
+            <Animated.View
+              key={index}
+              style={{
+                width,
+                height: 8,
+                borderRadius: BorderRadius.full,
+                backgroundColor,
+                opacity,
+              }}
+            />
+          );
+        })}
       </View>
 
       {/* Navigation Buttons */}
