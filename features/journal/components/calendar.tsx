@@ -6,12 +6,11 @@ import { Spacing, BorderRadius, Typography, ColorPalette } from "@/constants/des
 import { useState } from "react";
 
 export type CalendarProps = {
-  selectedDate?: Date;
-  onDateSelect?: (date: Date) => void;
+  onDateClick?: (date: Date) => void;
   journalDates?: Date[];
 };
 
-export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: CalendarProps) {
+export function Calendar({ onDateClick, journalDates = [] }: CalendarProps) {
   const { theme } = useTheme();
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -36,9 +35,6 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
     return date.toDateString() === today.toDateString();
   };
 
-  const isSelected = (date: Date) => {
-    return selectedDate && date.toDateString() === selectedDate.toDateString();
-  };
 
   const hasJournal = (date: Date) => {
     return journalDates.some(journalDate => 
@@ -140,7 +136,6 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
       const dayNumber = prevMonthDays - firstDay + i + 1;
       const prevMonthDate = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), dayNumber);
       
-      const isSelectedPrevDate = isSelected(prevMonthDate);
       const hasJournalPrevEntry = hasJournal(prevMonthDate);
       
       days.push(
@@ -148,7 +143,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           key={`prev-${dayNumber}`}
           onPress={() => {
             setCurrentMonth(prevMonth);
-            onDateSelect?.(prevMonthDate);
+            onDateClick?.(prevMonthDate);
           }}
           style={{
             flex: 1,
@@ -156,15 +151,15 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
-            backgroundColor: isSelectedPrevDate ? theme.brand.primary : 'transparent',
+            backgroundColor: 'transparent',
             position: 'relative',
-            paddingBottom: hasJournalPrevEntry ? Spacing[2] : 0,
+            paddingBottom: Spacing[2],
           }}
         >
           <ThemedText style={{
             fontSize: Typography.fontSize.base,
-            fontWeight: isSelectedPrevDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
-            color: isSelectedPrevDate ? '#ffffff' : theme.text.disabled,
+            fontWeight: Typography.fontWeight.normal,
+            color: theme.text.disabled,
           }}>
             {dayNumber}
           </ThemedText>
@@ -176,7 +171,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
               width: Spacing[1],
               height: Spacing[1],
               borderRadius: BorderRadius.full,
-              backgroundColor: isSelectedPrevDate ? '#ffffff' : theme.brand.primary,
+              backgroundColor: theme.brand.primary,
             }} />
           )}
         </TouchableOpacity>
@@ -186,38 +181,40 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
     // 現在の月の日付
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-      const isSelectedDate = isSelected(date);
       const isTodayDate = isToday(date);
       const hasJournalEntry = hasJournal(date);
 
       days.push(
         <TouchableOpacity
           key={day}
-          onPress={() => onDateSelect?.(date)}
+          onPress={() => onDateClick?.(date)}
           style={{
             flex: 1,
             aspectRatio: 0.8,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
-            backgroundColor: isSelectedDate ? theme.brand.primary : 'transparent',
-            borderWidth: isTodayDate && !isSelectedDate ? 1 : 0,
-            borderColor: theme.brand.primary,
+            backgroundColor: 'transparent',
             position: 'relative',
-            paddingBottom: hasJournalEntry ? Spacing[2] : 0,
+            paddingBottom: Spacing[2],
           }}
         >
-          <ThemedText style={{
-            fontSize: Typography.fontSize.base,
-            fontWeight: isSelectedDate || isTodayDate ? 
-              Typography.fontWeight.semibold : 
-              Typography.fontWeight.normal,
-            color: isSelectedDate ? '#ffffff' : 
-                   isTodayDate ? theme.brand.primary : 
-                   theme.text.primary,
+          <View style={{
+            width: isTodayDate ? 32 : 'auto',
+            height: isTodayDate ? 32 : 'auto',
+            borderRadius: isTodayDate ? BorderRadius.full : 0,
+            backgroundColor: isTodayDate ? theme.brand.primary : 'transparent',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            {day}
-          </ThemedText>
+            <ThemedText style={{
+              fontSize: Typography.fontSize.base,
+              fontWeight: isTodayDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
+              color: isTodayDate ? '#ffffff' : theme.text.primary,
+            }}>
+              {day}
+            </ThemedText>
+          </View>
           
           {hasJournalEntry && (
             <View style={{
@@ -226,7 +223,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
               width: Spacing[1],
               height: Spacing[1],
               borderRadius: BorderRadius.full,
-              backgroundColor: isSelectedDate ? '#ffffff' : theme.brand.primary,
+              backgroundColor: theme.brand.primary,
             }} />
           )}
         </TouchableOpacity>
@@ -240,7 +237,6 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
     for (let day = 1; day <= nextMonthDays; day++) {
       const nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, day);
       const nextMonthObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
-      const isSelectedNextDate = isSelected(nextMonth);
       const hasJournalNextEntry = hasJournal(nextMonth);
       
       days.push(
@@ -248,7 +244,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
           key={`next-${day}`}
           onPress={() => {
             setCurrentMonth(nextMonthObj);
-            onDateSelect?.(nextMonth);
+            onDateClick?.(nextMonth);
           }}
           style={{
             flex: 1,
@@ -256,15 +252,15 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: BorderRadius.base,
-            backgroundColor: isSelectedNextDate ? theme.brand.primary : 'transparent',
+            backgroundColor: 'transparent',
             position: 'relative',
-            paddingBottom: hasJournalNextEntry ? Spacing[2] : 0,
+            paddingBottom: Spacing[2],
           }}
         >
           <ThemedText style={{
             fontSize: Typography.fontSize.base,
-            fontWeight: isSelectedNextDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
-            color: isSelectedNextDate ? '#ffffff' : theme.text.disabled,
+            fontWeight: Typography.fontWeight.normal,
+            color: theme.text.disabled,
           }}>
             {day}
           </ThemedText>
@@ -276,7 +272,7 @@ export function Calendar({ selectedDate, onDateSelect, journalDates = [] }: Cale
               width: Spacing[1],
               height: Spacing[1],
               borderRadius: BorderRadius.full,
-              backgroundColor: isSelectedNextDate ? '#ffffff' : theme.brand.primary,
+              backgroundColor: theme.brand.primary,
             }} />
           )}
         </TouchableOpacity>
