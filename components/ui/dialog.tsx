@@ -147,7 +147,7 @@ export function DialogHeader({
       {...rest}
     >
       {/* Left Element */}
-      <View style={{ width: 40, alignItems: "flex-start" }}>
+      <View style={{ width: Spacing[6], alignItems: "flex-start" }}>
         {leftElement}
       </View>
       
@@ -157,7 +157,7 @@ export function DialogHeader({
       </View>
       
       {/* Right Element */}
-      <View style={{ width: 40, alignItems: "flex-end" }}>
+      <View style={{ width: Spacing[6], alignItems: "flex-end" }}>
         {rightElement || <DialogClose />}
       </View>
     </View>
