@@ -107,6 +107,7 @@ export function DialogContent({
           style={{ flex: 1 }}
           contentContainerStyle={{
             paddingHorizontal: Spacing[6],
+            paddingTop: Spacing[4],
             paddingBottom: Spacing[6],
           }}
           showsVerticalScrollIndicator={false}
@@ -135,10 +136,10 @@ export function DialogHeader({
           alignItems: "center",
           justifyContent: "space-between",
           paddingHorizontal: Spacing[6],
-          paddingTop: Spacing[6],
-          paddingBottom: Spacing[4],
+          paddingTop: Spacing[4],
+          paddingBottom: Spacing[3],
           borderBottomWidth: 1,
-          borderBottomColor: theme.border.default,
+          borderBottomColor: theme.border.primary,
           backgroundColor: theme.background.default,
         },
         style,
