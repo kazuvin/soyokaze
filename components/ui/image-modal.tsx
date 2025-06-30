@@ -7,8 +7,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import { ColorPalette } from '@/constants/design-tokens';
+import { Button } from '@/components/ui/button';
 
 type ImageModalProps = {
   visible: boolean;
@@ -27,13 +26,14 @@ export function ImageModal({ visible, imageUri, onClose }: ImageModalProps) {
       onRequestClose={onClose}
     >
       <SafeAreaView style={styles.overlay}>
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-          <Ionicons
-            name="close"
-            size={28}
-            color={ColorPalette.neutral[50]}
-          />
-        </TouchableOpacity>
+        <Button
+          variant="modal"
+          size="large"
+          iconOnly
+          icon="xmark"
+          onPress={onClose}
+          style={styles.closeButton}
+        />
         
         <TouchableOpacity
           style={styles.imageContainer}
@@ -65,10 +65,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   imageContainer: {
     flex: 1,
