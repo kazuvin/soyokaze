@@ -181,10 +181,7 @@ export default function HomeScreen() {
             style={styles.dialogContent}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
-            <ScrollView 
-              style={styles.dialogScrollView}
-              showsVerticalScrollIndicator={false}
-            >
+            <View style={{ paddingHorizontal: Spacing[6] }}>
               <Textarea
                 variant="borderless"
                 placeholder="タイトルを入力してください"
@@ -218,16 +215,18 @@ export default function HomeScreen() {
                 selectedOption={selectedAI}
                 onSelect={setSelectedAI}
               />
-            </ScrollView>
+            </View>
             
-            <Button
-              title="作成"
-              variant="primary"
-              fullWidth
-              onPress={handleCreateJournal}
-              disabled={!journalTitle.trim() || !journalContent.trim()}
-              style={styles.createButton}
-            />
+            <View style={{ paddingHorizontal: Spacing[6] }}>
+              <Button
+                title="作成"
+                variant="primary"
+                fullWidth
+                onPress={handleCreateJournal}
+                disabled={!journalTitle.trim() || !journalContent.trim()}
+                style={styles.createButton}
+              />
+            </View>
           </KeyboardAvoidingView>
         </DialogContent>
       </Dialog>
