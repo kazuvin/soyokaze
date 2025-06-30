@@ -1,47 +1,82 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { WeeklyCalendar } from '@/features/journal';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { FBSelectionCard, type AIFeedbackOption } from '@/features/ai-feedback';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/design-tokens';
 
 type JournalEntry = {
   id: string;
-  date: Date;
+  title: string;
   content: string;
+  date: Date;
   createdAt: Date;
 };
 
 export default function HomeScreen() {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [journalText, setJournalText] = useState('');
+  const [journalTitle, setJournalTitle] = useState('');
+  const [journalContent, setJournalContent] = useState('');
+  const [selectedAI, setSelectedAI] = useState<string>('');
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
     {
       id: '1',
-      date: new Date(),
+      title: '散歩日和',
       content: '今日は天気が良くて、散歩に出かけました。桜がとても綺麗で、気持ちの良い一日でした。',
+      date: new Date(),
       createdAt: new Date(),
     },
     {
       id: '2',
-      date: new Date(2024, 11, 15),
+      title: '新プロジェクト開始',
       content: '新しいプロジェクトが始まりました。チームのメンバーと初めての打ち合わせがあり、これからが楽しみです。',
+      date: new Date(2024, 11, 15),
       createdAt: new Date(2024, 11, 15),
     },
     {
       id: '3',
-      date: new Date(2024, 11, 20),
+      title: '読書習慣',
       content: '読書の時間を増やしたいと思います。最近忙しくて本を読む時間が取れていませんでした。',
+      date: new Date(2024, 11, 20),
       createdAt: new Date(2024, 11, 20),
     },
   ]);
+
+  const aiOptions: AIFeedbackOption[] = [
+    {
+      id: 'empathy',
+      name: '共感AI',
+      description: '気持ちに寄り添う',
+      illustration: '💝',
+    },
+    {
+      id: 'coach',
+      name: 'コーチAI',
+      description: '目標達成をサポート',
+      illustration: '🎯',
+    },
+    {
+      id: 'wise',
+      name: '賢者AI',
+      description: '深い洞察を提供',
+      illustration: '🦉',
+    },
+    {
+      id: 'cheerful',
+      name: '応援AI',
+      description: '元気づけてくれる',
+      illustration: '🌟',
+    },
+  ];
 
   const mockJournalDates = journalEntries.map(entry => entry.date);
 
@@ -50,15 +85,18 @@ export default function HomeScreen() {
   };
 
   const handleCreateJournal = () => {
-    if (journalText.trim()) {
+    if (journalTitle.trim() && journalContent.trim()) {
       const newEntry: JournalEntry = {
         id: Date.now().toString(),
+        title: journalTitle.trim(),
+        content: journalContent.trim(),
         date: new Date(),
-        content: journalText.trim(),
         createdAt: new Date(),
       };
       setJournalEntries(prev => [newEntry, ...prev]);
-      setJournalText('');
+      setJournalTitle('');
+      setJournalContent('');
+      setSelectedAI('');
       setIsDialogOpen(false);
     }
   };
@@ -75,35 +113,45 @@ export default function HomeScreen() {
     <View style={[styles.container, { backgroundColor: theme.background.default }]}>
       <ScrollView 
         style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
+        contentContainerStyle={[
+          styles.contentContainer,
+          { paddingTop: insets.top + Spacing[4], paddingBottom: insets.bottom + 100 }
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        <ThemedView style={styles.section}>
-          <ThemedText type="title" style={styles.sectionTitle}>今週のカレンダー</ThemedText>
+        <View style={[styles.section, styles.calendarSection, { backgroundColor: 'transparent' }]}>
+          <ThemedText type="subtitle" style={styles.greetingMessage}>
+            こんにちは！今日も素敵な一日を過ごしましょう
+          </ThemedText>
           <WeeklyCalendar
             onDateClick={handleDateClick}
             journalDates={mockJournalDates}
           />
-        </ThemedView>
+        </View>
         
-        <ThemedView style={styles.section}>
-          <ThemedText type="title" style={styles.sectionTitle}>ジャーナル</ThemedText>
+        <View style={[styles.section, styles.journalSection, { backgroundColor: 'transparent' }]}>
+          <ThemedText type="subtitle" style={styles.sectionTitle}>ジャーナル</ThemedText>
           {journalEntries.map((entry) => (
-            <Card key={entry.id} variant="elevated" style={styles.journalCard}>
-              <CardContent>
+            <Card key={entry.id} variant="flat" style={styles.journalCard}>
+              <CardHeader>
+                <CardTitle>{entry.title}</CardTitle>
+              </CardHeader>
+              <CardContent style={styles.journalCardContent}>
+                <ThemedText style={styles.journalContent}>
+                  {entry.content}
+                </ThemedText>
+              </CardContent>
+              <CardFooter>
                 <ThemedText 
                   type="defaultSemiBold" 
                   style={[styles.journalDate, { color: theme.text.secondary }]}
                 >
                   {formatDate(entry.date)}
                 </ThemedText>
-                <ThemedText style={styles.journalContent}>
-                  {entry.content}
-                </ThemedText>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
-        </ThemedView>
+        </View>
       </ScrollView>
 
       <Button
@@ -111,7 +159,15 @@ export default function HomeScreen() {
         iconOnly
         variant="primary"
         size="large"
-        style={[styles.fab, { backgroundColor: theme.brand.primary }]}
+        style={[
+          styles.fab, 
+          { 
+            backgroundColor: theme.brand.primary,
+            bottom: insets.bottom + 70, // タブバーの高さ + 余白を考慮（さらに下に移動）
+            borderRadius: 16, // 角丸の四角
+            aspectRatio: 1, // アスペクト比1:1を強制
+          }
+        ]}
         onPress={() => setIsDialogOpen(true)}
       />
 
@@ -121,34 +177,58 @@ export default function HomeScreen() {
             <DialogTitle>新しいジャーナルを作成</DialogTitle>
           </DialogHeader>
           
-          <View style={styles.dialogContent}>
-            <Textarea
-              variant="borderless"
-              placeholder="今日はどんな一日でしたか？"
-              value={journalText}
-              onChangeText={setJournalText}
-              rows={8}
-              fullWidth
-              style={styles.textArea}
-            />
-            
-            <View style={styles.characterCount}>
-              <ThemedText 
-                style={[styles.characterCountText, { color: theme.text.secondary }]}
-              >
-                {journalText.length} 文字
-              </ThemedText>
-            </View>
+          <KeyboardAvoidingView 
+            style={styles.dialogContent}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <ScrollView 
+              style={styles.dialogScrollView}
+              showsVerticalScrollIndicator={false}
+            >
+              <Textarea
+                variant="borderless"
+                placeholder="タイトルを入力してください"
+                value={journalTitle}
+                onChangeText={setJournalTitle}
+                rows={1}
+                fullWidth
+                style={styles.titleInput}
+              />
+              
+              <Textarea
+                variant="borderless"
+                placeholder="今日はどんな一日でしたか？"
+                value={journalContent}
+                onChangeText={setJournalContent}
+                rows={6}
+                fullWidth
+                style={styles.contentInput}
+              />
+              
+              <View style={styles.characterCount}>
+                <ThemedText 
+                  style={[styles.characterCountText, { color: theme.text.secondary }]}
+                >
+                  {journalContent.length} 文字
+                </ThemedText>
+              </View>
+              
+              <FBSelectionCard
+                options={aiOptions}
+                selectedOption={selectedAI}
+                onSelect={setSelectedAI}
+              />
+            </ScrollView>
             
             <Button
               title="作成"
               variant="primary"
               fullWidth
               onPress={handleCreateJournal}
-              disabled={!journalText.trim()}
+              disabled={!journalTitle.trim() || !journalContent.trim()}
               style={styles.createButton}
             />
-          </View>
+          </KeyboardAvoidingView>
         </DialogContent>
       </Dialog>
     </View>
@@ -163,9 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: Spacing[4],
-    paddingTop: Spacing[4],
-    paddingBottom: 100, // FABのスペースを確保
+    paddingHorizontal: 0,
   },
   section: {
     marginBottom: Spacing[6],
@@ -173,8 +251,22 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginBottom: Spacing[4],
   },
+  greetingMessage: {
+    marginBottom: Spacing[4],
+    textAlign: 'center',
+    paddingHorizontal: Spacing[4],
+  },
+  calendarSection: {
+    paddingHorizontal: 0,
+  },
+  journalSection: {
+    paddingHorizontal: Spacing[4],
+  },
   journalCard: {
     marginBottom: Spacing[3],
+  },
+  journalCardContent: {
+    paddingBottom: 0,
   },
   journalDate: {
     marginBottom: Spacing[2],
@@ -185,10 +277,8 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: Spacing[4],
-    bottom: Spacing[6],
     width: 56,
     height: 56,
-    borderRadius: 28,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: {
@@ -202,7 +292,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Spacing[4],
   },
-  textArea: {
+  dialogScrollView: {
+    flex: 1,
+  },
+  titleInput: {
+    marginBottom: Spacing[3],
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  contentInput: {
     flex: 1,
     marginBottom: Spacing[4],
   },
@@ -214,6 +312,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   createButton: {
-    marginTop: 'auto',
+    marginTop: Spacing[4],
   },
 });

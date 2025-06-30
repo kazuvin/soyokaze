@@ -1,7 +1,7 @@
 import { View, type ViewProps } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
-import { Spacing, BorderRadius, Shadow } from "@/constants/design-tokens";
+import { Spacing, Shadow } from "@/constants/design-tokens";
 
 export type CardVariant = "elevated" | "flat" | "outlined";
 
@@ -17,6 +17,8 @@ export type CardTitleProps = ViewProps & {
 
 export type CardContentProps = ViewProps;
 
+export type CardFooterProps = ViewProps;
+
 export function Card({
   variant = "elevated",
   style,
@@ -29,20 +31,20 @@ export function Card({
     switch (variant) {
       case "elevated":
         return {
-          borderRadius: BorderRadius.xl,
+          borderRadius: 20,
           backgroundColor: theme.background.elevated,
           ...Shadow.lg,
         };
       case "flat":
         return {
-          borderRadius: BorderRadius.lg,
+          borderRadius: 20,
           backgroundColor: theme.background.elevated,
           borderWidth: 1,
           borderColor: theme.border.primary,
         };
       case "outlined":
         return {
-          borderRadius: BorderRadius.lg,
+          borderRadius: 20,
           backgroundColor: "transparent",
           borderWidth: 1,
           borderColor: theme.border.primary,
@@ -90,6 +92,18 @@ export function CardContent({
 }: CardContentProps) {
   return (
     <View style={[{ paddingHorizontal: Spacing[6], paddingBottom: Spacing[6] }, style]} {...rest}>
+      {children}
+    </View>
+  );
+}
+
+export function CardFooter({
+  style,
+  children,
+  ...rest
+}: CardFooterProps) {
+  return (
+    <View style={[{ paddingHorizontal: Spacing[6], paddingBottom: Spacing[4], paddingTop: Spacing[3] }, style]} {...rest}>
       {children}
     </View>
   );

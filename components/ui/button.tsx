@@ -85,11 +85,14 @@ export function Button({
         ...baseStyle,
         width: baseStyle.minHeight,
         height: baseStyle.minHeight,
+        minWidth: baseStyle.minHeight,
+        maxWidth: baseStyle.minHeight,
         maxHeight: baseStyle.minHeight,
         paddingVertical: 0,
         paddingHorizontal: 0,
         alignItems: 'center',
         justifyContent: 'center',
+        aspectRatio: 1, // 強制的に正方形にする
       };
     }
 
