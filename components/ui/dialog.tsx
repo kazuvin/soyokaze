@@ -3,20 +3,19 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  ScrollView,
   Pressable,
   type ViewProps,
 } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Spacing, BorderRadius, Shadow, Opacity } from "@/constants/design-tokens";
+import { Spacing, BorderRadius } from "@/constants/design-tokens";
 
 export type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
-  variant?: "default" | "slide";
 };
 
 export type DialogContentProps = ViewProps & {
@@ -25,6 +24,8 @@ export type DialogContentProps = ViewProps & {
 
 export type DialogHeaderProps = ViewProps & {
   children: React.ReactNode;
+  leftElement?: React.ReactNode;
+  rightElement?: React.ReactNode;
 };
 
 export type DialogTitleProps = ViewProps & {
@@ -47,16 +48,14 @@ export type DialogCloseProps = {
 const DialogContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  variant?: "default" | "slide";
 }>({
   open: false,
   onOpenChange: () => {},
-  variant: "default",
 });
 
-export function Dialog({ open, onOpenChange, children, variant = "default" }: DialogProps) {
+export function Dialog({ open, onOpenChange, children }: DialogProps) {
   return (
-    <DialogContext.Provider value={{ open, onOpenChange, variant }}>
+    <DialogContext.Provider value={{ open, onOpenChange }}>
       {children}
     </DialogContext.Provider>
   );
@@ -72,96 +71,110 @@ export function DialogContent({
   ...rest
 }: DialogContentProps) {
   const { theme } = useTheme();
-  const { open, onOpenChange, variant } = React.useContext(DialogContext);
+  const { open, onOpenChange } = React.useContext(DialogContext);
 
-  const handleBackdropPress = () => {
-    onOpenChange(false);
-  };
-
-  if (variant === "slide") {
-    return (
-      <Modal
-        visible={open}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => onOpenChange(false)}
-      >
-        <View
-          style={[
-            {
-              flex: 1,
-              backgroundColor: theme.background.default,
-              position: "relative",
-            },
-            style,
-          ]}
-          {...rest}
-        >
-          <View style={{ flex: 1, padding: Spacing[6] }}>
-            {children}
-          </View>
-        </View>
-      </Modal>
-    );
-  }
+  // Extract header and content children
+  const childrenArray = React.Children.toArray(children);
+  const headerElement = childrenArray.find(
+    (child) => React.isValidElement(child) && child.type === DialogHeader
+  );
+  const otherChildren = childrenArray.filter(
+    (child) => !(React.isValidElement(child) && child.type === DialogHeader)
+  );
 
   return (
     <Modal
       visible={open}
-      transparent
-      animationType="fade"
+      animationType="slide"
+      presentationStyle="pageSheet"
       onRequestClose={() => onOpenChange(false)}
     >
-      <TouchableWithoutFeedback onPress={handleBackdropPress}>
-        <View
-          style={{
+      <View
+        style={[
+          {
             flex: 1,
-            backgroundColor: `rgba(0, 0, 0, ${Opacity[50]})`,
-            alignItems: "center",
-            justifyContent: "center",
-            padding: Spacing[4],
-          }}
-        >
-          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
-            <View
-              style={[
-                {
-                  backgroundColor: theme.background.elevated,
-                  borderRadius: BorderRadius.xl,
-                  padding: Spacing[6],
-                  minWidth: 280,
-                  maxWidth: "90%",
-                  ...Shadow.lg,
-                },
-                style,
-              ]}
-              {...rest}
-            >
-              {children}
-            </View>
-          </TouchableWithoutFeedback>
+            backgroundColor: theme.background.default,
+            position: "relative",
+          },
+          style,
+        ]}
+        {...rest}
+      >
+        {/* Fixed Header */}
+        <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
+          {headerElement}
         </View>
-      </TouchableWithoutFeedback>
+        
+        {/* Scrollable Content */}
+        <ScrollView
+          style={{ flex: 1, marginTop: 56 }}
+          contentContainerStyle={{
+            paddingTop: Spacing[4],
+            paddingBottom: Spacing[6],
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {otherChildren}
+        </ScrollView>
+      </View>
     </Modal>
   );
 }
 
 export function DialogHeader({
   children,
+  leftElement,
+  rightElement,
   style,
   ...rest
 }: DialogHeaderProps) {
+  const { theme } = useTheme();
+  
   return (
     <View
       style={[
         {
-          marginBottom: Spacing[4],
+          position: "relative",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          height: 56,
+          borderBottomWidth: 1,
+          borderBottomColor: theme.border.primary,
+          backgroundColor: theme.background.default,
         },
         style,
       ]}
       {...rest}
     >
-      {children}
+      {/* Left Element - Absolute Position */}
+      {leftElement && (
+        <View style={{ 
+          position: "absolute", 
+          left: Spacing[6], 
+          top: 0,
+          bottom: 0,
+          justifyContent: "center"
+        }}>
+          {leftElement}
+        </View>
+      )}
+      
+      {/* Center Content - Flex Center */}
+      <View style={{ alignItems: "center" }}>
+        {children}
+      </View>
+      
+      {/* Right Element - Absolute Position */}
+      <View style={{ 
+        position: "absolute", 
+        right: Spacing[6], 
+        top: 0,
+        bottom: 0,
+        justifyContent: "center"
+      }}>
+        {rightElement || <DialogClose />}
+      </View>
     </View>
   );
 }
@@ -173,7 +186,13 @@ export function DialogTitle({
 }: DialogTitleProps) {
   return (
     <View style={[style]} {...rest}>
-      <ThemedText type="h6" style={{ marginBottom: Spacing[2] }}>
+      <ThemedText 
+        type="h6" 
+        style={{ 
+          textAlign: "center",
+          fontWeight: "600",
+        }}
+      >
         {children}
       </ThemedText>
     </View>
@@ -226,7 +245,8 @@ export function DialogFooter({
 }
 
 export function DialogClose({ onPress, children }: DialogCloseProps) {
-  const { onOpenChange, variant } = React.useContext(DialogContext);
+  const { onOpenChange } = React.useContext(DialogContext);
+  const { theme } = useTheme();
   
   const handlePress = () => {
     onOpenChange(false);
@@ -245,14 +265,15 @@ export function DialogClose({ onPress, children }: DialogCloseProps) {
     <TouchableOpacity
       onPress={handlePress}
       style={{
-        position: "absolute",
-        top: variant === "slide" ? Spacing[6] : Spacing[4],
-        right: Spacing[4],
         padding: Spacing[2],
-        zIndex: 1000,
+        borderRadius: BorderRadius.md,
       }}
     >
-      <IconSymbol name="xmark" size={20} />
+      <IconSymbol 
+        name="xmark" 
+        size={18} 
+        color={theme.text.secondary}
+      />
     </TouchableOpacity>
   );
 }

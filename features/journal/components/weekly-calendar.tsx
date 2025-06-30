@@ -38,107 +38,99 @@ export function WeeklyCalendar({ onDateClick, journalDates = [] }: WeeklyCalenda
     );
   };
 
-  const renderDayHeaders = () => (
-    <View style={{
-      flexDirection: 'row',
-      paddingHorizontal: Spacing[2],
-      marginBottom: Spacing[2],
-    }}>
-      {['日', '月', '火', '水', '木', '金', '土'].map((day, index) => (
-        <View
-          key={day}
-          style={{
-            flex: 1,
-            alignItems: 'center',
-          }}
-        >
-          <ThemedText style={{
-            fontSize: Typography.fontSize.sm,
-            fontWeight: Typography.fontWeight.medium,
-            color: index === 0 ? ColorPalette.error[500] : 
-                   index === 6 ? ColorPalette.primary[500] : 
-                   theme.text.secondary,
-          }}>
-            {day}
-          </ThemedText>
-        </View>
-      ))}
-    </View>
-  );
-
-  const renderWeekDays = () => {
+  const renderWeekCalendar = () => {
     const weekDates = getWeekDates();
+    const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
     return (
-      <View
-        style={{
+      <View style={{
+        paddingHorizontal: Spacing[4],
+      }}>
+        {/* 曜日ヘッダー */}
+        <View style={{
           flexDirection: 'row',
-          paddingHorizontal: Spacing[2],
-        }}
-      >
-        {weekDates.map((date, index) => {
-          const isTodayDate = isToday(date);
-          const hasJournalEntry = hasJournal(date);
-
-          return (
-            <TouchableOpacity
-              key={date.toDateString()}
-              onPress={() => onDateClick?.(date)}
+          marginBottom: 6,
+        }}>
+          {dayLabels.map((day, index) => (
+            <View
+              key={day}
               style={{
                 flex: 1,
-                aspectRatio: 0.8,
                 alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: BorderRadius.base,
-                backgroundColor: 'transparent',
-                position: 'relative',
-                paddingBottom: Spacing[2],
               }}
             >
-              <View style={{
-                width: isTodayDate ? 32 : 'auto',
-                height: isTodayDate ? 32 : 'auto',
-                borderRadius: isTodayDate ? BorderRadius.lg : 0,
-                backgroundColor: isTodayDate ? theme.brand.primary : 'transparent',
-                alignItems: 'center',
-                justifyContent: 'center',
+              <ThemedText style={{
+                fontSize: 12,
+                fontWeight: Typography.fontWeight.medium,
+                color: index === 0 ? ColorPalette.error[500] : 
+                       index === 6 ? ColorPalette.primary[500] : 
+                       theme.text.secondary,
               }}>
-                <ThemedText style={{
-                  fontSize: Typography.fontSize.base,
-                  fontWeight: isTodayDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
-                  color: isTodayDate ? '#ffffff' : theme.text.primary,
-                }}>
-                  {date.getDate()}
-                </ThemedText>
+                {day}
+              </ThemedText>
+            </View>
+          ))}
+        </View>
+
+        {/* 日付 */}
+        <View style={{
+          flexDirection: 'row',
+        }}>
+          {weekDates.map((date, index) => {
+            const isTodayDate = isToday(date);
+            const hasJournalEntry = hasJournal(date);
+
+            return (
+              <View
+                key={date.toDateString()}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => onDateClick?.(date)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: isTodayDate ? 16 : 0,
+                    backgroundColor: isTodayDate ? theme.brand.primary : 'transparent',
+                  }}
+                >
+                  <ThemedText style={{
+                    fontSize: 14,
+                    fontWeight: isTodayDate ? Typography.fontWeight.semibold : Typography.fontWeight.normal,
+                    color: isTodayDate ? '#ffffff' : theme.text.primary,
+                  }}>
+                    {date.getDate()}
+                  </ThemedText>
+                </TouchableOpacity>
+                
+                {hasJournalEntry && (
+                  <View style={{
+                    marginTop: 2,
+                    width: 4,
+                    height: 4,
+                    borderRadius: 2,
+                    backgroundColor: theme.brand.primary,
+                  }} />
+                )}
               </View>
-              
-              {hasJournalEntry && (
-                <View style={{
-                  position: 'absolute',
-                  bottom: Spacing[1],
-                  width: Spacing[1],
-                  height: Spacing[1],
-                  borderRadius: BorderRadius.full,
-                  backgroundColor: theme.brand.primary,
-                }} />
-              )}
-            </TouchableOpacity>
-          );
-        })}
+            );
+          })}
+        </View>
       </View>
     );
   };
 
   return (
-    <ThemedView style={{
-      borderRadius: BorderRadius.lg,
-      padding: Spacing[4],
-      backgroundColor: theme.background.primary,
-      borderWidth: 1,
-      borderColor: theme.border.primary,
+    <View style={{
+      backgroundColor: 'transparent',
+      paddingVertical: Spacing[2],
     }}>
-      {renderDayHeaders()}
-      {renderWeekDays()}
-    </ThemedView>
+      {renderWeekCalendar()}
+    </View>
   );
 }

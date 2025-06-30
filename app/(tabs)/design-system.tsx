@@ -410,15 +410,17 @@ function DialogShowcase() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Basic Dialog</DialogTitle>
+          </DialogHeader>
+          <View style={{ paddingHorizontal: Spacing[6] }}>
             <DialogDescription>
               This is a basic dialog example with a title and description.
             </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose>
-              <Button title="Close" variant="outline" />
-            </DialogClose>
-          </DialogFooter>
+            <DialogFooter>
+              <DialogClose>
+                <Button title="Close" variant="outline" />
+              </DialogClose>
+            </DialogFooter>
+          </View>
         </DialogContent>
       </Dialog>
 
@@ -434,23 +436,25 @@ function DialogShowcase() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
+          </DialogHeader>
+          <View style={{ paddingHorizontal: Spacing[6] }}>
             <DialogDescription>
               Are you sure you want to delete this item? This action cannot be undone.
             </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose>
-              <Button title="Cancel" variant="outline" />
-            </DialogClose>
-            <DialogClose onPress={() => console.log('Item deleted')}>
-              <Button title="Delete" variant="primary" />
-            </DialogClose>
-          </DialogFooter>
+            <DialogFooter>
+              <DialogClose>
+                <Button title="Cancel" variant="outline" />
+              </DialogClose>
+              <DialogClose onPress={() => console.log('Item deleted')}>
+                <Button title="Delete" variant="primary" />
+              </DialogClose>
+            </DialogFooter>
+          </View>
         </DialogContent>
       </Dialog>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Slide Dialog</ThemedText>
-      <Dialog open={slideDialogOpen} onOpenChange={setSlideDialogOpen} variant="slide">
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Full-Screen Dialog</ThemedText>
+      <Dialog open={slideDialogOpen} onOpenChange={setSlideDialogOpen}>
         <DialogTrigger>
           <Button 
             title="Open Slide Dialog" 
@@ -459,23 +463,24 @@ function DialogShowcase() {
           />
         </DialogTrigger>
         <DialogContent>
-          <DialogClose />
           <DialogHeader>
             <DialogTitle>Slide Dialog</DialogTitle>
-            <DialogDescription>
-              This dialog slides up from the bottom of the screen like a modal.
-            </DialogDescription>
           </DialogHeader>
-          <View style={{ paddingVertical: 16 }}>
-            <ThemedText type="body">
-              This is a full-screen modal that slides in from the bottom. It&apos;s perfect for forms, settings, or detailed content.
-            </ThemedText>
+          <View style={{ paddingHorizontal: Spacing[6] }}>
+            <DialogDescription>
+              This dialog slides up from the bottom with a fixed header and scrollable content.
+            </DialogDescription>
+            <View style={{ paddingVertical: 16 }}>
+              <ThemedText type="body">
+                This is a full-screen modal that slides in from the bottom. It&apos;s perfect for forms, settings, or detailed content.
+              </ThemedText>
+            </View>
+            <DialogFooter>
+              <DialogClose>
+                <Button title="Close" variant="primary" />
+              </DialogClose>
+            </DialogFooter>
           </View>
-          <DialogFooter>
-            <DialogClose>
-              <Button title="Close" variant="primary" />
-            </DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -489,23 +494,24 @@ function DialogShowcase() {
           />
         </DialogTrigger>
         <DialogContent>
-          <DialogClose />
           <DialogHeader>
             <DialogTitle>Custom Dialog with Close Button</DialogTitle>
+          </DialogHeader>
+          <View style={{ paddingHorizontal: Spacing[6] }}>
             <DialogDescription>
               This dialog has a close button in the header and demonstrates custom styling.
             </DialogDescription>
-          </DialogHeader>
-          <View style={{ paddingVertical: 16 }}>
-            <ThemedText type="body">
-              You can add any custom content here. The dialog will automatically handle backdrop clicks and the close button.
-            </ThemedText>
+            <View style={{ paddingVertical: 16 }}>
+              <ThemedText type="body">
+                You can add any custom content here. The dialog will automatically handle backdrop clicks and the close button.
+              </ThemedText>
+            </View>
+            <DialogFooter>
+              <DialogClose>
+                <Button title="Got it" variant="primary" />
+              </DialogClose>
+            </DialogFooter>
           </View>
-          <DialogFooter>
-            <DialogClose>
-              <Button title="Got it" variant="primary" />
-            </DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </ThemedView>
