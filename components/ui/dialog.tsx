@@ -135,9 +135,7 @@ export function DialogHeader({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          paddingHorizontal: 0,
-          paddingTop: Spacing[4],
-          paddingBottom: Spacing[3],
+          height: 56,
           borderBottomWidth: 1,
           borderBottomColor: theme.border.primary,
           backgroundColor: theme.background.default,
@@ -151,8 +149,8 @@ export function DialogHeader({
         <View style={{ 
           position: "absolute", 
           left: Spacing[6], 
-          top: Spacing[4],
-          bottom: Spacing[3],
+          top: 0,
+          bottom: 0,
           justifyContent: "center"
         }}>
           {leftElement}
@@ -168,8 +166,8 @@ export function DialogHeader({
       <View style={{ 
         position: "absolute", 
         right: Spacing[6], 
-        top: Spacing[4],
-        bottom: Spacing[3],
+        top: 0,
+        bottom: 0,
         justifyContent: "center"
       }}>
         {rightElement || <DialogClose />}
