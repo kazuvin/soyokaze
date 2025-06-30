@@ -6,7 +6,7 @@ import { ThemedView } from '@/components/themed-view';
 import { WeeklyCalendar } from '@/features/journal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/design-tokens';
@@ -115,11 +115,10 @@ export default function HomeScreen() {
         onPress={() => setIsDialogOpen(true)}
       />
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} variant="slide">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>新しいジャーナルを作成</DialogTitle>
-            <DialogClose />
           </DialogHeader>
           
           <View style={styles.dialogContent}>
