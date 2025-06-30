@@ -132,10 +132,11 @@ export function DialogHeader({
     <View
       style={[
         {
+          position: "relative",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 0,
+          justifyContent: "center",
+          paddingHorizontal: Spacing[6],
           paddingTop: Spacing[4],
           paddingBottom: Spacing[3],
           borderBottomWidth: 1,
@@ -146,18 +147,32 @@ export function DialogHeader({
       ]}
       {...rest}
     >
-      {/* Left Element */}
-      <View style={{ paddingLeft: Spacing[6], alignItems: "flex-start" }}>
-        {leftElement}
-      </View>
+      {/* Left Element - Absolute Position */}
+      {leftElement && (
+        <View style={{ 
+          position: "absolute", 
+          left: Spacing[6], 
+          top: Spacing[4],
+          bottom: Spacing[3],
+          justifyContent: "center"
+        }}>
+          {leftElement}
+        </View>
+      )}
       
-      {/* Center Content */}
-      <View style={{ flex: 1, alignItems: "center" }}>
+      {/* Center Content - Flex Center */}
+      <View style={{ alignItems: "center" }}>
         {children}
       </View>
       
-      {/* Right Element */}
-      <View style={{ paddingRight: Spacing[6], alignItems: "flex-end" }}>
+      {/* Right Element - Absolute Position */}
+      <View style={{ 
+        position: "absolute", 
+        right: Spacing[6], 
+        top: Spacing[4],
+        bottom: Spacing[3],
+        justifyContent: "center"
+      }}>
         {rightElement || <DialogClose />}
       </View>
     </View>
