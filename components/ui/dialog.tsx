@@ -94,17 +94,20 @@ export function DialogContent({
           {
             flex: 1,
             backgroundColor: theme.background.default,
+            position: "relative",
           },
           style,
         ]}
         {...rest}
       >
         {/* Fixed Header */}
-        {headerElement}
+        <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
+          {headerElement}
+        </View>
         
         {/* Scrollable Content */}
         <ScrollView
-          style={{ flex: 1 }}
+          style={{ flex: 1, marginTop: 56 }}
           contentContainerStyle={{
             paddingTop: Spacing[4],
             paddingBottom: Spacing[6],
