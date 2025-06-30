@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
@@ -33,6 +33,7 @@ export default function HomeScreen() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedAI, setSelectedAI] = useState<string>('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
     {
       id: '1',
@@ -117,6 +118,14 @@ export default function HomeScreen() {
 
   const handleRemoveImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleInputFocus = () => {
+    setIsKeyboardVisible(true);
+    // ScrollViewを少し下にスクロールして、入力フィールドをキーボードの上に表示
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
   };
 
   const handleCreateJournal = () => {
@@ -225,12 +234,20 @@ export default function HomeScreen() {
           <KeyboardAvoidingView 
             style={styles.dialogContent}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+            enabled={true}
           >
             <ScrollView 
+              ref={scrollViewRef}
               style={styles.dialogScrollView}
-              contentContainerStyle={{ paddingHorizontal: Spacing[6] }}
+              contentContainerStyle={{ 
+                paddingHorizontal: Spacing[6],
+                flexGrow: 1,
+                paddingBottom: Spacing[4]
+              }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
+              bounces={false}
             >
               <ImageGrid
                 images={selectedImages}
@@ -246,7 +263,7 @@ export default function HomeScreen() {
                 rows={1}
                 fullWidth
                 style={styles.titleInput}
-                onFocus={() => setIsKeyboardVisible(true)}
+                onFocus={handleInputFocus}
                 onBlur={() => setIsKeyboardVisible(false)}
               />
               
@@ -258,7 +275,7 @@ export default function HomeScreen() {
                 rows={6}
                 fullWidth
                 style={styles.contentInput}
-                onFocus={() => setIsKeyboardVisible(true)}
+                onFocus={handleInputFocus}
                 onBlur={() => setIsKeyboardVisible(false)}
               />
               
@@ -357,6 +374,7 @@ const styles = StyleSheet.create({
   dialogContent: {
     flex: 1,
     paddingTop: Spacing[4],
+    justifyContent: 'space-between',
   },
   dialogScrollView: {
     flex: 1,
