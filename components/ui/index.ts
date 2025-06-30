@@ -5,6 +5,8 @@
 export { Button } from './button';
 export { Card } from './card';
 export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './dialog';
+export { ImageGrid } from './image-grid';
+export { KeyboardToolbar } from './keyboard-toolbar';
 export { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from './list';
 export { Spacing } from './spacing';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';

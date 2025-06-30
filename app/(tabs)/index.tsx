@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
 
 import { ThemedText } from '@/components/themed-text';
 import { WeeklyCalendar } from '@/features/journal';
@@ -8,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { KeyboardToolbar } from '@/components/ui/keyboard-toolbar';
+import { ImageGrid } from '@/components/ui/image-grid';
 import { FBSelectionCard, type AIFeedbackOption } from '@/features/ai-feedback';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/design-tokens';
@@ -16,6 +19,7 @@ type JournalEntry = {
   id: string;
   title: string;
   content: string;
+  images?: string[];
   date: Date;
   createdAt: Date;
 };
@@ -26,7 +30,9 @@ export default function HomeScreen() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [journalTitle, setJournalTitle] = useState('');
   const [journalContent, setJournalContent] = useState('');
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedAI, setSelectedAI] = useState<string>('');
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
     {
       id: '1',
@@ -84,18 +90,49 @@ export default function HomeScreen() {
     console.log('クリックされた日付:', date.toLocaleDateString('ja-JP'));
   };
 
+  const handleImagePick = async () => {
+    if (selectedImages.length >= 4) {
+      Alert.alert('最大枚数に達しました', '画像は最大4枚まで添付できます。');
+      return;
+    }
+
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      Alert.alert('権限が必要です', '画像を選択するには写真ライブラリへのアクセス権限が必要です。');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setSelectedImages(prev => [...prev, result.assets[0].uri]);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleCreateJournal = () => {
     if (journalTitle.trim() && journalContent.trim()) {
       const newEntry: JournalEntry = {
         id: Date.now().toString(),
         title: journalTitle.trim(),
         content: journalContent.trim(),
+        images: selectedImages.length > 0 ? selectedImages : undefined,
         date: new Date(),
         createdAt: new Date(),
       };
       setJournalEntries(prev => [newEntry, ...prev]);
       setJournalTitle('');
       setJournalContent('');
+      setSelectedImages([]);
       setSelectedAI('');
       setIsDialogOpen(false);
     }
@@ -137,6 +174,14 @@ export default function HomeScreen() {
                 <CardTitle>{entry.title}</CardTitle>
               </CardHeader>
               <CardContent style={styles.journalCardContent}>
+                {entry.images && entry.images.length > 0 && (
+                  <ImageGrid
+                    images={entry.images}
+                    onRemoveImage={() => {}} // Read-only in journal card
+                    maxImages={4}
+                    readonly={true}
+                  />
+                )}
                 <ThemedText style={styles.journalContent}>
                   {entry.content}
                 </ThemedText>
@@ -181,7 +226,18 @@ export default function HomeScreen() {
             style={styles.dialogContent}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           >
-            <View style={{ paddingHorizontal: Spacing[6] }}>
+            <ScrollView 
+              style={styles.dialogScrollView}
+              contentContainerStyle={{ paddingHorizontal: Spacing[6] }}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+            >
+              <ImageGrid
+                images={selectedImages}
+                onRemoveImage={handleRemoveImage}
+                maxImages={4}
+              />
+              
               <Textarea
                 variant="borderless"
                 placeholder="タイトルを入力してください"
@@ -190,6 +246,8 @@ export default function HomeScreen() {
                 rows={1}
                 fullWidth
                 style={styles.titleInput}
+                onFocus={() => setIsKeyboardVisible(true)}
+                onBlur={() => setIsKeyboardVisible(false)}
               />
               
               <Textarea
@@ -200,6 +258,8 @@ export default function HomeScreen() {
                 rows={6}
                 fullWidth
                 style={styles.contentInput}
+                onFocus={() => setIsKeyboardVisible(true)}
+                onBlur={() => setIsKeyboardVisible(false)}
               />
               
               <View style={styles.characterCount}>
@@ -215,7 +275,14 @@ export default function HomeScreen() {
                 selectedOption={selectedAI}
                 onSelect={setSelectedAI}
               />
-            </View>
+            </ScrollView>
+            
+            {isKeyboardVisible && (
+              <KeyboardToolbar
+                onImagePress={handleImagePick}
+                disabled={selectedImages.length >= 4}
+              />
+            )}
             
             <View style={{ paddingHorizontal: Spacing[6] }}>
               <Button
@@ -293,6 +360,7 @@ const styles = StyleSheet.create({
   },
   dialogScrollView: {
     flex: 1,
+    maxHeight: '70%',
   },
   titleInput: {
     marginBottom: Spacing[3],
