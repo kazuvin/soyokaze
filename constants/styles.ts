@@ -92,6 +92,12 @@ export const TypographyStyles = StyleSheet.create({
     lineHeight: Typography.fontSize.sm * Typography.lineHeight.none,
     textAlign: 'center' as const,
   },
+  buttonXs: {
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.medium,
+    lineHeight: Typography.fontSize.xs * Typography.lineHeight.none,
+    textAlign: 'center' as const,
+  },
   
   // Link Text
   link: {
@@ -214,6 +220,14 @@ export const ComponentStyles = StyleSheet.create({
     paddingVertical: Spacing[2],
     paddingHorizontal: Spacing[3],
     minHeight: 36,
+  },
+  buttonXs: {
+    borderRadius: BorderRadius.base,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    minHeight: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   
   // Input Styles

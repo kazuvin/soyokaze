@@ -1,48 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import { Spacing, BorderRadius, ColorPalette } from '@/constants/design-tokens';
+import { Spacing, BorderRadius } from '@/constants/design-tokens';
+import { Button } from './button';
+import { ImageModal } from './image-modal';
 
 type ImagePreviewProps = {
   images: string[];
   onRemoveImage?: (index: number) => void;
   editable?: boolean;
+  onImagePress?: (imageUri: string) => void;
 };
 
-export function ImagePreview({ images, onRemoveImage, editable = false }: ImagePreviewProps) {
+export function ImagePreview({ images, onRemoveImage, editable = false, onImagePress }: ImagePreviewProps) {
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
 
   if (images.length === 0) {
     return null;
   }
 
+  const handleImagePress = (uri: string) => {
+    if (onImagePress) {
+      onImagePress(uri);
+    } else {
+      setSelectedImageUri(uri);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      {images.map((uri, index) => (
-        <View key={index} style={styles.imageContainer}>
-          <Image
-            source={{ uri }}
-            style={styles.image}
-            contentFit="cover"
-          />
-          {editable && onRemoveImage && (
-            <TouchableOpacity
-              style={[
-                styles.removeButton,
-                { backgroundColor: ColorPalette.error[500] }
-              ]}
-              onPress={() => onRemoveImage(index)}
-            >
-              <Ionicons
-                name="close"
-                size={16}
-                color={ColorPalette.neutral[50]}
+    <>
+      <View style={styles.container}>
+        {images.map((uri, index) => (
+          <View key={index} style={styles.imageContainer}>
+            <TouchableOpacity onPress={() => handleImagePress(uri)}>
+              <Image
+                source={{ uri }}
+                style={styles.image}
+                contentFit="cover"
               />
             </TouchableOpacity>
-          )}
-        </View>
-      ))}
-    </View>
+            {editable && onRemoveImage && (
+              <Button
+                variant="remove"
+                size="xs"
+                iconOnly
+                icon="xmark"
+                onPress={() => onRemoveImage(index)}
+                style={styles.removeButton}
+              />
+            )}
+          </View>
+        ))}
+      </View>
+      
+      {selectedImageUri && (
+        <ImageModal
+          visible={!!selectedImageUri}
+          imageUri={selectedImageUri}
+          onClose={() => setSelectedImageUri(null)}
+        />
+      )}
+    </>
   );
 }
 
@@ -70,8 +88,5 @@ const styles = StyleSheet.create({
     right: 4,
     width: 20,
     height: 20,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

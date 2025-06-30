@@ -6,8 +6,8 @@ import { ColorPalette } from "@/constants/design-tokens";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import type { SymbolName } from "@/components/ui/icon-symbol";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
-export type ButtonSize = "small" | "medium" | "large";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "overlay" | "remove";
+export type ButtonSize = "xs" | "small" | "medium" | "large";
 
 export type ButtonProps = TouchableOpacityProps & {
   title?: string;
@@ -61,6 +61,16 @@ export function Button({
         return {
           backgroundColor: "transparent",
         };
+      case "overlay":
+        return {
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          borderRadius: 22,
+        };
+      case "remove":
+        return {
+          backgroundColor: ColorPalette.error[500],
+          borderRadius: 10,
+        };
       default:
         return {};
     }
@@ -69,6 +79,8 @@ export function Button({
   const getSizeStyles = () => {
     const baseStyle = (() => {
       switch (size) {
+        case "xs":
+          return ComponentStyles.buttonXs;
         case "small":
           return ComponentStyles.buttonSmall;
         case "large":
@@ -119,6 +131,10 @@ export function Button({
         return theme.brand.primary;
       case "ghost":
         return theme.brand.primary;
+      case "overlay":
+        return ColorPalette.neutral[50];
+      case "remove":
+        return ColorPalette.neutral[50];
       default:
         return theme.text.primary;
     }
@@ -126,6 +142,8 @@ export function Button({
 
   const getTextStyle = () => {
     switch (size) {
+      case "xs":
+        return TypographyStyles.buttonXs;
       case "small":
         return TypographyStyles.buttonSmall;
       case "large":
@@ -138,6 +156,8 @@ export function Button({
 
   const getIconSize = () => {
     switch (size) {
+      case "xs":
+        return 12;
       case "small":
         return 16;
       case "large":
