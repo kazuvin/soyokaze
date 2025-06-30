@@ -136,7 +136,7 @@ export function DialogHeader({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          paddingHorizontal: Spacing[6],
+          paddingHorizontal: 0,
           paddingTop: Spacing[4],
           paddingBottom: Spacing[3],
           borderBottomWidth: 1,
