@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/hooks/use-theme';
 import { Spacing, BorderRadius } from '@/constants/design-tokens';
 
 type ImagePreviewProps = {
@@ -12,7 +11,6 @@ type ImagePreviewProps = {
 };
 
 export function ImagePreview({ images, onRemoveImage, editable = false }: ImagePreviewProps) {
-  const { theme } = useTheme();
 
   if (images.length === 0) {
     return null;
@@ -31,14 +29,14 @@ export function ImagePreview({ images, onRemoveImage, editable = false }: ImageP
             <TouchableOpacity
               style={[
                 styles.removeButton,
-                { backgroundColor: theme.semantic.critical }
+                { backgroundColor: '#ef4444' } // red-500
               ]}
               onPress={() => onRemoveImage(index)}
             >
               <Ionicons
                 name="close"
                 size={16}
-                color={theme.text.onColor}
+                color="#ffffff"
               />
             </TouchableOpacity>
           )}
