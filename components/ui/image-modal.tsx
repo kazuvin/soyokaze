@@ -27,7 +27,7 @@ export function ImageModal({ visible, imageUri, onClose }: ImageModalProps) {
     >
       <SafeAreaView style={styles.overlay}>
         <Button
-          variant="modal"
+          variant="overlay"
           size="large"
           iconOnly
           icon="xmark"

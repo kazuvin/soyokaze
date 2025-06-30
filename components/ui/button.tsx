@@ -6,7 +6,7 @@ import { ColorPalette } from "@/constants/design-tokens";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import type { SymbolName } from "@/components/ui/icon-symbol";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "modal";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "overlay";
 export type ButtonSize = "small" | "medium" | "large";
 
 export type ButtonProps = TouchableOpacityProps & {
@@ -61,7 +61,7 @@ export function Button({
         return {
           backgroundColor: "transparent",
         };
-      case "modal":
+      case "overlay":
         return {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           borderRadius: 22,
@@ -124,7 +124,7 @@ export function Button({
         return theme.brand.primary;
       case "ghost":
         return theme.brand.primary;
-      case "modal":
+      case "overlay":
         return ColorPalette.neutral[50];
       default:
         return theme.text.primary;
