@@ -106,7 +106,6 @@ export function DialogContent({
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{
-            paddingHorizontal: Spacing[6],
             paddingTop: Spacing[4],
             paddingBottom: Spacing[6],
           }}
