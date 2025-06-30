@@ -135,7 +135,7 @@ export function DialogHeader({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingHorizontal: Spacing[6],
+          paddingHorizontal: 0,
           paddingTop: Spacing[4],
           paddingBottom: Spacing[3],
           borderBottomWidth: 1,
@@ -147,7 +147,7 @@ export function DialogHeader({
       {...rest}
     >
       {/* Left Element */}
-      <View style={{ width: Spacing[6], alignItems: "flex-start" }}>
+      <View style={{ paddingLeft: Spacing[6], alignItems: "flex-start" }}>
         {leftElement}
       </View>
       
@@ -157,7 +157,7 @@ export function DialogHeader({
       </View>
       
       {/* Right Element */}
-      <View style={{ width: Spacing[6], alignItems: "flex-end" }}>
+      <View style={{ paddingRight: Spacing[6], alignItems: "flex-end" }}>
         {rightElement || <DialogClose />}
       </View>
     </View>
