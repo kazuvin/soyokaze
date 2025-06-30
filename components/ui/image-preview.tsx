@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import { Spacing, BorderRadius, ColorPalette } from '@/constants/design-tokens';
+import { Spacing, BorderRadius } from '@/constants/design-tokens';
+import { Button } from './button';
 import { ImageModal } from './image-modal';
 
 type ImagePreviewProps = {
@@ -40,19 +40,14 @@ export function ImagePreview({ images, onRemoveImage, editable = false, onImageP
               />
             </TouchableOpacity>
             {editable && onRemoveImage && (
-              <TouchableOpacity
-                style={[
-                  styles.removeButton,
-                  { backgroundColor: ColorPalette.error[500] }
-                ]}
+              <Button
+                variant="remove"
+                size="xs"
+                iconOnly
+                icon="xmark"
                 onPress={() => onRemoveImage(index)}
-              >
-                <Ionicons
-                  name="close"
-                  size={16}
-                  color={ColorPalette.neutral[50]}
-                />
-              </TouchableOpacity>
+                style={styles.removeButton}
+              />
             )}
           </View>
         ))}
@@ -93,8 +88,5 @@ const styles = StyleSheet.create({
     right: 4,
     width: 20,
     height: 20,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
