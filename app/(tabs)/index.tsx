@@ -260,7 +260,7 @@ export default function HomeScreen() {
                   variant="secondary"
                   onPress={handleImagePick}
                   disabled={selectedImages.length >= 4}
-                  icon="image"
+                  icon="photo"
                   style={styles.imageButton}
                 />
               </View>
