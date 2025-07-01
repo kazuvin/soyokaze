@@ -107,7 +107,7 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.background.primary,
     },
     scrollContent: {
       padding: Spacing[4],
@@ -134,21 +134,21 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
     dateText: {
       fontSize: 18,
       fontWeight: '600',
-      color: theme.colors.text,
+      color: theme.text.primary,
       marginBottom: Spacing[1],
     },
     timeText: {
       fontSize: 14,
-      color: theme.colors.textSecondary,
+      color: theme.text.secondary,
     },
     titleText: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: theme.colors.text,
+      color: theme.text.primary,
       marginBottom: Spacing[4],
     },
     contentContainer: {
-      backgroundColor: theme.colors.cardBackground,
+      backgroundColor: theme.background.elevated,
       borderRadius: BorderRadius.lg,
       padding: Spacing[4],
       marginBottom: Spacing[4],
@@ -157,7 +157,7 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
     contentText: {
       fontSize: 16,
       lineHeight: 24,
-      color: theme.colors.text,
+      color: theme.text.primary,
       ...journalFont,
     },
     imagesContainer: {
@@ -166,7 +166,7 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
     imagesTitle: {
       fontSize: 18,
       fontWeight: '600',
-      color: theme.colors.text,
+      color: theme.text.primary,
       marginBottom: Spacing[3],
     },
     imagesGrid: {
@@ -179,7 +179,7 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
       aspectRatio: 1,
     },
     metadataContainer: {
-      backgroundColor: theme.colors.cardBackground,
+      backgroundColor: theme.background.elevated,
       borderRadius: BorderRadius.lg,
       padding: Spacing[4],
       ...Shadow.base,
@@ -187,7 +187,7 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
     metadataTitle: {
       fontSize: 16,
       fontWeight: '600',
-      color: theme.colors.text,
+      color: theme.text.primary,
       marginBottom: Spacing[2],
     },
     metadataRow: {
@@ -197,11 +197,11 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
     },
     metadataLabel: {
       fontSize: 14,
-      color: theme.colors.textSecondary,
+      color: theme.text.secondary,
     },
     metadataValue: {
       fontSize: 14,
-      color: theme.colors.text,
+      color: theme.text.primary,
     },
     dialogContent: {
       gap: Spacing[4],
@@ -219,14 +219,14 @@ export function JournalDetail({ entry, onEntryUpdated, onEntryDeleted }: Journal
       <ScrollView style={styles.scrollContent}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+            <Ionicons name="arrow-back" size={24} color={theme.text.primary} />
           </TouchableOpacity>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionButton} onPress={handleEdit}>
-              <Ionicons name="create-outline" size={24} color={theme.colors.text} />
+              <Ionicons name="create-outline" size={24} color={theme.text.primary} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton} onPress={handleDelete}>
-              <Ionicons name="trash-outline" size={24} color={theme.colors.destructive} />
+              <Ionicons name="trash-outline" size={24} color={theme.text.error} />
             </TouchableOpacity>
           </View>
         </View>

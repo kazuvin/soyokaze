@@ -58,7 +58,7 @@ export default function JournalDetailScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.background.primary,
       paddingTop: insets.top,
     },
     loadingContainer: {
@@ -75,13 +75,13 @@ export default function JournalDetailScreen() {
     },
     errorText: {
       fontSize: 16,
-      color: theme.colors.destructive,
+      color: theme.text.error,
       textAlign: 'center',
       marginBottom: Spacing[4],
     },
     loadingText: {
       fontSize: 16,
-      color: theme.colors.textSecondary,
+      color: theme.text.secondary,
       marginTop: Spacing[4],
     },
   });
@@ -90,7 +90,7 @@ export default function JournalDetailScreen() {
     return (
       <View style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <ActivityIndicator size="large" color={theme.brand.primary} />
           <ThemedText style={styles.loadingText}>読み込み中...</ThemedText>
         </View>
       </View>
