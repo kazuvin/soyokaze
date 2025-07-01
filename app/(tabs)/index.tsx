@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 
 import { ThemedText } from '@/components/themed-text';
@@ -136,6 +137,10 @@ export default function HomeScreen() {
     }
   };
 
+  const handleJournalCardPress = (entryId: string) => {
+    router.push(`/journal/${entryId}`);
+  };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -167,27 +172,33 @@ export default function HomeScreen() {
         <View style={[styles.section, styles.journalSection, { backgroundColor: 'transparent' }]}>
           <ThemedText type="subtitle" style={styles.sectionTitle}>ジャーナル</ThemedText>
           {journalEntries.map((entry) => (
-            <Card key={entry.id} variant="flat" style={styles.journalCard}>
-              <CardHeader>
-                <CardTitle>{entry.title}</CardTitle>
-              </CardHeader>
-              <CardContent style={styles.journalCardContent}>
-                {entry.images && entry.images.length > 0 && (
-                  <ImagePreview images={entry.images} />
-                )}
-                <ThemedText style={styles.journalContent}>
-                  {entry.content}
-                </ThemedText>
-              </CardContent>
-              <CardFooter>
-                <ThemedText 
-                  type="defaultSemiBold" 
-                  style={[styles.journalDate, { color: theme.text.secondary }]}
-                >
-                  {formatDate(entry.date)}
-                </ThemedText>
-              </CardFooter>
-            </Card>
+            <TouchableOpacity 
+              key={entry.id} 
+              onPress={() => handleJournalCardPress(entry.id)}
+              activeOpacity={0.7}
+            >
+              <Card variant="flat" style={styles.journalCard}>
+                <CardHeader>
+                  <CardTitle>{entry.title}</CardTitle>
+                </CardHeader>
+                <CardContent style={styles.journalCardContent}>
+                  {entry.images && entry.images.length > 0 && (
+                    <ImagePreview images={entry.images} />
+                  )}
+                  <ThemedText style={styles.journalContent}>
+                    {entry.content}
+                  </ThemedText>
+                </CardContent>
+                <CardFooter>
+                  <ThemedText 
+                    type="defaultSemiBold" 
+                    style={[styles.journalDate, { color: theme.text.secondary }]}
+                  >
+                    {formatDate(entry.date)}
+                  </ThemedText>
+                </CardFooter>
+              </Card>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
