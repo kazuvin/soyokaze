@@ -19,8 +19,32 @@ export const CREATE_USERS_SYNCED_INDEX = `
   CREATE INDEX IF NOT EXISTS idx_users_synced ON users(synced);
 `;
 
+export const CREATE_JOURNAL_ENTRIES_TABLE = `
+  CREATE TABLE IF NOT EXISTS journal_entries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    content TEXT NOT NULL,
+    entry_date DATE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    synced BOOLEAN DEFAULT 0,
+    last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`;
+
+export const CREATE_JOURNAL_ENTRIES_DATE_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_journal_entries_entry_date ON journal_entries(entry_date);
+`;
+
+export const CREATE_JOURNAL_ENTRIES_SYNCED_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_journal_entries_synced ON journal_entries(synced);
+`;
+
 export const SCHEMA_STATEMENTS = [
   CREATE_USERS_TABLE,
   CREATE_USERS_EMAIL_INDEX,
   CREATE_USERS_SYNCED_INDEX,
+  CREATE_JOURNAL_ENTRIES_TABLE,
+  CREATE_JOURNAL_ENTRIES_DATE_INDEX,
+  CREATE_JOURNAL_ENTRIES_SYNCED_INDEX,
 ] as const;
