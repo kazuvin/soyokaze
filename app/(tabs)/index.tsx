@@ -18,6 +18,7 @@ import {
   getAllJournalEntries, 
   getJournalEntriesByDate 
 } from '@/services/journal-service';
+import { saveMultipleImages, initializeImageStorage } from '@/services/image-storage';
 import type { JournalEntry as DBJournalEntry } from '@/models/journal';
 
 type JournalEntry = {
@@ -95,7 +96,11 @@ export default function HomeScreen() {
 
   // 初回読み込み
   useEffect(() => {
-    loadJournalEntries();
+    const initializeApp = async () => {
+      await initializeImageStorage();
+      await loadJournalEntries();
+    };
+    initializeApp();
   }, [loadJournalEntries]);
 
   const handleDateClick = async (date: Date) => {
@@ -162,11 +167,19 @@ export default function HomeScreen() {
         const today = new Date();
         const entryDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
         
+        // 選択された画像を永続的なローカルストレージに保存
+        let savedImagePaths: string[] = [];
+        if (selectedImages.length > 0) {
+          console.log('Saving images to local storage...');
+          savedImagePaths = await saveMultipleImages(selectedImages);
+          console.log('Saved image paths:', savedImagePaths);
+        }
+        
         const newDBEntry = await createJournalEntry({
           title: journalTitle.trim(),
           content: journalContent.trim(),
           entry_date: entryDate,
-          images: selectedImages.length > 0 ? selectedImages : undefined,
+          images: savedImagePaths.length > 0 ? savedImagePaths : undefined,
         });
 
         const newUIEntry = convertDBEntryToUIEntry(newDBEntry);
