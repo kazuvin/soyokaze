@@ -17,8 +17,20 @@ export async function initializeImageStorage(): Promise<void> {
 
 export async function saveImageToLocal(imageUri: string): Promise<string | null> {
   try {
+    console.log('saveImageToLocal - Input URI:', imageUri);
+    
     // ディレクトリの初期化を確実に行う
     await initializeImageStorage();
+    
+    // 元の画像ファイルが存在するか確認
+    const sourceInfo = await FileSystem.getInfoAsync(imageUri);
+    console.log('Source file info:', sourceInfo);
+    
+    if (!sourceInfo.exists) {
+      console.error('Source image does not exist:', imageUri);
+      Alert.alert('エラー', '画像ファイルが見つかりません');
+      return null;
+    }
     
     // ユニークなファイル名を生成（タイムスタンプ + ランダム文字列）
     const timestamp = Date.now();
@@ -26,14 +38,26 @@ export async function saveImageToLocal(imageUri: string): Promise<string | null>
     const fileName = `journal_${timestamp}_${randomSuffix}.jpg`;
     const localUri = `${IMAGES_DIR}${fileName}`;
     
+    console.log('Copying from:', imageUri);
+    console.log('Copying to:', localUri);
+    
     // 画像を永続的なローカルストレージにコピー
     await FileSystem.copyAsync({
       from: imageUri,
       to: localUri,
     });
     
-    console.log('Image saved to:', localUri);
-    return localUri;
+    // コピー後のファイルが存在するか確認
+    const savedInfo = await FileSystem.getInfoAsync(localUri);
+    console.log('Saved file info:', savedInfo);
+    
+    if (savedInfo.exists) {
+      console.log('Image saved successfully to:', localUri);
+      return localUri;
+    } else {
+      console.error('Failed to save image - file does not exist after copy');
+      return null;
+    }
   } catch (error) {
     console.error('Failed to save image:', error);
     Alert.alert('エラー', '画像の保存に失敗しました');

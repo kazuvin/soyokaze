@@ -15,6 +15,24 @@ type ImagePreviewProps = {
 export function ImagePreview({ images, onRemoveImage, editable = false, onImagePress }: ImagePreviewProps) {
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
 
+  // URIを正規化（ローカルファイルの場合file://プレフィックスを確認）
+  const normalizeUri = (uri: string): string => {
+    if (uri.startsWith('/') && !uri.startsWith('file://')) {
+      // ローカルファイルパスにfile://プレフィックスを追加
+      return `file://${uri}`;
+    }
+    return uri;
+  };
+
+  // デバッグ: 渡された画像URIをログ出力
+  React.useEffect(() => {
+    console.log('ImagePreview received images:', images);
+    images.forEach((uri, index) => {
+      const normalizedUri = normalizeUri(uri);
+      console.log(`Image ${index}: ${uri} -> ${normalizedUri}`);
+    });
+  }, [images]);
+
   if (images.length === 0) {
     return null;
   }
@@ -30,27 +48,36 @@ export function ImagePreview({ images, onRemoveImage, editable = false, onImageP
   return (
     <>
       <View style={styles.container}>
-        {images.map((uri, index) => (
-          <View key={index} style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => handleImagePress(uri)}>
-              <Image
-                source={{ uri }}
-                style={styles.image}
-                contentFit="cover"
-              />
-            </TouchableOpacity>
-            {editable && onRemoveImage && (
-              <Button
-                variant="remove"
-                size="xs"
-                iconOnly
-                icon="xmark"
-                onPress={() => onRemoveImage(index)}
-                style={styles.removeButton}
-              />
-            )}
-          </View>
-        ))}
+        {images.map((uri, index) => {
+          const normalizedUri = normalizeUri(uri);
+          return (
+            <View key={index} style={styles.imageContainer}>
+              <TouchableOpacity onPress={() => handleImagePress(normalizedUri)}>
+                <Image
+                  source={{ uri: normalizedUri }}
+                  style={styles.image}
+                  contentFit="cover"
+                  onError={(error) => {
+                    console.error(`Failed to load image ${normalizedUri}:`, error);
+                  }}
+                  onLoad={() => {
+                    console.log(`Successfully loaded image: ${normalizedUri}`);
+                  }}
+                />
+              </TouchableOpacity>
+              {editable && onRemoveImage && (
+                <Button
+                  variant="remove"
+                  size="xs"
+                  iconOnly
+                  icon="xmark"
+                  onPress={() => onRemoveImage(index)}
+                  style={styles.removeButton}
+                />
+              )}
+            </View>
+          );
+        })}
       </View>
       
       {selectedImageUri && (
