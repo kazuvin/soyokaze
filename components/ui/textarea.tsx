@@ -2,7 +2,7 @@ import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps
 import { TypographyStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
-import { ColorPalette, Spacing, BorderRadius } from "@/constants/design-tokens";
+import { ColorPalette, Spacing, BorderRadius, Typography } from "@/constants/design-tokens";
 
 export type TextareaVariant = "base" | "borderless";
 export type TextareaSize = "small" | "medium" | "large";
@@ -126,6 +126,7 @@ export function Textarea({
         <RNTextInput
           style={[
             {
+              fontFamily: Typography.fontFamily.primary,
               color: theme.text.primary,
               fontSize: getSizeStyles().fontSize,
               lineHeight: getSizeStyles().lineHeight,
