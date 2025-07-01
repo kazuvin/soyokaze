@@ -1,32 +1,35 @@
 import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps } from "react-native";
 import { TypographyStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
+import { useJournalFont } from "@/hooks/use-journal-font";
 import { ThemedText } from "@/components/themed-text";
-import { ColorPalette, Spacing, BorderRadius, Typography } from "@/constants/design-tokens";
+import { ColorPalette, Spacing, BorderRadius } from "@/constants/design-tokens";
 
-export type TextareaVariant = "base" | "borderless";
-export type TextareaSize = "small" | "medium" | "large";
+export type JournalTextareaVariant = "base" | "borderless";
+export type JournalTextareaSize = "small" | "medium" | "large";
 
-export type TextareaProps = RNTextInputProps & {
-  variant?: TextareaVariant;
-  size?: TextareaSize;
+export type JournalTextareaProps = RNTextInputProps & {
+  variant?: JournalTextareaVariant;
+  size?: JournalTextareaSize;
   label?: string;
   error?: string;
   fullWidth?: boolean;
   rows?: number;
 };
 
-export function Textarea({
+export function JournalTextarea({
   variant = "base",
   size = "medium",
   label,
   error,
   fullWidth = false,
-  rows = 4,
+  rows = 6,
   style,
+  value,
   ...rest
-}: TextareaProps) {
+}: JournalTextareaProps) {
   const { theme } = useTheme();
+  const { fontFamily } = useJournalFont(value);
 
   const getVariantStyles = () => {
     switch (variant) {
@@ -49,14 +52,14 @@ export function Textarea({
   const getSizeStyles = () => {
     const basePadding = {
       small: Spacing[3],
-      medium: Spacing[3],
-      large: Spacing[4],
+      medium: Spacing[4],
+      large: Spacing[5],
     }[size];
 
     const lineHeight = {
-      small: 20,
-      medium: 24,
-      large: 28,
+      small: 22,
+      medium: 26,
+      large: 30,
     }[size];
 
     const minHeight = lineHeight * rows;
@@ -126,19 +129,20 @@ export function Textarea({
         <RNTextInput
           style={[
             {
-              fontFamily: Typography.fontFamily.primary,
               color: theme.text.primary,
               fontSize: getSizeStyles().fontSize,
               lineHeight: getSizeStyles().lineHeight,
               minHeight: getSizeStyles().minHeight,
               padding: getSizeStyles().padding,
               textAlignVertical: "top",
+              fontFamily,
             },
             style,
           ]}
           placeholderTextColor={theme.text.secondary}
           multiline={true}
           numberOfLines={rows}
+          value={value}
           {...rest}
         />
       </View>

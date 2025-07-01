@@ -2,7 +2,7 @@ import { TextInput as RNTextInput, View, type TextInputProps as RNTextInputProps
 import { TypographyStyles } from "@/constants/styles";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
-import { ColorPalette, Spacing, BorderRadius } from "@/constants/design-tokens";
+import { ColorPalette, Spacing, BorderRadius, Typography } from "@/constants/design-tokens";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import type { SymbolName } from "@/components/ui/icon-symbol";
 
@@ -162,6 +162,7 @@ export function TextInput({
           style={[
             {
               flex: 1,
+              fontFamily: Typography.fontFamily.primary,
               color: theme.text.primary,
               fontSize: getSizeStyles().fontSize,
               paddingLeft: getSizeStyles().paddingLeft,

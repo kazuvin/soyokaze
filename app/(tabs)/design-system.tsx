@@ -11,7 +11,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea, JournalTextarea } from '@/components/ui/textarea';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { ColorPalette, Shadow, BorderRadius, Spacing } from '@/constants/design-tokens';
 import { useTheme } from '@/hooks/use-theme';
@@ -46,6 +46,12 @@ export default function DesignSystemScreen() {
       <ThemedView style={styles.section}>
         <ThemedText type="h3">Typography</ThemedText>
         <TypographyShowcase />
+      </ThemedView>
+
+      {/* Journal Font System Section */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="h3">Journal Font System</ThemedText>
+        <JournalFontShowcase />
       </ThemedView>
 
       {/* Components Section */}
@@ -149,6 +155,67 @@ function TypographyShowcase() {
   );
 }
 
+function JournalFontShowcase() {
+  const { theme } = useTheme();
+  
+  const journalSamples = [
+    {
+      language: 'japanese',
+      text: '今日は素晴らしい一日でした。朝の散歩で美しい桜を見つけました。日記を書くことで、日常の小さな幸せに気づくことができます。',
+      description: 'Japanese sample text',
+    },
+    {
+      language: 'english',
+      text: 'Today was a wonderful day. I discovered beautiful cherry blossoms during my morning walk. Writing in a journal helps me notice the small joys in everyday life.',
+      description: 'English sample text',
+    },
+    {
+      language: 'mixed',
+      text: 'Today is Monday. 今日は月曜日です。I had coffee with a friend. 友達とコーヒーを飲みました。',
+      description: 'Mixed language sample',
+    },
+  ];
+
+  return (
+    <ThemedView>
+      <ThemedText type="body" style={{ marginBottom: 16 }}>
+        The journal font system automatically detects text language and applies appropriate fonts for better readability.
+      </ThemedText>
+      
+      {journalSamples.map((sample, index) => (
+        <View key={index} style={styles.journalSample}>
+          <ThemedText type="caption" style={styles.journalSampleLabel}>
+            {sample.description}
+          </ThemedText>
+          <View style={[styles.journalSampleBox, { backgroundColor: theme.background.secondary }]}>
+            <ThemedText 
+              style={{
+                fontFamily: sample.language === 'japanese' 
+                  ? theme.typography.journal.japanese
+                  : sample.language === 'english'
+                  ? theme.typography.journal.english
+                  : theme.typography.journal.system,
+                fontSize: 16,
+                lineHeight: 24,
+                color: theme.text.primary,
+              }}
+            >
+              {sample.text}
+            </ThemedText>
+          </View>
+          <ThemedText type="caption" style={styles.journalFontInfo}>
+            Font: {sample.language === 'japanese' 
+              ? theme.typography.journal.japanese
+              : sample.language === 'english'
+              ? theme.typography.journal.english
+              : theme.typography.journal.system}
+          </ThemedText>
+        </View>
+      ))}
+    </ThemedView>
+  );
+}
+
 function ComponentShowcase() {
   return (
     <ThemedView>
@@ -172,6 +239,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Textareas">
         <TextareaShowcase />
+      </Collapsible>
+      <Collapsible title="Journal Textareas">
+        <JournalTextareaShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -1023,6 +1093,94 @@ function TextareaShowcase() {
   );
 }
 
+function JournalTextareaShowcase() {
+  const [japaneseValue, setJapaneseValue] = useState('今日は良い天気でした。');
+  const [englishValue, setEnglishValue] = useState('Today was a beautiful day.');
+  const [mixedValue, setMixedValue] = useState('今日はcoffeeを飲みました。It was delicious!');
+  const [emptyValue, setEmptyValue] = useState('');
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Automatic Language Detection</ThemedText>
+      <ThemedText type="caption" style={{ marginBottom: 16 }}>
+        The journal textarea automatically detects the language and applies appropriate fonts.
+      </ThemedText>
+      
+      <View style={{ gap: 16 }}>
+        <JournalTextarea
+          label="Japanese Text"
+          placeholder="日本語で書いてください..."
+          value={japaneseValue}
+          onChangeText={setJapaneseValue}
+          rows={3}
+        />
+        
+        <JournalTextarea
+          label="English Text"
+          placeholder="Write in English..."
+          value={englishValue}
+          onChangeText={setEnglishValue}
+          rows={3}
+        />
+        
+        <JournalTextarea
+          label="Mixed Language"
+          placeholder="Mix languages as you write..."
+          value={mixedValue}
+          onChangeText={setMixedValue}
+          rows={4}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 24 }}>Journal Textarea Variants</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <JournalTextarea
+          placeholder="Base variant journal textarea"
+          variant="base"
+          value={emptyValue}
+          onChangeText={setEmptyValue}
+          rows={4}
+        />
+        <JournalTextarea
+          placeholder="Borderless variant for seamless writing"
+          variant="borderless"
+          rows={5}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Different Sizes</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <JournalTextarea
+          placeholder="Small journal textarea"
+          size="small"
+          rows={3}
+        />
+        <JournalTextarea
+          placeholder="Medium journal textarea (default)"
+          size="medium"
+          rows={4}
+        />
+        <JournalTextarea
+          placeholder="Large journal textarea for longer entries"
+          size="large"
+          rows={5}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Optimized for Writing</ThemedText>
+      <ThemedText type="caption" style={{ marginBottom: 8 }}>
+        Notice the improved line height and padding for comfortable writing experience
+      </ThemedText>
+      <JournalTextarea
+        label="Today's Journal Entry"
+        placeholder="What happened today? How are you feeling?"
+        rows={8}
+        fullWidth
+      />
+    </ThemedView>
+  );
+}
+
 function HeaderShowcase() {
   const scrollY = new Animated.Value(0);
 
@@ -1249,5 +1407,22 @@ const styles = StyleSheet.create({
   scrollCard: {
     marginHorizontal: 16,
     marginBottom: 8,
+  },
+  journalSample: {
+    marginBottom: 16,
+  },
+  journalSampleLabel: {
+    marginBottom: 4,
+    opacity: 0.7,
+  },
+  journalSampleBox: {
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 4,
+  },
+  journalFontInfo: {
+    opacity: 0.5,
+    fontSize: 10,
+    fontFamily: 'monospace',
   },
 });
