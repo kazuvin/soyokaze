@@ -4,7 +4,7 @@
  * This file defines the light and dark theme configurations using design tokens.
  */
 
-import { ColorPalette } from "./design-tokens";
+import { ColorPalette, Typography } from "./design-tokens";
 
 export type ThemeMode = "light" | "dark";
 
@@ -72,6 +72,12 @@ export const LightTheme = {
     color: "rgba(0, 0, 0, 0.15)",
     androidColor: "rgba(0, 0, 0, 0.3)",
   },
+
+  // Typography
+  typography: {
+    primary: Typography.fontFamily.primary,
+    journal: Typography.fontFamily.journal,
+  },
 } as const;
 
 // Dark Theme
@@ -137,6 +143,12 @@ export const DarkTheme = {
   shadow: {
     color: "rgba(0, 0, 0, 0.25)",
     androidColor: "rgba(0, 0, 0, 0.4)",
+  },
+
+  // Typography
+  typography: {
+    primary: Typography.fontFamily.primary,
+    journal: Typography.fontFamily.journal,
   },
 } as const;
 

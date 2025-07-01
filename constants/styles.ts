@@ -12,33 +12,39 @@ import { Typography, Spacing, BorderRadius, Shadow } from './design-tokens';
 export const TypographyStyles = StyleSheet.create({
   // Headings
   h1: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize['5xl'],
     fontWeight: Typography.fontWeight.bold,
     lineHeight: Typography.fontSize['5xl'] * Typography.lineHeight.tight,
     letterSpacing: Typography.letterSpacing.tight,
   },
   h2: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize['4xl'],
     fontWeight: Typography.fontWeight.bold,
     lineHeight: Typography.fontSize['4xl'] * Typography.lineHeight.tight,
     letterSpacing: Typography.letterSpacing.tight,
   },
   h3: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize['3xl'],
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize['3xl'] * Typography.lineHeight.snug,
   },
   h4: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize['2xl'],
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize['2xl'] * Typography.lineHeight.snug,
   },
   h5: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.xl,
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize.xl * Typography.lineHeight.snug,
   },
   h6: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.lg,
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize.lg * Typography.lineHeight.normal,
@@ -46,16 +52,19 @@ export const TypographyStyles = StyleSheet.create({
   
   // Body Text
   bodyLarge: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.lg,
     fontWeight: Typography.fontWeight.normal,
     lineHeight: Typography.fontSize.lg * Typography.lineHeight.relaxed,
   },
   body: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.base,
     fontWeight: Typography.fontWeight.normal,
     lineHeight: Typography.fontSize.base * Typography.lineHeight.relaxed,
   },
   bodySmall: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.sm,
     fontWeight: Typography.fontWeight.normal,
     lineHeight: Typography.fontSize.sm * Typography.lineHeight.normal,
@@ -63,11 +72,13 @@ export const TypographyStyles = StyleSheet.create({
   
   // Labels and Captions
   label: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.sm,
     fontWeight: Typography.fontWeight.medium,
     lineHeight: Typography.fontSize.sm * Typography.lineHeight.normal,
   },
   caption: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.xs,
     fontWeight: Typography.fontWeight.normal,
     lineHeight: Typography.fontSize.xs * Typography.lineHeight.normal,
@@ -75,24 +86,28 @@ export const TypographyStyles = StyleSheet.create({
   
   // Button Text
   buttonLarge: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.lg,
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize.lg * Typography.lineHeight.none,
     textAlign: 'center' as const,
   },
   button: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.base,
     fontWeight: Typography.fontWeight.semibold,
     lineHeight: Typography.fontSize.base * Typography.lineHeight.none,
     textAlign: 'center' as const,
   },
   buttonSmall: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.sm,
     fontWeight: Typography.fontWeight.medium,
     lineHeight: Typography.fontSize.sm * Typography.lineHeight.none,
     textAlign: 'center' as const,
   },
   buttonXs: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.xs,
     fontWeight: Typography.fontWeight.medium,
     lineHeight: Typography.fontSize.xs * Typography.lineHeight.none,
@@ -101,6 +116,7 @@ export const TypographyStyles = StyleSheet.create({
   
   // Link Text
   link: {
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.base,
     fontWeight: Typography.fontWeight.normal,
     lineHeight: Typography.fontSize.base * Typography.lineHeight.relaxed,
@@ -235,6 +251,7 @@ export const ComponentStyles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     paddingVertical: Spacing[3],
     paddingHorizontal: Spacing[4],
+    fontFamily: Typography.fontFamily.primary,
     fontSize: Typography.fontSize.base,
     minHeight: 44,
   },

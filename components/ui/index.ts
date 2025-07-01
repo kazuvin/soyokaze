@@ -12,6 +12,7 @@ export { Spacing } from './spacing';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export { TextInput } from './text-input';
 export { Textarea } from './textarea';
+export { JournalTextarea } from './journal-textarea';
 
 // Re-export existing components
 export { IconSymbol } from './icon-symbol';

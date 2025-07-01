@@ -115,8 +115,17 @@ export const ColorPalette = {
 export const Typography = {
   // Font Families
   fontFamily: {
-    primary: 'System',
+    primary: 'Hiragino Sans',
     mono: 'SpaceMono',
+    // Journal-specific fonts for better readability and writing experience
+    journal: {
+      // Japanese: Using system fonts optimized for Japanese text
+      japanese: 'Hiragino Sans', // iOS default, falls back to system
+      // English: Serif fonts for better reading experience
+      english: 'Georgia', // Classic serif font available on most systems
+      // Fallback system font
+      system: 'System',
+    },
   },
   
   // Font Sizes
