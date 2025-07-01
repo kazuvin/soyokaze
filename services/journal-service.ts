@@ -5,11 +5,22 @@ import type { DatabaseError } from '@/database/query';
 
 // SQLiteの生データをアプリケーション用のデータに変換
 function convertRawToJournalEntry(raw: JournalEntryRaw): JournalEntry {
+  let images: string[] | undefined;
+  if (raw.images) {
+    try {
+      images = JSON.parse(raw.images);
+    } catch (error) {
+      console.error('Failed to parse images JSON:', error);
+      images = undefined;
+    }
+  }
+
   return {
     id: raw.id,
     title: raw.title || undefined,
     content: raw.content,
     entry_date: raw.entry_date,
+    images,
     created_at: raw.created_at,
     updated_at: raw.updated_at,
     synced: raw.synced === 1,
@@ -20,14 +31,18 @@ function convertRawToJournalEntry(raw: JournalEntryRaw): JournalEntry {
 export async function createJournalEntry(entryData: CreateJournalEntryData): Promise<JournalEntry> {
   const validatedData = CreateJournalEntrySchema.parse(entryData);
   
+  const imagesJson = validatedData.images && validatedData.images.length > 0 
+    ? JSON.stringify(validatedData.images) 
+    : null;
+  
   const query = `
-    INSERT INTO journal_entries (title, content, entry_date, last_modified)
-    VALUES (?, ?, ?, datetime('now'))
+    INSERT INTO journal_entries (title, content, entry_date, images, last_modified)
+    VALUES (?, ?, ?, ?, datetime('now'))
   `;
   
   const result = await executeQuery<{ lastInsertRowId: number }>(
     query,
-    [validatedData.title || null, validatedData.content, validatedData.entry_date]
+    [validatedData.title || null, validatedData.content, validatedData.entry_date, imagesJson]
   );
 
   console.log('createJournalEntry result:', result);
@@ -101,7 +116,14 @@ export async function updateJournalEntry(id: number, entryData: UpdateJournalEnt
   }
 
   const setClause = updateFields.map(field => `${field} = ?`).join(', ');
-  const values = updateFields.map(field => validatedData[field as keyof UpdateJournalEntryData]);
+  const values = updateFields.map(field => {
+    const value = validatedData[field as keyof UpdateJournalEntryData];
+    // 画像フィールドの場合はJSON文字列に変換
+    if (field === 'images' && Array.isArray(value)) {
+      return value.length > 0 ? JSON.stringify(value) : null;
+    }
+    return value;
+  });
   
   const query = `
     UPDATE journal_entries 

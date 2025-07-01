@@ -25,6 +25,7 @@ export const CREATE_JOURNAL_ENTRIES_TABLE = `
     title TEXT,
     content TEXT NOT NULL,
     entry_date DATE NOT NULL,
+    images TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     synced BOOLEAN DEFAULT 0,

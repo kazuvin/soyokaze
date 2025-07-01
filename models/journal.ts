@@ -6,6 +6,7 @@ export const JournalEntryRawSchema = z.object({
   title: z.string().nullable(),
   content: z.string().min(1, 'Content is required'),
   entry_date: z.string(), // YYYY-MM-DD format
+  images: z.string().nullable(), // JSON文字列として保存
   created_at: z.string(), // SQLiteのdatetime format
   updated_at: z.string(), // SQLiteのdatetime format
   synced: z.number().int().min(0).max(1), // SQLiteのboolean (0 or 1)
@@ -18,6 +19,7 @@ export const JournalEntrySchema = z.object({
   title: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   entry_date: z.string().date(),
+  images: z.array(z.string()).optional(), // 文字列配列
   created_at: z.string(),
   updated_at: z.string(),
   synced: z.boolean(),
@@ -28,12 +30,14 @@ export const CreateJournalEntrySchema = z.object({
   title: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   entry_date: z.string().date(),
+  images: z.array(z.string()).optional(),
 });
 
 export const UpdateJournalEntrySchema = z.object({
   title: z.string().optional(),
   content: z.string().min(1, 'Content is required').optional(),
   entry_date: z.string().date().optional(),
+  images: z.array(z.string()).optional(),
 });
 
 export type JournalEntryRaw = z.infer<typeof JournalEntryRawSchema>;

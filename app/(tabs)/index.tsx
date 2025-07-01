@@ -166,6 +166,7 @@ export default function HomeScreen() {
           title: journalTitle.trim(),
           content: journalContent.trim(),
           entry_date: entryDate,
+          images: selectedImages.length > 0 ? selectedImages : undefined,
         });
 
         const newUIEntry = convertDBEntryToUIEntry(newDBEntry);

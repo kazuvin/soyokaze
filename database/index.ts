@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { SCHEMA_STATEMENTS } from './schema';
+import { runMigrations } from './migrations';
 import type { DatabaseError } from './query';
 
 const DATABASE_NAME = 'soyokaze.db';
@@ -17,9 +17,8 @@ export async function initializeDatabase(): Promise<SQLite.SQLiteDatabase> {
     await database.execAsync('PRAGMA journal_mode = WAL;');
     await database.execAsync('PRAGMA foreign_keys = ON;');
 
-    for (const statement of SCHEMA_STATEMENTS) {
-      await database.execAsync(statement);
-    }
+    // マイグレーションを実行
+    await runMigrations(database);
 
     console.log('Database initialized successfully');
     return database;
