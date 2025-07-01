@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
@@ -13,6 +13,12 @@ import { ImagePreview } from '@/components/ui/image-preview';
 import { FBSelectionCard, type AIFeedbackOption } from '@/features/ai-feedback';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/design-tokens';
+import { 
+  createJournalEntry, 
+  getAllJournalEntries, 
+  getJournalEntriesByDate 
+} from '@/services/journal-service';
+import type { JournalEntry as DBJournalEntry } from '@/models/journal';
 
 type JournalEntry = {
   id: string;
@@ -31,29 +37,8 @@ export default function HomeScreen() {
   const [journalContent, setJournalContent] = useState('');
   const [selectedAI, setSelectedAI] = useState<string>('');
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
-    {
-      id: '1',
-      title: '散歩日和',
-      content: '今日は天気が良くて、散歩に出かけました。桜がとても綺麗で、気持ちの良い一日でした。',
-      date: new Date(),
-      createdAt: new Date(),
-    },
-    {
-      id: '2',
-      title: '新プロジェクト開始',
-      content: '新しいプロジェクトが始まりました。チームのメンバーと初めての打ち合わせがあり、これからが楽しみです。',
-      date: new Date(2024, 11, 15),
-      createdAt: new Date(2024, 11, 15),
-    },
-    {
-      id: '3',
-      title: '読書習慣',
-      content: '読書の時間を増やしたいと思います。最近忙しくて本を読む時間が取れていませんでした。',
-      date: new Date(2024, 11, 20),
-      createdAt: new Date(2024, 11, 20),
-    },
-  ]);
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const aiOptions: AIFeedbackOption[] = [
     {
@@ -82,10 +67,64 @@ export default function HomeScreen() {
     },
   ];
 
-  const mockJournalDates = journalEntries.map(entry => entry.date);
+  const journalDates = journalEntries.map(entry => entry.date);
 
-  const handleDateClick = (date: Date) => {
-    console.log('クリックされた日付:', date.toLocaleDateString('ja-JP'));
+  // データベースのジャーナルエントリをUI用の形式に変換
+  const convertDBEntryToUIEntry = (dbEntry: DBJournalEntry): JournalEntry => ({
+    id: dbEntry.id.toString(),
+    title: dbEntry.title || '',
+    content: dbEntry.content,
+    date: new Date(dbEntry.entry_date),
+    createdAt: new Date(dbEntry.created_at),
+  });
+
+  // ジャーナルエントリを読み込む
+  const loadJournalEntries = React.useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const dbEntries = await getAllJournalEntries();
+      const uiEntries = dbEntries.map(convertDBEntryToUIEntry);
+      setJournalEntries(uiEntries);
+    } catch (error) {
+      console.error('ジャーナルエントリの読み込みに失敗しました:', error);
+      Alert.alert('エラー', 'ジャーナルエントリの読み込みに失敗しました');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 初回読み込み
+  useEffect(() => {
+    loadJournalEntries();
+  }, [loadJournalEntries]);
+
+  const handleDateClick = async (date: Date) => {
+    try {
+      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const entriesForDate = await getJournalEntriesByDate(dateString);
+      
+      if (entriesForDate.length > 0) {
+        const uiEntries = entriesForDate.map(convertDBEntryToUIEntry);
+        Alert.alert(
+          `${date.toLocaleDateString('ja-JP')}のジャーナル`,
+          `${uiEntries.length}件のエントリがあります`,
+          [
+            { text: 'OK', style: 'default' }
+          ]
+        );
+      } else {
+        Alert.alert(
+          '該当なし',
+          `${date.toLocaleDateString('ja-JP')}にはジャーナルエントリがありません`,
+          [
+            { text: 'OK', style: 'default' }
+          ]
+        );
+      }
+    } catch (error) {
+      console.error('日付別ジャーナルエントリの取得に失敗しました:', error);
+      Alert.alert('エラー', 'ジャーナルエントリの取得に失敗しました');
+    }
   };
 
   const handleImagePick = async () => {
@@ -117,22 +156,32 @@ export default function HomeScreen() {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleCreateJournal = () => {
+  const handleCreateJournal = async () => {
     if (journalTitle.trim() && journalContent.trim()) {
-      const newEntry: JournalEntry = {
-        id: Date.now().toString(),
-        title: journalTitle.trim(),
-        content: journalContent.trim(),
-        images: selectedImages.length > 0 ? selectedImages : undefined,
-        date: new Date(),
-        createdAt: new Date(),
-      };
-      setJournalEntries(prev => [newEntry, ...prev]);
-      setJournalTitle('');
-      setJournalContent('');
-      setSelectedImages([]);
-      setSelectedAI('');
-      setIsDialogOpen(false);
+      try {
+        const today = new Date();
+        const entryDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+        
+        const newDBEntry = await createJournalEntry({
+          title: journalTitle.trim(),
+          content: journalContent.trim(),
+          entry_date: entryDate,
+        });
+
+        const newUIEntry = convertDBEntryToUIEntry(newDBEntry);
+        setJournalEntries(prev => [newUIEntry, ...prev]);
+        
+        setJournalTitle('');
+        setJournalContent('');
+        setSelectedImages([]);
+        setSelectedAI('');
+        setIsDialogOpen(false);
+        
+        Alert.alert('成功', 'ジャーナルエントリが作成されました');
+      } catch (error) {
+        console.error('ジャーナルエントリの作成に失敗しました:', error);
+        Alert.alert('エラー', 'ジャーナルエントリの作成に失敗しました');
+      }
     }
   };
 
@@ -160,35 +209,45 @@ export default function HomeScreen() {
           </ThemedText>
           <WeeklyCalendar
             onDateClick={handleDateClick}
-            journalDates={mockJournalDates}
+            journalDates={journalDates}
           />
         </View>
         
         <View style={[styles.section, styles.journalSection, { backgroundColor: 'transparent' }]}>
           <ThemedText type="subtitle" style={styles.sectionTitle}>ジャーナル</ThemedText>
-          {journalEntries.map((entry) => (
-            <Card key={entry.id} variant="flat" style={styles.journalCard}>
-              <CardHeader>
-                <CardTitle>{entry.title}</CardTitle>
-              </CardHeader>
-              <CardContent style={styles.journalCardContent}>
-                {entry.images && entry.images.length > 0 && (
-                  <ImagePreview images={entry.images} />
-                )}
-                <ThemedText style={styles.journalContent}>
-                  {entry.content}
-                </ThemedText>
-              </CardContent>
-              <CardFooter>
-                <ThemedText 
-                  type="defaultSemiBold" 
-                  style={[styles.journalDate, { color: theme.text.secondary }]}
-                >
-                  {formatDate(entry.date)}
-                </ThemedText>
-              </CardFooter>
-            </Card>
-          ))}
+          {isLoading ? (
+            <ThemedText style={{ textAlign: 'center', marginTop: Spacing[4] }}>
+              読み込み中...
+            </ThemedText>
+          ) : journalEntries.length === 0 ? (
+            <ThemedText style={{ textAlign: 'center', marginTop: Spacing[4] }}>
+              まだジャーナルエントリがありません
+            </ThemedText>
+          ) : (
+            journalEntries.map((entry) => (
+              <Card key={entry.id} variant="flat" style={styles.journalCard}>
+                <CardHeader>
+                  <CardTitle>{entry.title}</CardTitle>
+                </CardHeader>
+                <CardContent style={styles.journalCardContent}>
+                  {entry.images && entry.images.length > 0 && (
+                    <ImagePreview images={entry.images} />
+                  )}
+                  <ThemedText style={styles.journalContent}>
+                    {entry.content}
+                  </ThemedText>
+                </CardContent>
+                <CardFooter>
+                  <ThemedText 
+                    type="defaultSemiBold" 
+                    style={[styles.journalDate, { color: theme.text.secondary }]}
+                  >
+                    {formatDate(entry.date)}
+                  </ThemedText>
+                </CardFooter>
+              </Card>
+            ))
+          )}
         </View>
       </ScrollView>
 
