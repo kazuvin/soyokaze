@@ -11,12 +11,18 @@ export async function createJournalEntry(entryData: CreateJournalEntryData): Pro
     VALUES (?, ?, ?, datetime('now'))
   `;
   
-  const result = await executeQuery<{ insertId: number }>(
+  const result = await executeQuery<{ lastInsertRowId: number }>(
     query,
     [validatedData.title || null, validatedData.content, validatedData.entry_date]
   );
 
-  return await getJournalEntry(result.insertId);
+  console.log('createJournalEntry result:', result);
+  
+  if (!result.lastInsertRowId) {
+    throw new Error(`Failed to create journal entry: lastInsertRowId is ${result.lastInsertRowId}`);
+  }
+
+  return await getJournalEntry(result.lastInsertRowId);
 }
 
 export async function getJournalEntry(id: number): Promise<JournalEntry> {

@@ -11,12 +11,12 @@ export async function createUser(userData: CreateUserData): Promise<User> {
     VALUES (?, ?, ?, datetime('now'))
   `;
   
-  const result = await executeQuery<{ insertId: number }>(
+  const result = await executeQuery<{ lastInsertRowId: number }>(
     query,
     [validatedData.name, validatedData.email, validatedData.avatar_url || null]
   );
 
-  return await getUser(result.insertId);
+  return await getUser(result.lastInsertRowId);
 }
 
 export async function getUser(id: number): Promise<User> {
