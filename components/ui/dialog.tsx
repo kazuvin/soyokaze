@@ -7,6 +7,7 @@ import {
   Pressable,
   type ViewProps,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -16,6 +17,7 @@ export type DialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
+  variant?: "default" | "fullscreen";
 };
 
 export type DialogContentProps = ViewProps & {
@@ -48,14 +50,16 @@ export type DialogCloseProps = {
 const DialogContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  variant?: "default" | "fullscreen";
 }>({
   open: false,
   onOpenChange: () => {},
+  variant: "default",
 });
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, variant = "default" }: DialogProps) {
   return (
-    <DialogContext.Provider value={{ open, onOpenChange }}>
+    <DialogContext.Provider value={{ open, onOpenChange, variant }}>
       {children}
     </DialogContext.Provider>
   );
@@ -71,7 +75,7 @@ export function DialogContent({
   ...rest
 }: DialogContentProps) {
   const { theme } = useTheme();
-  const { open, onOpenChange } = React.useContext(DialogContext);
+  const { open, onOpenChange, variant } = React.useContext(DialogContext);
 
   // Extract header and content children
   const childrenArray = React.Children.toArray(children);
@@ -82,41 +86,53 @@ export function DialogContent({
     (child) => !(React.isValidElement(child) && child.type === DialogHeader)
   );
 
+  const isFullscreen = variant === "fullscreen";
+
+  const content = (
+    <View
+      style={[
+        {
+          flex: 1,
+          backgroundColor: theme.background.default,
+          position: "relative",
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {/* Fixed Header */}
+      <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
+        {headerElement}
+      </View>
+      
+      {/* Scrollable Content */}
+      <ScrollView
+        style={{ flex: 1, marginTop: 56 }}
+        contentContainerStyle={{
+          paddingTop: Spacing[4],
+          paddingBottom: Spacing[6],
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        {otherChildren}
+      </ScrollView>
+    </View>
+  );
+
   return (
     <Modal
       visible={open}
       animationType="slide"
-      presentationStyle="pageSheet"
+      presentationStyle={isFullscreen ? "fullScreen" : "pageSheet"}
       onRequestClose={() => onOpenChange(false)}
     >
-      <View
-        style={[
-          {
-            flex: 1,
-            backgroundColor: theme.background.default,
-            position: "relative",
-          },
-          style,
-        ]}
-        {...rest}
-      >
-        {/* Fixed Header */}
-        <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
-          {headerElement}
-        </View>
-        
-        {/* Scrollable Content */}
-        <ScrollView
-          style={{ flex: 1, marginTop: 56 }}
-          contentContainerStyle={{
-            paddingTop: Spacing[4],
-            paddingBottom: Spacing[6],
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          {otherChildren}
-        </ScrollView>
-      </View>
+      {isFullscreen ? (
+        <SafeAreaView style={{ flex: 1 }}>
+          {content}
+        </SafeAreaView>
+      ) : (
+        content
+      )}
     </Modal>
   );
 }
