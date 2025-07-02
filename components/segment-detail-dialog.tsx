@@ -43,7 +43,7 @@ export function SegmentDetailDialog({ open, onOpenChange, segment }: SegmentDeta
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} variant="fullscreen">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{segment.title}</DialogTitle>
