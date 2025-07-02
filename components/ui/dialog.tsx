@@ -101,7 +101,13 @@ export function DialogContent({
       {...rest}
     >
       {/* Fixed Header */}
-      <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
+      <View style={{ 
+        position: "absolute", 
+        top: isFullscreen ? 0 : 0, 
+        left: 0, 
+        right: 0, 
+        zIndex: 1 
+      }}>
         {headerElement}
       </View>
       
@@ -127,7 +133,7 @@ export function DialogContent({
       onRequestClose={() => onOpenChange(false)}
     >
       {isFullscreen ? (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right', 'bottom']}>
           {content}
         </SafeAreaView>
       ) : (
