@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  SafeAreaView,
   type ViewProps,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -57,7 +57,12 @@ const DialogContext = React.createContext<{
   variant: "default",
 });
 
-export function Dialog({ open, onOpenChange, children, variant = "default" }: DialogProps) {
+export function Dialog({
+  open,
+  onOpenChange,
+  children,
+  variant = "default",
+}: DialogProps) {
   return (
     <DialogContext.Provider value={{ open, onOpenChange, variant }}>
       {children}
@@ -80,10 +85,10 @@ export function DialogContent({
   // Extract header and content children
   const childrenArray = React.Children.toArray(children);
   const headerElement = childrenArray.find(
-    (child) => React.isValidElement(child) && child.type === DialogHeader
+    (child) => React.isValidElement(child) && child.type === DialogHeader,
   );
   const otherChildren = childrenArray.filter(
-    (child) => !(React.isValidElement(child) && child.type === DialogHeader)
+    (child) => !(React.isValidElement(child) && child.type === DialogHeader),
   );
 
   const isFullscreen = variant === "fullscreen";
@@ -101,10 +106,12 @@ export function DialogContent({
       {...rest}
     >
       {/* Fixed Header */}
-      <View style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}>
+      <View
+        style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}
+      >
         {headerElement}
       </View>
-      
+
       {/* Scrollable Content */}
       <ScrollView
         style={{ flex: 1, marginTop: 56 }}
@@ -126,13 +133,7 @@ export function DialogContent({
       presentationStyle={isFullscreen ? "fullScreen" : "pageSheet"}
       onRequestClose={() => onOpenChange(false)}
     >
-      {isFullscreen ? (
-        <SafeAreaView style={{ flex: 1 }}>
-          {content}
-        </SafeAreaView>
-      ) : (
-        content
-      )}
+      <SafeAreaView style={{ flex: 1 }}>{content}</SafeAreaView>
     </Modal>
   );
 }
@@ -145,7 +146,7 @@ export function DialogHeader({
   ...rest
 }: DialogHeaderProps) {
   const { theme } = useTheme();
-  
+
   return (
     <View
       style={[
@@ -165,46 +166,44 @@ export function DialogHeader({
     >
       {/* Left Element - Absolute Position */}
       {leftElement && (
-        <View style={{ 
-          position: "absolute", 
-          left: Spacing[6], 
-          top: 0,
-          bottom: 0,
-          justifyContent: "center"
-        }}>
+        <View
+          style={{
+            position: "absolute",
+            left: Spacing[6],
+            top: 0,
+            bottom: 0,
+            justifyContent: "center",
+          }}
+        >
           {leftElement}
         </View>
       )}
-      
+
       {/* Center Content - Flex Center */}
-      <View style={{ alignItems: "center" }}>
-        {children}
-      </View>
-      
+      <View style={{ alignItems: "center" }}>{children}</View>
+
       {/* Right Element - Absolute Position */}
-      <View style={{ 
-        position: "absolute", 
-        right: Spacing[6], 
-        top: 0,
-        bottom: 0,
-        justifyContent: "center"
-      }}>
+      <View
+        style={{
+          position: "absolute",
+          right: Spacing[6],
+          top: 0,
+          bottom: 0,
+          justifyContent: "center",
+        }}
+      >
         {rightElement || <DialogClose />}
       </View>
     </View>
   );
 }
 
-export function DialogTitle({
-  children,
-  style,
-  ...rest
-}: DialogTitleProps) {
+export function DialogTitle({ children, style, ...rest }: DialogTitleProps) {
   return (
     <View style={[style]} {...rest}>
-      <ThemedText 
-        type="h6" 
-        style={{ 
+      <ThemedText
+        type="h6"
+        style={{
           textAlign: "center",
           fontWeight: "600",
         }}
@@ -221,12 +220,12 @@ export function DialogDescription({
   ...rest
 }: DialogDescriptionProps) {
   const { theme } = useTheme();
-  
+
   return (
     <View style={[style]} {...rest}>
-      <ThemedText 
-        type="default" 
-        style={{ 
+      <ThemedText
+        type="default"
+        style={{
           color: theme.text.secondary,
           lineHeight: 20,
         }}
@@ -237,11 +236,7 @@ export function DialogDescription({
   );
 }
 
-export function DialogFooter({
-  children,
-  style,
-  ...rest
-}: DialogFooterProps) {
+export function DialogFooter({ children, style, ...rest }: DialogFooterProps) {
   return (
     <View
       style={[
@@ -263,18 +258,14 @@ export function DialogFooter({
 export function DialogClose({ onPress, children }: DialogCloseProps) {
   const { onOpenChange } = React.useContext(DialogContext);
   const { theme } = useTheme();
-  
+
   const handlePress = () => {
     onOpenChange(false);
     onPress?.();
   };
 
   if (children) {
-    return (
-      <Pressable onPress={handlePress}>
-        {children}
-      </Pressable>
-    );
+    return <Pressable onPress={handlePress}>{children}</Pressable>;
   }
 
   return (
@@ -285,11 +276,8 @@ export function DialogClose({ onPress, children }: DialogCloseProps) {
         borderRadius: BorderRadius.md,
       }}
     >
-      <IconSymbol 
-        name="xmark" 
-        size={18} 
-        color={theme.text.secondary}
-      />
+      <IconSymbol name="xmark" size={18} color={theme.text.secondary} />
     </TouchableOpacity>
   );
 }
+
