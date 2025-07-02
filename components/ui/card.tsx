@@ -1,4 +1,4 @@
-import { View, type ViewProps } from "react-native";
+import { View, TouchableOpacity, type ViewProps } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { Spacing, Shadow } from "@/constants/design-tokens";
@@ -7,6 +7,7 @@ export type CardVariant = "elevated" | "flat" | "outlined";
 
 export type CardProps = ViewProps & {
   variant?: CardVariant;
+  onPress?: () => void;
 };
 
 export type CardHeaderProps = ViewProps;
@@ -23,6 +24,7 @@ export function Card({
   variant = "elevated",
   style,
   children,
+  onPress,
   ...rest
 }: CardProps) {
   const { theme } = useTheme();
@@ -53,6 +55,19 @@ export function Card({
         return {};
     }
   };
+
+  if (onPress) {
+    return (
+      <TouchableOpacity 
+        style={[getVariantStyles(), style]} 
+        onPress={onPress}
+        activeOpacity={0.7}
+        {...rest}
+      >
+        {children}
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <View style={[getVariantStyles(), style]} {...rest}>
