@@ -8,6 +8,7 @@ import { WeeklyCalendar } from '@/features/journal';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { SegmentDetailDialog } from '@/components/segment-detail-dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { ImagePreview } from '@/components/ui/image-preview';
 import { FBSelectionCard, type AIFeedbackOption } from '@/features/ai-feedback';
@@ -27,6 +28,8 @@ export default function HomeScreen() {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSegmentDetailOpen, setIsSegmentDetailOpen] = useState(false);
+  const [selectedSegment, setSelectedSegment] = useState<JournalEntry | null>(null);
   const [journalTitle, setJournalTitle] = useState('');
   const [journalContent, setJournalContent] = useState('');
   const [selectedAI, setSelectedAI] = useState<string>('');
@@ -136,6 +139,11 @@ export default function HomeScreen() {
     }
   };
 
+  const handleSegmentClick = (segment: JournalEntry) => {
+    setSelectedSegment(segment);
+    setIsSegmentDetailOpen(true);
+  };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -167,7 +175,12 @@ export default function HomeScreen() {
         <View style={[styles.section, styles.journalSection, { backgroundColor: 'transparent' }]}>
           <ThemedText type="subtitle" style={styles.sectionTitle}>ジャーナル</ThemedText>
           {journalEntries.map((entry) => (
-            <Card key={entry.id} variant="flat" style={styles.journalCard}>
+            <Card 
+              key={entry.id} 
+              variant="flat" 
+              style={styles.journalCard}
+              onPress={() => handleSegmentClick(entry)}
+            >
               <CardHeader>
                 <CardTitle>{entry.title}</CardTitle>
               </CardHeader>
@@ -285,6 +298,12 @@ export default function HomeScreen() {
           </KeyboardAvoidingView>
         </DialogContent>
       </Dialog>
+
+      <SegmentDetailDialog
+        open={isSegmentDetailOpen}
+        onOpenChange={setIsSegmentDetailOpen}
+        segment={selectedSegment}
+      />
     </View>
   );
 }
