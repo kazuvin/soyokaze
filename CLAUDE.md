@@ -260,3 +260,59 @@ The repository includes automated Expo Go previews for pull requests:
 - **Design System**: Comprehensive design token system with light/dark theme support
 - **Database Layer**: SQLite integration with Zod schema validation for type-safe data operations
 
+## Documentation and Knowledge Management
+
+### Obsidian Zettelkasten Integration
+
+This project is integrated with an Obsidian-based Zettelkasten knowledge management system located at `/Users/kazuya.miura/Develop/obsidian`.
+
+#### When to Create Documentation
+
+Create notes in the Obsidian system when:
+- Discovering important technical specifications or implementation details
+- Learning about React Native/Expo patterns and best practices
+- Documenting complex architectural decisions
+- Recording reusable knowledge that could benefit future development
+
+#### Documentation Process
+
+1. **Location**: Always create new notes in `/obsidian/zettelkasten/01-inbox/`
+2. **Naming Convention**: Use format `YYYYMMDDHHMM-descriptive-title.md`
+3. **Template Structure**: Follow the Zettelkasten template format:
+   ```markdown
+   # Title
+   
+   **作成日時**: YYYY-MM-DD HH:mm
+   **ID**: YYYYMMDDHHMM
+   **タグ**: #relevant #tags
+   
+   ## 概要
+   Brief summary
+   
+   ## 詳細
+   Detailed content
+   
+   ## 関連するノート
+   - [[Related Note Links]]
+   
+   ## 参考文献
+   Sources and references
+   
+   ---
+   *このノートは [[Zettelkasten]] 手法に基づいて作成されています*
+   ```
+
+#### Git Operations for Documentation
+
+- Use `git -C /Users/kazuya.miura/Develop/obsidian` commands for all git operations
+- Add, commit, and push documentation changes immediately after creation
+- Use descriptive commit messages including the note ID
+
+#### Examples of Documentation Topics
+
+- React Native component specifications
+- UI/UX patterns and implementations
+- Database schema decisions
+- Performance optimization techniques
+- Cross-platform compatibility notes
+
