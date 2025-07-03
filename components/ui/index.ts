@@ -2,6 +2,7 @@
  * UI Components Exports
  */
 
+export { Avatar, AvatarGroup } from './avatar';
 export { Button } from './button';
 export { Card } from './card';
 export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './dialog';

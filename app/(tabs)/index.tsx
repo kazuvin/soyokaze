@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { WeeklyCalendar } from '@/features/journal';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarGroup } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { SegmentDetailDialog } from '@/components/segment-detail-dialog';
 import { Textarea } from '@/components/ui/textarea';
@@ -83,6 +84,15 @@ export default function HomeScreen() {
       description: '元気づけてくれる',
       illustration: '🌟',
     },
+  ];
+
+  // Mock avatar data for demonstration
+  const mockAvatars = [
+    { id: '1', name: 'Yuki Tanaka', src: undefined },
+    { id: '2', name: 'Hiroshi Sato', src: undefined },
+    { id: '3', name: 'Akiko Yamada', src: undefined },
+    { id: '4', name: 'Kenji Nakamura', src: undefined },
+    { id: '5', name: 'Misaki Ito', src: undefined },
   ];
 
   const mockJournalDates = journalEntries.map(entry => entry.date);
@@ -192,13 +202,22 @@ export default function HomeScreen() {
                   {entry.content}
                 </ThemedText>
               </CardContent>
-              <CardFooter>
+              <CardFooter style={styles.journalCardFooter}>
                 <ThemedText 
                   type="defaultSemiBold" 
                   style={[styles.journalDate, { color: theme.text.secondary }]}
                 >
                   {formatDate(entry.date)}
                 </ThemedText>
+                <AvatarGroup max={4} spacing={-Spacing[1]}>
+                  {mockAvatars.slice(0, 5).map((avatar) => (
+                    <Avatar
+                      key={avatar.id}
+                      fallback={avatar.name}
+                      size="sm"
+                    />
+                  ))}
+                </AvatarGroup>
               </CardFooter>
             </Card>
           ))}
@@ -341,8 +360,13 @@ const styles = StyleSheet.create({
   journalCardContent: {
     paddingBottom: 0,
   },
+  journalCardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   journalDate: {
-    marginBottom: Spacing[2],
+    marginBottom: 0,
   },
   journalContent: {
     lineHeight: 22,
