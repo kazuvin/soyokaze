@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
 import { Textarea, JournalTextarea } from '@/components/ui/textarea';
@@ -242,6 +243,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Journal Textareas">
         <JournalTextareaShowcase />
+      </Collapsible>
+      <Collapsible title="Skeleton">
+        <SkeletonShowcase />
       </Collapsible>
     </ThemedView>
   );
@@ -1260,6 +1264,69 @@ function HeaderShowcase() {
           <Header title="No Shadow" showShadow={false} />
         </View>
       </View>
+    </ThemedView>
+  );
+}
+
+function SkeletonShowcase() {
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Skeleton</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Skeleton width="100%" height={20} />
+        <Skeleton width="80%" height={20} />
+        <Skeleton width="60%" height={20} />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Skeleton Variants</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <Skeleton variant="circular" height={40} />
+          <View style={{ flex: 1 }}>
+            <Skeleton variant="text" width="100%" height={16} />
+            <Skeleton variant="text" width="70%" height={14} style={{ marginTop: 8 }} />
+          </View>
+        </View>
+        
+        <Skeleton variant="rectangular" width="100%" height={120} />
+        
+        <View style={{ flexDirection: 'row', gap: 12 }}>
+          <Skeleton variant="rectangular" width={80} height={80} />
+          <View style={{ flex: 1 }}>
+            <Skeleton variant="text" width="100%" height={16} />
+            <Skeleton variant="text" width="80%" height={14} style={{ marginTop: 8 }} />
+            <Skeleton variant="text" width="60%" height={14} style={{ marginTop: 8 }} />
+          </View>
+        </View>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Multiple Text Lines</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Skeleton variant="text" lines={3} />
+        <Skeleton variant="text" lines={5} />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Without Animation</ThemedText>
+      <View style={{ gap: 16, marginTop: 8 }}>
+        <Skeleton width="100%" height={20} animation={false} />
+        <Skeleton variant="circular" height={40} animation={false} />
+        <Skeleton variant="rectangular" width="100%" height={80} animation={false} />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Loading Card Example</ThemedText>
+      <Card variant="elevated" style={{ marginTop: 8 }}>
+        <CardContent style={{ padding: 16 }}>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <Skeleton variant="circular" height={48} />
+            <View style={{ flex: 1 }}>
+              <Skeleton variant="text" width="60%" height={16} />
+              <Skeleton variant="text" width="40%" height={14} style={{ marginTop: 8 }} />
+            </View>
+          </View>
+          <Skeleton variant="text" lines={3} style={{ marginTop: 16 }} />
+          <Skeleton variant="rectangular" width="100%" height={120} style={{ marginTop: 16 }} />
+        </CardContent>
+      </Card>
     </ThemedView>
   );
 }

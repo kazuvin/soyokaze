@@ -8,6 +8,7 @@ export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 export { ImagePreview } from './image-preview';
 export { ImageModal } from './image-modal';
 export { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from './list';
+export { Skeleton } from './skeleton';
 export { Spacing } from './spacing';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export { TextInput } from './text-input';
