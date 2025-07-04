@@ -7,21 +7,6 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     include: ['**/*.{test,spec}.{js,ts,tsx}'],
     globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
-      include: [
-        'hooks/**/*.{ts,tsx}',
-        'components/**/*.{ts,tsx}',
-        'services/**/*.{ts,tsx}',
-      ],
-      exclude: [
-        '**/*.d.ts',
-        '**/node_modules/**',
-        '**/*.test.{ts,tsx}',
-        '**/*.spec.{ts,tsx}',
-      ],
-    },
   },
   resolve: {
     alias: {
