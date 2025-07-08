@@ -70,18 +70,20 @@ export function DropdownMenuTrigger({ children, asChild = false }: DropdownMenuT
   };
 
   if (asChild && React.isValidElement(children)) {
+    const originalOnPress = children.props.onPress;
     return React.cloneElement(children as React.ReactElement<any>, {
       ref: triggerRef,
-      onPress: handlePress,
+      onPress: (event: any) => {
+        handlePress();
+        originalOnPress?.(event);
+      },
     });
   }
 
   return (
-    <View ref={triggerRef}>
-      <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
-        {children}
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity ref={triggerRef} onPress={handlePress} activeOpacity={0.7}>
+      {children}
+    </TouchableOpacity>
   );
 }
 
