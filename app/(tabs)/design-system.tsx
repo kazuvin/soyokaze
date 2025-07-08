@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
@@ -227,6 +228,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Dropdown Menus">
+        <DropdownMenuShowcase />
       </Collapsible>
       <Collapsible title="Lists">
         <ListShowcase />
@@ -1089,6 +1093,107 @@ function TextareaShowcase() {
         fullWidth
         rows={4}
       />
+    </ThemedView>
+  );
+}
+
+function DropdownMenuShowcase() {
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [selectedIcon, setSelectedIcon] = useState<string>('');
+  const [selectedDisabled, setSelectedDisabled] = useState<string>('');
+
+  const options = [
+    { id: '1', label: 'Option 1', value: 'option1' },
+    { id: '2', label: 'Option 2', value: 'option2' },
+    { id: '3', label: 'Option 3', value: 'option3' },
+    { id: '4', label: 'Option 4', value: 'option4' },
+    { id: '5', label: 'Option 5', value: 'option5' },
+  ];
+
+  const iconOptions = [
+    { id: '1', label: 'Home', value: 'home', icon: 'house' as const },
+    { id: '2', label: 'Settings', value: 'settings', icon: 'gear' as const },
+    { id: '3', label: 'Profile', value: 'profile', icon: 'person' as const },
+    { id: '4', label: 'Notifications', value: 'notifications', icon: 'bell' as const },
+    { id: '5', label: 'Help', value: 'help', icon: 'questionmark.circle' as const },
+  ];
+
+  const disabledOptions = [
+    { id: '1', label: 'Active Option', value: 'active' },
+    { id: '2', label: 'Disabled Option', value: 'disabled', disabled: true },
+    { id: '3', label: 'Another Active', value: 'active2' },
+    { id: '4', label: 'Also Disabled', value: 'disabled2', disabled: true },
+  ];
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Dropdown Menu</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={options}
+          selectedValue={selectedOption}
+          onValueChange={setSelectedOption}
+          placeholder="Select an option"
+          width={250}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Dropdown with Icons</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={iconOptions}
+          selectedValue={selectedIcon}
+          onValueChange={setSelectedIcon}
+          placeholder="Choose with icon"
+          width={250}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Dropdown with Disabled Items</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={disabledOptions}
+          selectedValue={selectedDisabled}
+          onValueChange={setSelectedDisabled}
+          placeholder="Some options disabled"
+          width={250}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Disabled Dropdown</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={options}
+          selectedValue=""
+          onValueChange={() => {}}
+          placeholder="This dropdown is disabled"
+          width={250}
+          disabled
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Long List with Scroll</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={Array.from({ length: 20 }, (_, i) => ({
+            id: String(i + 1),
+            label: `Option ${i + 1}`,
+            value: `option${i + 1}`,
+          }))}
+          selectedValue=""
+          onValueChange={() => {}}
+          placeholder="Long list example"
+          width={250}
+          maxHeight={200}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Selected Values</ThemedText>
+      <View style={{ marginTop: 8, gap: 8 }}>
+        <ThemedText type="caption">Basic: {selectedOption || 'None'}</ThemedText>
+        <ThemedText type="caption">With Icon: {selectedIcon || 'None'}</ThemedText>
+        <ThemedText type="caption">Disabled Items: {selectedDisabled || 'None'}</ThemedText>
+      </View>
     </ThemedView>
   );
 }
