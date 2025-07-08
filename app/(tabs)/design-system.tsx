@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
@@ -227,6 +228,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Dropdown Menus">
+        <DropdownMenuShowcase />
       </Collapsible>
       <Collapsible title="Lists">
         <ListShowcase />
@@ -457,6 +461,250 @@ function ShadowShowcase() {
           </View>
         </View>
       ))}
+    </ThemedView>
+  );
+}
+
+function DropdownMenuShowcase() {
+  const [actionResult, setActionResult] = useState<string>('');
+
+  const basicMenuItems = [
+    {
+      id: 'edit',
+      label: 'Edit',
+      icon: 'pencil' as const,
+      onPress: () => setActionResult('Edit clicked'),
+    },
+    {
+      id: 'duplicate',
+      label: 'Duplicate',
+      icon: 'doc.on.doc' as const,
+      onPress: () => setActionResult('Duplicate clicked'),
+    },
+    {
+      id: 'separator-1',
+      label: '',
+      separator: true,
+    },
+    {
+      id: 'delete',
+      label: 'Delete',
+      icon: 'trash' as const,
+      destructive: true,
+      onPress: () => setActionResult('Delete clicked'),
+    },
+  ];
+
+  const alignmentItems = [
+    {
+      id: 'left',
+      label: 'Left',
+      icon: 'text.alignleft' as const,
+      onPress: () => setActionResult('Left align'),
+    },
+    {
+      id: 'center',
+      label: 'Center',
+      icon: 'text.aligncenter' as const,
+      onPress: () => setActionResult('Center align'),
+    },
+    {
+      id: 'right',
+      label: 'Right',
+      icon: 'text.alignright' as const,
+      onPress: () => setActionResult('Right align'),
+    },
+  ];
+
+  const profileItems = [
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: 'person' as const,
+      onPress: () => setActionResult('Profile opened'),
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: 'gear' as const,
+      onPress: () => setActionResult('Settings opened'),
+    },
+    {
+      id: 'separator-1',
+      label: '',
+      separator: true,
+    },
+    {
+      id: 'help',
+      label: 'Help',
+      icon: 'questionmark.circle' as const,
+      onPress: () => setActionResult('Help opened'),
+    },
+    {
+      id: 'separator-2',
+      label: '',
+      separator: true,
+    },
+    {
+      id: 'logout',
+      label: 'Logout',
+      icon: 'arrow.right.square' as const,
+      destructive: true,
+      onPress: () => setActionResult('Logout clicked'),
+    },
+  ];
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Dropdown Menu</ThemedText>
+      <View style={styles.dropdownRow}>
+        <DropdownMenu
+          trigger={
+            <Button
+              title="Actions"
+              icon="chevron.down"
+              variant="secondary"
+              onPress={() => {}}
+            />
+          }
+          items={basicMenuItems}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Icon-Only Trigger</ThemedText>
+      <View style={styles.dropdownRow}>
+        <DropdownMenu
+          trigger={
+            <Button
+              icon="ellipsis"
+              iconOnly
+              variant="ghost"
+              onPress={() => {}}
+            />
+          }
+          items={basicMenuItems}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Different Positions</ThemedText>
+      <View style={styles.dropdownGrid}>
+        <DropdownMenu
+          trigger={<Button title="Top Left" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="top"
+          align="start"
+        />
+        <DropdownMenu
+          trigger={<Button title="Top Center" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="top"
+          align="center"
+        />
+        <DropdownMenu
+          trigger={<Button title="Top Right" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="top"
+          align="end"
+        />
+        <DropdownMenu
+          trigger={<Button title="Bottom Left" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="bottom"
+          align="start"
+        />
+        <DropdownMenu
+          trigger={<Button title="Bottom Center" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="bottom"
+          align="center"
+        />
+        <DropdownMenu
+          trigger={<Button title="Bottom Right" size="small" variant="outline" />}
+          items={alignmentItems}
+          side="bottom"
+          align="end"
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Profile Menu Example</ThemedText>
+      <View style={styles.dropdownRow}>
+        <DropdownMenu
+          trigger={
+            <Button
+              title="Profile"
+              icon="person.circle"
+              variant="ghost"
+              onPress={() => {}}
+            />
+          }
+          items={profileItems}
+          side="bottom"
+          align="start"
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Trigger</ThemedText>
+      <View style={styles.dropdownRow}>
+        <DropdownMenu
+          trigger={
+            <Card variant="outlined" style={{ padding: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <IconSymbol name="folder" size={20} />
+                <ThemedText type="body">Custom Trigger</ThemedText>
+                <IconSymbol name="chevron.down" size={16} />
+              </View>
+            </Card>
+          }
+          items={basicMenuItems}
+        />
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>With Disabled Items</ThemedText>
+      <View style={styles.dropdownRow}>
+        <DropdownMenu
+          trigger={
+            <Button
+              title="Mixed States"
+              icon="gear"
+              variant="secondary"
+              onPress={() => {}}
+            />
+          }
+          items={[
+            {
+              id: 'enabled',
+              label: 'Enabled Item',
+              icon: 'checkmark' as const,
+              onPress: () => setActionResult('Enabled item clicked'),
+            },
+            {
+              id: 'disabled',
+              label: 'Disabled Item',
+              icon: 'xmark' as const,
+              disabled: true,
+              onPress: () => setActionResult('This should not appear'),
+            },
+            {
+              id: 'separator-1',
+              label: '',
+              separator: true,
+            },
+            {
+              id: 'destructive',
+              label: 'Destructive Action',
+              icon: 'trash' as const,
+              destructive: true,
+              onPress: () => setActionResult('Destructive action clicked'),
+            },
+          ]}
+        />
+      </View>
+
+      {actionResult && (
+        <View style={styles.actionResult}>
+          <ThemedText type="caption">Last action: {actionResult}</ThemedText>
+        </View>
+      )}
     </ThemedView>
   );
 }
@@ -1424,5 +1672,25 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     fontSize: 10,
     fontFamily: 'monospace',
+  },
+  dropdownRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  dropdownGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+  },
+  actionResult: {
+    marginTop: 16,
+    padding: 8,
+    backgroundColor: '#f0f9ff',
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: '#0ea5e9',
   },
 });
