@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
@@ -227,6 +228,9 @@ function ComponentShowcase() {
       </Collapsible>
       <Collapsible title="Dialogs">
         <DialogShowcase />
+      </Collapsible>
+      <Collapsible title="Dropdown Menus">
+        <DropdownMenuShowcase />
       </Collapsible>
       <Collapsible title="Lists">
         <ListShowcase />
@@ -584,6 +588,264 @@ function DialogShowcase() {
           </View>
         </DialogContent>
       </Dialog>
+    </ThemedView>
+  );
+}
+
+function DropdownMenuShowcase() {
+  const [selectedAction, setSelectedAction] = useState<string>('');
+
+  return (
+    <ThemedView style={styles.componentSection}>
+      <ThemedText type="h6">Basic Dropdown Menu</ThemedText>
+      <View style={styles.buttonRow}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              title="Open Menu"
+              icon="chevron.down"
+              variant="outline"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onPress={() => setSelectedAction('edit')}>
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('duplicate')}>
+              Duplicate
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onPress={() => setSelectedAction('delete')} destructive>
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              title="Actions"
+              icon="ellipsis"
+              variant="secondary"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem icon="square.and.arrow.up" onPress={() => setSelectedAction('share')}>
+              Share
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="heart" onPress={() => setSelectedAction('favorite')}>
+              Add to Favorites
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="folder" onPress={() => setSelectedAction('move')}>
+              Move to Folder
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem icon="info.circle" onPress={() => setSelectedAction('info')}>
+              Get Info
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Icon Only Trigger</ThemedText>
+      <View style={styles.buttonRow}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              icon="ellipsis"
+              iconOnly
+              variant="ghost"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem icon="pencil" onPress={() => setSelectedAction('edit')}>
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="doc.on.doc" onPress={() => setSelectedAction('copy')}>
+              Copy
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="folder" onPress={() => setSelectedAction('move')}>
+              Move
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem icon="trash" onPress={() => setSelectedAction('delete')} destructive>
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              icon="gear"
+              iconOnly
+              variant="outline"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem icon="bell" onPress={() => setSelectedAction('notifications')}>
+              Notifications
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="moon" onPress={() => setSelectedAction('theme')}>
+              Dark Mode
+            </DropdownMenuItem>
+            <DropdownMenuItem icon="globe" onPress={() => setSelectedAction('language')}>
+              Language
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem icon="questionmark.circle" onPress={() => setSelectedAction('help')}>
+              Help
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Different Alignments</ThemedText>
+      <View style={styles.buttonRow}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              title="Align Start"
+              variant="outline"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onPress={() => setSelectedAction('start1')}>
+              Menu Item 1
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('start2')}>
+              Menu Item 2
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('start3')}>
+              Menu Item 3
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              title="Align Center"
+              variant="outline"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center">
+            <DropdownMenuItem onPress={() => setSelectedAction('center1')}>
+              Menu Item 1
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('center2')}>
+              Menu Item 2
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('center3')}>
+              Menu Item 3
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              title="Align End"
+              variant="outline"
+              onPress={() => {}}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onPress={() => setSelectedAction('end1')}>
+              Menu Item 1
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('end2')}>
+              Menu Item 2
+            </DropdownMenuItem>
+            <DropdownMenuItem onPress={() => setSelectedAction('end3')}>
+              Menu Item 3
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Scrollable Menu</ThemedText>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button
+            title="Long Menu"
+            icon="chevron.down"
+            variant="secondary"
+            onPress={() => {}}
+          />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent maxHeight={150}>
+          <DropdownMenuItem icon="house" onPress={() => setSelectedAction('home')}>
+            Home
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="star" onPress={() => setSelectedAction('favorites')}>
+            Favorites
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="clock" onPress={() => setSelectedAction('recent')}>
+            Recent
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="folder" onPress={() => setSelectedAction('documents')}>
+            Documents
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="photo" onPress={() => setSelectedAction('photos')}>
+            Photos
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="music.note" onPress={() => setSelectedAction('music')}>
+            Music
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="tv" onPress={() => setSelectedAction('videos')}>
+            Videos
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="cloud" onPress={() => setSelectedAction('cloud')}>
+            Cloud Storage
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="archivebox" onPress={() => setSelectedAction('archive')}>
+            Archive
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem icon="trash" onPress={() => setSelectedAction('trash')} destructive>
+            Trash
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Disabled Items</ThemedText>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button
+            title="With Disabled"
+            variant="outline"
+            onPress={() => {}}
+          />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem icon="pencil" onPress={() => setSelectedAction('edit')}>
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="doc.on.doc" disabled>
+            Copy (Disabled)
+          </DropdownMenuItem>
+          <DropdownMenuItem icon="folder" onPress={() => setSelectedAction('move')}>
+            Move
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem icon="trash" onPress={() => setSelectedAction('delete')} destructive>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {selectedAction && (
+        <ThemedText type="caption" style={{ marginTop: 16, opacity: 0.7 }}>
+          Last selected: {selectedAction}
+        </ThemedText>
+      )}
     </ThemedView>
   );
 }
