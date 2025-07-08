@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, TouchableOpacity, ScrollView, Dimensions, type ViewProps } from "react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacity, ScrollView, type ViewProps } from "react-native";
 import { useTheme } from "@/hooks/use-theme";
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -37,19 +37,9 @@ export type DropdownMenuProps = {
   onOpenChange?: (open: boolean) => void;
 };
 
-type Position = {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-};
-
 const DropdownMenuContext = React.createContext<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  triggerRef: React.RefObject<TouchableOpacity>;
-  contentPosition: Position | null;
-  setContentPosition: (position: Position | null) => void;
 } | null>(null);
 
 function useDropdownMenu() {
@@ -62,8 +52,6 @@ function useDropdownMenu() {
 
 export function DropdownMenu({ children, open: controlledOpen, onOpenChange }: DropdownMenuProps) {
   const [internalOpen, setInternalOpen] = useState(false);
-  const [contentPosition, setContentPosition] = useState<Position | null>(null);
-  const triggerRef = useRef<TouchableOpacity>(null);
 
   const open = controlledOpen ?? internalOpen;
   const handleOpenChange = onOpenChange ?? setInternalOpen;
@@ -73,41 +61,26 @@ export function DropdownMenu({ children, open: controlledOpen, onOpenChange }: D
       value={{
         open,
         onOpenChange: handleOpenChange,
-        triggerRef,
-        contentPosition,
-        setContentPosition,
       }}
     >
-      {children}
+      <View style={{ position: 'relative' }}>
+        {children}
+      </View>
     </DropdownMenuContext.Provider>
   );
 }
 
 export function DropdownMenuTrigger({ children, onPress, disabled, ...rest }: DropdownMenuTriggerProps) {
-  const { open, onOpenChange, triggerRef, setContentPosition } = useDropdownMenu();
+  const { open, onOpenChange } = useDropdownMenu();
 
   const handlePress = () => {
     if (disabled) return;
-    
-    if (!open) {
-      // Calculate position when opening
-      triggerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        setContentPosition({
-          top: pageY,
-          left: pageX,
-          width,
-          height,
-        });
-      });
-    }
-    
     onPress?.();
     onOpenChange(!open);
   };
 
   return (
     <TouchableOpacity
-      ref={triggerRef}
       onPress={handlePress}
       disabled={disabled}
       activeOpacity={0.7}
@@ -129,104 +102,48 @@ export function DropdownMenuContent({
   ...rest
 }: DropdownMenuContentProps) {
   const { theme } = useTheme();
-  const { open, contentPosition } = useDropdownMenu();
-  const [adjustedPosition, setAdjustedPosition] = useState<{ top: number; left: number } | null>(null);
+  const { open } = useDropdownMenu();
 
-  useEffect(() => {
-    if (!open || !contentPosition) {
-      setAdjustedPosition(null);
-      return;
-    }
-
-    const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-    const { top, left, width, height } = contentPosition;
-
-    let finalTop = top;
-    let finalLeft = left;
-
-    // Calculate position based on side
-    switch (side) {
-      case "bottom":
-        finalTop = top + height + sideOffset;
-        break;
-      case "top":
-        finalTop = top - maxHeight - sideOffset;
-        break;
-      case "right":
-        finalLeft = left + width + sideOffset;
-        break;
-      case "left":
-        finalLeft = left - 200 - sideOffset; // Assuming 200px width
-        break;
-    }
-
-    // Calculate alignment
-    switch (align) {
-      case "start":
-        // Already set
-        break;
-      case "center":
-        if (side === "bottom" || side === "top") {
-          finalLeft = left + (width / 2) - 100; // Assuming 200px width
-        } else {
-          finalTop = top + (height / 2) - (maxHeight / 2);
-        }
-        break;
-      case "end":
-        if (side === "bottom" || side === "top") {
-          finalLeft = left + width - 200; // Assuming 200px width
-        } else {
-          finalTop = top + height - maxHeight;
-        }
-        break;
-    }
-
-    // Apply alignment offset
-    if (side === "bottom" || side === "top") {
-      finalLeft += alignOffset;
-    } else {
-      finalTop += alignOffset;
-    }
-
-    // Ensure content stays within screen bounds
-    const contentWidth = 200; // Fixed width for simplicity
-    const contentHeight = Math.min(maxHeight, 200);
-
-    if (finalLeft + contentWidth > screenWidth) {
-      finalLeft = screenWidth - contentWidth - Spacing[2];
-    }
-    if (finalLeft < Spacing[2]) {
-      finalLeft = Spacing[2];
-    }
-    if (finalTop + contentHeight > screenHeight) {
-      finalTop = screenHeight - contentHeight - Spacing[2];
-    }
-    if (finalTop < Spacing[2]) {
-      finalTop = Spacing[2];
-    }
-
-    setAdjustedPosition({ top: finalTop, left: finalLeft });
-  }, [open, contentPosition, side, align, sideOffset, alignOffset, maxHeight]);
-
-  if (!open || !adjustedPosition) {
+  if (!open) {
     return null;
   }
 
+  const contentWidth = 200;
+  let topPosition = sideOffset;
+  let leftPosition = 0;
+
+  // Calculate alignment
+  switch (align) {
+    case "start":
+      leftPosition = 0;
+      break;
+    case "center":
+      leftPosition = -100; // Half of contentWidth
+      break;
+    case "end":
+      leftPosition = -contentWidth;
+      break;
+  }
+  leftPosition += alignOffset;
+
   return (
     <View
-      style={{
-        position: "absolute",
-        top: adjustedPosition.top,
-        left: adjustedPosition.left,
-        width: 200,
-        maxHeight,
-        backgroundColor: theme.background.elevated,
-        borderRadius: BorderRadius.md,
-        borderWidth: 1,
-        borderColor: theme.border.primary,
-        zIndex: ZIndex[50],
-        ...Shadow.lg,
-      }}
+      style={[
+        {
+          position: "absolute",
+          top: topPosition,
+          left: leftPosition,
+          width: contentWidth,
+          maxHeight,
+          backgroundColor: theme.background.elevated,
+          borderRadius: BorderRadius.md,
+          borderWidth: 1,
+          borderColor: theme.border.primary,
+          zIndex: ZIndex[50],
+          ...Shadow.lg,
+        },
+        style,
+      ]}
       {...rest}
     >
       <ScrollView
@@ -318,24 +235,4 @@ export function DropdownMenuSeparator({ style, ...rest }: DropdownMenuSeparatorP
       {...rest}
     />
   );
-}
-
-// Close dropdown when clicking outside
-export function useDropdownMenuAutoClose() {
-  const { open, onOpenChange } = useDropdownMenu();
-
-  useEffect(() => {
-    if (!open) return;
-
-    // This is a simplified approach - in a real app you might want to use
-    // a more sophisticated outside click detection
-    const timer = setTimeout(() => {
-      // Auto-close after some time if needed
-      onOpenChange(false);
-    }, 10000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [open, onOpenChange]);
 }
