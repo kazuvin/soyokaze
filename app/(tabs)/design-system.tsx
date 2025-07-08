@@ -8,7 +8,14 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import { 
+  DropdownMenu, 
+  DropdownMenuTrigger, 
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu';
 import { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from '@/components/ui/list';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TextInput } from '@/components/ui/text-input';
@@ -1098,170 +1105,179 @@ function TextareaShowcase() {
 }
 
 function DropdownMenuShowcase() {
-  const [selectedOption, setSelectedOption] = useState<string>('');
-  const [selectedIcon, setSelectedIcon] = useState<string>('');
-  const [selectedDisabled, setSelectedDisabled] = useState<string>('');
   const { theme } = useTheme();
-
-  const options = [
-    { id: '1', label: 'Option 1', value: 'option1' },
-    { id: '2', label: 'Option 2', value: 'option2' },
-    { id: '3', label: 'Option 3', value: 'option3' },
-    { id: '4', label: 'Option 4', value: 'option4' },
-    { id: '5', label: 'Option 5', value: 'option5' },
-  ];
-
-  const iconOptions = [
-    { id: '1', label: 'Home', value: 'home', icon: 'house' as const },
-    { id: '2', label: 'Settings', value: 'settings', icon: 'gear' as const },
-    { id: '3', label: 'Profile', value: 'profile', icon: 'person' as const },
-    { id: '4', label: 'Notifications', value: 'notifications', icon: 'bell' as const },
-    { id: '5', label: 'Help', value: 'help', icon: 'questionmark.circle' as const },
-  ];
-
-  const disabledOptions = [
-    { id: '1', label: 'Active Option', value: 'active' },
-    { id: '2', label: 'Disabled Option', value: 'disabled', disabled: true },
-    { id: '3', label: 'Another Active', value: 'active2' },
-    { id: '4', label: 'Also Disabled', value: 'disabled2', disabled: true },
-  ];
-
-  const shortOptions = [
-    { id: '1', label: 'Short 1', value: 'short1' },
-    { id: '2', label: 'Short 2', value: 'short2' },
-  ];
 
   return (
     <ThemedView style={styles.componentSection}>
-      <ThemedText type="h6">Custom Trigger with Button</ThemedText>
+      <ThemedText type="h6">Basic Dropdown Menu</ThemedText>
       <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={options}
-          selectedValue={selectedOption}
-          onValueChange={setSelectedOption}
-          width={250}
-        >
-          <Button 
-            title={`Selected: ${options.find(o => o.value === selectedOption)?.label || 'None'}`}
-            variant="outline"
-            icon="chevron.down"
-          />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Open Menu" variant="outline" icon="chevron.down" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => console.log('Profile')}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <IconSymbol name="person" size={16} color={theme.text.primary} style={{ marginRight: Spacing[2] }} />
+                <ThemedText>Profile</ThemedText>
+              </View>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Settings')}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <IconSymbol name="gear" size={16} color={theme.text.primary} style={{ marginRight: Spacing[2] }} />
+                <ThemedText>Settings</ThemedText>
+              </View>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => console.log('Logout')}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <IconSymbol name="power" size={16} color={theme.text.primary} style={{ marginRight: Spacing[2] }} />
+                <ThemedText>Logout</ThemedText>
+              </View>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Menu with Labels and Sections</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Account Menu" variant="secondary" icon="person.circle" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => console.log('Profile')}>
+              <ThemedText>Profile</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Billing')}>
+              <ThemedText>Billing</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => console.log('Settings')}>
+              <ThemedText>Settings</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Keyboard shortcuts')}>
+              <ThemedText>Keyboard shortcuts</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => console.log('Logout')}>
+              <ThemedText>Logout</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Menu with Disabled Items</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Actions" variant="ghost" icon="ellipsis" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => console.log('Edit')}>
+              <ThemedText>Edit</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Copy')}>
+              <ThemedText>Copy</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled>
+              <ThemedText>Move (unavailable)</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => console.log('Delete')}>
+              <ThemedText style={{ color: theme.text.error || '#ef4444' }}>Delete</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </View>
 
       <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Trigger with Card</ThemedText>
       <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={iconOptions}
-          selectedValue={selectedIcon}
-          onValueChange={setSelectedIcon}
-          width={250}
-        >
-          <Card variant="flat" style={{ padding: Spacing[4] }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {iconOptions.find(o => o.value === selectedIcon)?.icon && (
-                  <IconSymbol
-                    name={iconOptions.find(o => o.value === selectedIcon)!.icon!}
-                    size={20}
-                    color={theme.text.primary}
-                    style={{ marginRight: Spacing[3] }}
-                  />
-                )}
-                <ThemedText>
-                  {iconOptions.find(o => o.value === selectedIcon)?.label || 'Choose an option'}
-                </ThemedText>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Card variant="flat" style={{ padding: Spacing[4] }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <ThemedText>Custom Card Trigger</ThemedText>
+                <IconSymbol name="chevron.down" size={16} color={theme.text.secondary} />
               </View>
-              <IconSymbol
-                name="chevron.down"
-                size={16}
-                color={theme.text.secondary}
-              />
-            </View>
-          </Card>
+            </Card>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => console.log('Option 1')}>
+              <ThemedText>Option 1</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Option 2')}>
+              <ThemedText>Option 2</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Option 3')}>
+              <ThemedText>Option 3</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </View>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Text Trigger</ThemedText>
-      <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={disabledOptions}
-          selectedValue={selectedDisabled}
-          onValueChange={setSelectedDisabled}
-          width={200}
-        >
-          <View style={{ 
-            padding: Spacing[3], 
-            borderWidth: 1, 
-            borderColor: theme.border.primary,
-            borderRadius: BorderRadius.base,
-            backgroundColor: theme.background.secondary 
-          }}>
-            <ThemedText type="body">
-              {disabledOptions.find(o => o.value === selectedDisabled)?.label || 'Click to select'} ▼
-            </ThemedText>
-          </View>
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Menu with Different Alignment</ThemedText>
+      <View style={{ marginTop: 8, flexDirection: 'row', gap: 16 }}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Align Start" size="small" variant="outline" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onSelect={() => console.log('Start 1')}>
+              <ThemedText>Start aligned item 1</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Start 2')}>
+              <ThemedText>Start aligned item 2</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Align End" size="small" variant="outline" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => console.log('End 1')}>
+              <ThemedText>End aligned item 1</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('End 2')}>
+              <ThemedText>End aligned item 2</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </View>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Short List (2 items)</ThemedText>
-      <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={shortOptions}
-          selectedValue=""
-          onValueChange={() => {}}
-          width={200}
-        >
-          <Button 
-            title="Short List"
-            variant="secondary"
-            icon="list.bullet"
-          />
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Menu Positioning</ThemedText>
+      <View style={{ marginTop: 8, flexDirection: 'row', gap: 16 }}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Top Side" size="small" variant="secondary" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="top">
+            <DropdownMenuItem onSelect={() => console.log('Top 1')}>
+              <ThemedText>Top positioned item 1</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Top 2')}>
+              <ThemedText>Top positioned item 2</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
-      </View>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Long List (8 items)</ThemedText>
-      <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={Array.from({ length: 8 }, (_, i) => ({
-            id: String(i + 1),
-            label: `Long Option ${i + 1}`,
-            value: `long${i + 1}`,
-          }))}
-          selectedValue=""
-          onValueChange={() => {}}
-          width={250}
-        >
-          <Button 
-            title="Long List (No Scroll)"
-            variant="ghost"
-            icon="list.bullet"
-          />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button title="Right Side" size="small" variant="secondary" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right">
+            <DropdownMenuItem onSelect={() => console.log('Right 1')}>
+              <ThemedText>Right positioned item 1</ThemedText>
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => console.log('Right 2')}>
+              <ThemedText>Right positioned item 2</ThemedText>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
-      </View>
-
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Disabled Dropdown</ThemedText>
-      <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={options}
-          selectedValue=""
-          onValueChange={() => {}}
-          width={250}
-          disabled
-        >
-          <Button 
-            title="Disabled Dropdown"
-            variant="outline"
-            disabled
-          />
-        </DropdownMenu>
-      </View>
-
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Selected Values</ThemedText>
-      <View style={{ marginTop: 8, gap: 8 }}>
-        <ThemedText type="caption">Button: {selectedOption || 'None'}</ThemedText>
-        <ThemedText type="caption">Card: {selectedIcon || 'None'}</ThemedText>
-        <ThemedText type="caption">Text: {selectedDisabled || 'None'}</ThemedText>
       </View>
     </ThemedView>
   );

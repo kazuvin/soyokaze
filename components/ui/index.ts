@@ -5,7 +5,14 @@
 export { Button } from './button';
 export { Card } from './card';
 export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './dialog';
-export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from './dropdown-menu';
+export { 
+  DropdownMenu, 
+  DropdownMenuTrigger, 
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from './dropdown-menu';
 export { ImagePreview } from './image-preview';
 export { ImageModal } from './image-modal';
 export { List, ListItem, ListItemText, ListItemIcon, ListItemAction, ListLabel } from './list';
