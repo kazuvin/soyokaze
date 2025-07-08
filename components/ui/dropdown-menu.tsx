@@ -188,13 +188,14 @@ export function DropdownMenu({
 
   return (
     <>
-      <Pressable
+      <View
         ref={triggerRef}
-        onPress={handleOpen}
         style={style}
       >
-        {trigger}
-      </Pressable>
+        {React.cloneElement(trigger as React.ReactElement, {
+          onPress: handleOpen,
+        })}
+      </View>
 
       <Modal
         visible={isOpen}
@@ -205,7 +206,6 @@ export function DropdownMenu({
         <Pressable
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
           }}
           onPress={handleClose}
         >
