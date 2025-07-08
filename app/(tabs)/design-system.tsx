@@ -1101,6 +1101,7 @@ function DropdownMenuShowcase() {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
   const [selectedDisabled, setSelectedDisabled] = useState<string>('');
+  const { theme } = useTheme();
 
   const options = [
     { id: '1', label: 'Option 1', value: 'option1' },
@@ -1125,39 +1126,118 @@ function DropdownMenuShowcase() {
     { id: '4', label: 'Also Disabled', value: 'disabled2', disabled: true },
   ];
 
+  const shortOptions = [
+    { id: '1', label: 'Short 1', value: 'short1' },
+    { id: '2', label: 'Short 2', value: 'short2' },
+  ];
+
   return (
     <ThemedView style={styles.componentSection}>
-      <ThemedText type="h6">Basic Dropdown Menu</ThemedText>
+      <ThemedText type="h6">Custom Trigger with Button</ThemedText>
       <View style={{ marginTop: 8 }}>
         <DropdownMenu
           items={options}
           selectedValue={selectedOption}
           onValueChange={setSelectedOption}
-          placeholder="Select an option"
           width={250}
-        />
+        >
+          <Button 
+            title={`Selected: ${options.find(o => o.value === selectedOption)?.label || 'None'}`}
+            variant="outline"
+            icon="chevron.down"
+          />
+        </DropdownMenu>
       </View>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Dropdown with Icons</ThemedText>
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Trigger with Card</ThemedText>
       <View style={{ marginTop: 8 }}>
         <DropdownMenu
           items={iconOptions}
           selectedValue={selectedIcon}
           onValueChange={setSelectedIcon}
-          placeholder="Choose with icon"
           width={250}
-        />
+        >
+          <Card variant="flat" style={{ padding: Spacing[4] }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {iconOptions.find(o => o.value === selectedIcon)?.icon && (
+                  <IconSymbol
+                    name={iconOptions.find(o => o.value === selectedIcon)!.icon!}
+                    size={20}
+                    color={theme.text.primary}
+                    style={{ marginRight: Spacing[3] }}
+                  />
+                )}
+                <ThemedText>
+                  {iconOptions.find(o => o.value === selectedIcon)?.label || 'Choose an option'}
+                </ThemedText>
+              </View>
+              <IconSymbol
+                name="chevron.down"
+                size={16}
+                color={theme.text.secondary}
+              />
+            </View>
+          </Card>
+        </DropdownMenu>
       </View>
 
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Dropdown with Disabled Items</ThemedText>
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Custom Text Trigger</ThemedText>
       <View style={{ marginTop: 8 }}>
         <DropdownMenu
           items={disabledOptions}
           selectedValue={selectedDisabled}
           onValueChange={setSelectedDisabled}
-          placeholder="Some options disabled"
+          width={200}
+        >
+          <View style={{ 
+            padding: Spacing[3], 
+            borderWidth: 1, 
+            borderColor: theme.border.primary,
+            borderRadius: BorderRadius.base,
+            backgroundColor: theme.background.secondary 
+          }}>
+            <ThemedText type="body">
+              {disabledOptions.find(o => o.value === selectedDisabled)?.label || 'Click to select'} ▼
+            </ThemedText>
+          </View>
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Short List (2 items)</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={shortOptions}
+          selectedValue=""
+          onValueChange={() => {}}
+          width={200}
+        >
+          <Button 
+            title="Short List"
+            variant="secondary"
+            icon="list.bullet"
+          />
+        </DropdownMenu>
+      </View>
+
+      <ThemedText type="h6" style={{ marginTop: 16 }}>Long List (8 items)</ThemedText>
+      <View style={{ marginTop: 8 }}>
+        <DropdownMenu
+          items={Array.from({ length: 8 }, (_, i) => ({
+            id: String(i + 1),
+            label: `Long Option ${i + 1}`,
+            value: `long${i + 1}`,
+          }))}
+          selectedValue=""
+          onValueChange={() => {}}
           width={250}
-        />
+        >
+          <Button 
+            title="Long List (No Scroll)"
+            variant="ghost"
+            icon="list.bullet"
+          />
+        </DropdownMenu>
       </View>
 
       <ThemedText type="h6" style={{ marginTop: 16 }}>Disabled Dropdown</ThemedText>
@@ -1166,33 +1246,22 @@ function DropdownMenuShowcase() {
           items={options}
           selectedValue=""
           onValueChange={() => {}}
-          placeholder="This dropdown is disabled"
           width={250}
           disabled
-        />
-      </View>
-
-      <ThemedText type="h6" style={{ marginTop: 16 }}>Long List with Scroll</ThemedText>
-      <View style={{ marginTop: 8 }}>
-        <DropdownMenu
-          items={Array.from({ length: 20 }, (_, i) => ({
-            id: String(i + 1),
-            label: `Option ${i + 1}`,
-            value: `option${i + 1}`,
-          }))}
-          selectedValue=""
-          onValueChange={() => {}}
-          placeholder="Long list example"
-          width={250}
-          maxHeight={200}
-        />
+        >
+          <Button 
+            title="Disabled Dropdown"
+            variant="outline"
+            disabled
+          />
+        </DropdownMenu>
       </View>
 
       <ThemedText type="h6" style={{ marginTop: 16 }}>Selected Values</ThemedText>
       <View style={{ marginTop: 8, gap: 8 }}>
-        <ThemedText type="caption">Basic: {selectedOption || 'None'}</ThemedText>
-        <ThemedText type="caption">With Icon: {selectedIcon || 'None'}</ThemedText>
-        <ThemedText type="caption">Disabled Items: {selectedDisabled || 'None'}</ThemedText>
+        <ThemedText type="caption">Button: {selectedOption || 'None'}</ThemedText>
+        <ThemedText type="caption">Card: {selectedIcon || 'None'}</ThemedText>
+        <ThemedText type="caption">Text: {selectedDisabled || 'None'}</ThemedText>
       </View>
     </ThemedView>
   );

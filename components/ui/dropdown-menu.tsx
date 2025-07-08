@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, TouchableOpacity, Modal, Dimensions, FlatList, type ViewProps } from 'react-native';
+import { View, TouchableOpacity, Modal, Dimensions, type ViewProps } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -18,65 +18,55 @@ export type DropdownMenuProps = ViewProps & {
   items: DropdownMenuItem[];
   selectedValue?: string;
   onValueChange?: (value: string) => void;
-  placeholder?: string;
+  children: React.ReactNode;
   disabled?: boolean;
   width?: number;
-  maxHeight?: number;
 };
 
-export function DropdownMenu({
+export type DropdownMenuTriggerProps = {
+  children: React.ReactNode;
+  onPress?: () => void;
+};
+
+export type DropdownMenuContentProps = ViewProps & {
+  items: DropdownMenuItem[];
+  selectedValue?: string;
+  onValueChange?: (value: string) => void;
+  onClose?: () => void;
+  width?: number;
+  position: { x: number; y: number; width: number };
+  visible: boolean;
+};
+
+export function DropdownMenuTrigger({ children, onPress }: DropdownMenuTriggerProps) {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+      {children}
+    </TouchableOpacity>
+  );
+}
+
+export function DropdownMenuContent({
   items,
   selectedValue,
   onValueChange,
-  placeholder = "Select an option",
-  disabled = false,
+  onClose,
   width,
-  maxHeight = 200,
-  style,
+  position,
+  visible,
   ...rest
-}: DropdownMenuProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0, width: 0 });
-  const triggerRef = useRef<TouchableOpacity>(null);
+}: DropdownMenuContentProps) {
   const { theme } = useTheme();
-
-  const selectedItem = items.find(item => item.value === selectedValue);
-  const screenHeight = Dimensions.get('window').height;
-
-  const handleOpen = () => {
-    if (disabled) return;
-    
-    triggerRef.current?.measure((fx, fy, width, height, px, py) => {
-      const dropdownHeight = Math.min(items.length * 48, maxHeight);
-      const spaceBelow = screenHeight - py - height;
-      const spaceAbove = py;
-      
-      let yPosition = py + height + 4;
-      if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
-        yPosition = py - dropdownHeight - 4;
-      }
-      
-      setDropdownPosition({
-        x: px,
-        y: yPosition,
-        width: width || 200,
-      });
-      setIsOpen(true);
-    });
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
 
   const handleItemPress = (item: DropdownMenuItem) => {
     if (item.disabled) return;
     onValueChange?.(item.value);
-    handleClose();
+    onClose?.();
   };
 
-  const renderItem = ({ item }: { item: DropdownMenuItem }) => (
+  const renderItem = (item: DropdownMenuItem) => (
     <TouchableOpacity
+      key={item.id}
       style={[
         {
           flexDirection: 'row',
@@ -114,87 +104,101 @@ export function DropdownMenu({
   );
 
   return (
-    <View style={[{ position: 'relative' }, style]} {...rest}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       <TouchableOpacity
-        ref={triggerRef}
-        style={[
-          {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: Spacing[4],
-            paddingVertical: Spacing[3],
-            minHeight: 48,
-            backgroundColor: theme.background.secondary,
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        }}
+        activeOpacity={1}
+        onPress={onClose}
+      >
+        <View
+          style={{
+            position: 'absolute',
+            left: position.x,
+            top: position.y,
+            width: position.width,
+            backgroundColor: theme.background.elevated,
             borderRadius: BorderRadius.md,
             borderWidth: 1,
             borderColor: theme.border.primary,
-          },
-          width && { width },
-          disabled && { opacity: 0.6 },
-        ]}
-        onPress={handleOpen}
-        disabled={disabled}
-        activeOpacity={0.7}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-          {selectedItem?.icon && (
-            <IconSymbol
-              name={selectedItem.icon}
-              size={20}
-              color={theme.text.primary}
-              style={{ marginRight: Spacing[3] }}
-            />
-          )}
-          <ThemedText style={{ flex: 1 }}>
-            {selectedItem?.label || placeholder}
-          </ThemedText>
-        </View>
-        <IconSymbol
-          name={isOpen ? "chevron.up" : "chevron.down"}
-          size={16}
-          color={theme.text.secondary}
-        />
-      </TouchableOpacity>
-
-      <Modal
-        visible={isOpen}
-        transparent
-        animationType="fade"
-        onRequestClose={handleClose}
-      >
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            ...Shadow.lg,
           }}
-          activeOpacity={1}
-          onPress={handleClose}
+          {...rest}
         >
-          <View
-            style={{
-              position: 'absolute',
-              left: dropdownPosition.x,
-              top: dropdownPosition.y,
-              width: dropdownPosition.width,
-              maxHeight: maxHeight,
-              backgroundColor: theme.background.elevated,
-              borderRadius: BorderRadius.md,
-              borderWidth: 1,
-              borderColor: theme.border.primary,
-              ...Shadow.lg,
-            }}
-          >
-            <FlatList
-              data={items}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              style={{ maxHeight: maxHeight }}
-              showsVerticalScrollIndicator={false}
-            />
+          {items.map(renderItem)}
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  );
+}
+
+export function DropdownMenu({
+  items,
+  selectedValue,
+  onValueChange,
+  children,
+  disabled = false,
+  width,
+  style,
+  ...rest
+}: DropdownMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0, width: 0 });
+  const triggerRef = useRef<View>(null);
+  const screenHeight = Dimensions.get('window').height;
+
+  const handleOpen = () => {
+    if (disabled) return;
+    
+    triggerRef.current?.measure((fx, fy, width, height, px, py) => {
+      const dropdownHeight = items.length * 48;
+      const spaceBelow = screenHeight - py - height;
+      const spaceAbove = py;
+      
+      let yPosition = py + height + 4;
+      if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+        yPosition = py - dropdownHeight - 4;
+      }
+      
+      setDropdownPosition({
+        x: px,
+        y: yPosition,
+        width: width || 200,
+      });
+      setIsOpen(true);
+    });
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <View style={[{ position: 'relative' }, style]} {...rest}>
+      <View ref={triggerRef}>
+        <DropdownMenuTrigger onPress={handleOpen}>
+          <View style={[disabled && { opacity: 0.6 }]}>
+            {children}
           </View>
-        </TouchableOpacity>
-      </Modal>
+        </DropdownMenuTrigger>
+      </View>
+      
+      <DropdownMenuContent
+        items={items}
+        selectedValue={selectedValue}
+        onValueChange={onValueChange}
+        onClose={handleClose}
+        width={width}
+        position={dropdownPosition}
+        visible={isOpen}
+      />
     </View>
   );
 }
