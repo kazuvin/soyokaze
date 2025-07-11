@@ -1,0 +1,28 @@
+import { z } from "zod";
+
+{{#each schemas}}
+const {{@key}} = z
+{{#if (eq type "object")}}
+  .object({
+{{#each properties}}
+    {{@key}}: {{> zodType this}},
+{{/each}}
+  })
+{{#if required}}
+{{#unless (eq (len required) (len properties))}}
+  .partial()
+{{/unless}}
+{{else}}
+  .partial()
+{{/if}}
+{{else}}
+{{> zodType this}}
+{{/if}}
+  .passthrough();
+{{/each}}
+
+export const schemas = {
+{{#each schemas}}
+  {{@key}},
+{{/each}}
+};

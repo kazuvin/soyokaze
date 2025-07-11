@@ -15,6 +15,13 @@
     "mobile:test:watch": "npm run test:watch --workspace=packages/mobile",
     "mobile:test:ui": "npm run test:ui --workspace=packages/mobile",
     "mobile:reset-project": "npm run reset-project --workspace=packages/mobile",
+    "schemas:start": "npm run start --workspace=packages/schemas",
+    "schemas:dev": "npm run dev --workspace=packages/schemas",
+    "schemas:generate": "npm run generate --workspace=packages/schemas",
+    "schemas:test": "npm run test:schemas --workspace=packages/schemas",
+    "schemas:test:client": "npm run test:client --workspace=packages/schemas",
+    "schemas:build": "npm run build --workspace=packages/schemas",
+    "schemas:clean": "npm run clean --workspace=packages/schemas",
     "lint": "npm run lint --workspace=packages/mobile",
     "test": "npm run test --workspace=packages/mobile",
     "install:all": "npm install"
