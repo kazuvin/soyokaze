@@ -27,8 +27,11 @@ jobs:
     - name: Install dependencies
       run: npm ci --legacy-peer-deps
     
+    - name: Clean mobile package dependencies
+      run: cd packages/mobile && rm -rf node_modules package-lock.json
+    
     - name: Install mobile package dependencies
-      run: cd packages/mobile && npm ci --legacy-peer-deps
+      run: cd packages/mobile && npm install --legacy-peer-deps
     
     - name: Run linting
       run: cd packages/mobile && npm run lint
