@@ -1,0 +1,49 @@
+Error:
+  type: object
+  required:
+    - error
+    - message
+  properties:
+    error:
+      type: string
+      description: Error code
+      example: "USER_NOT_FOUND"
+    message:
+      type: string
+      description: Human-readable error message
+      example: "User with ID 123e4567-e89b-12d3-a456-426614174000 was not found"
+    details:
+      type: object
+      nullable: true
+      description: Additional error details
+      additionalProperties: true
+
+PaginationResponse:
+  type: object
+  properties:
+    total:
+      type: integer
+      description: Total number of items
+    limit:
+      type: integer
+      description: Maximum number of items returned
+    offset:
+      type: integer
+      description: Number of items skipped
+
+UsersListResponse:
+  type: object
+  properties:
+    users:
+      type: array
+      items:
+        $ref: './user.yaml'
+    total:
+      type: integer
+      description: Total number of users
+    limit:
+      type: integer
+      description: Maximum number of users returned
+    offset:
+      type: integer
+      description: Number of users skipped

@@ -12,11 +12,29 @@ const User = z
     is_active: z.boolean().optional(),
   })
   .passthrough();
+const UsersListResponse = z
+  .object({
+    users: z.array(User),
+    total: z.number().int(),
+    limit: z.number().int(),
+    offset: z.number().int(),
+  })
+  .partial()
+  .passthrough();
 const Error = z
   .object({
     error: z.string(),
     message: z.string(),
     details: z.object({}).partial().passthrough().nullish(),
+  })
+  .passthrough();
+const CreateUserRequest = z
+  .object({
+    email: z.string().email(),
+    name: z.string(),
+    avatar_url: z.string().url().nullish(),
+    bio: z.string().nullish(),
+    is_active: z.boolean().optional().default(true),
   })
   .passthrough();
 const UpdateUserRequest = z
@@ -29,19 +47,20 @@ const UpdateUserRequest = z
   })
   .partial()
   .passthrough();
-const CreateUserRequest = z
+const PaginationResponse = z
   .object({
-    email: z.string().email(),
-    name: z.string(),
-    avatar_url: z.string().url().nullish(),
-    bio: z.string().nullish(),
-    is_active: z.boolean().optional().default(true),
+    total: z.number().int(),
+    limit: z.number().int(),
+    offset: z.number().int(),
   })
+  .partial()
   .passthrough();
 
 export const schemas = {
   User,
+  UsersListResponse,
   Error,
-  UpdateUserRequest,
   CreateUserRequest,
+  UpdateUserRequest,
+  PaginationResponse,
 };

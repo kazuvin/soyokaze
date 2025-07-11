@@ -2,7 +2,7 @@ import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
 import { z } from "zod";
 import { schemas } from "../zod";
 
-const { User, Error, UpdateUserRequest, CreateUserRequest } = schemas;
+const { User, UsersListResponse, Error, CreateUserRequest, UpdateUserRequest, PaginationResponse } = schemas;
 
 const endpoints = makeApi([
   {
@@ -23,15 +23,7 @@ const endpoints = makeApi([
         schema: z.number().int().gte(0).optional().default(0),
       },
     ],
-    response: z
-      .object({
-        users: z.array(User),
-        total: z.number().int(),
-        limit: z.number().int(),
-        offset: z.number().int(),
-      })
-      .partial()
-      .passthrough(),
+    response: UsersListResponse,
     errors: [
       {
         status: 500,
@@ -62,7 +54,7 @@ const endpoints = makeApi([
       },
       {
         status: 409,
-        description: `User already exists (email conflict)`,
+        description: `Resource conflict (e.g., email already exists)`,
         schema: Error,
       },
       {
@@ -89,7 +81,7 @@ const endpoints = makeApi([
     errors: [
       {
         status: 404,
-        description: `User not found`,
+        description: `The specified resource was not found`,
         schema: Error,
       },
       {
@@ -126,12 +118,12 @@ const endpoints = makeApi([
       },
       {
         status: 404,
-        description: `User not found`,
+        description: `The specified resource was not found`,
         schema: Error,
       },
       {
         status: 409,
-        description: `Email already exists`,
+        description: `Resource conflict (e.g., email already exists)`,
         schema: Error,
       },
       {
@@ -158,7 +150,7 @@ const endpoints = makeApi([
     errors: [
       {
         status: 404,
-        description: `User not found`,
+        description: `The specified resource was not found`,
         schema: Error,
       },
       {

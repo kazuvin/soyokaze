@@ -23,16 +23,12 @@
     }
   },
   "scripts": {
-    "start": "node server.js",
     "dev": "nodemon server.js",
-    "generate:zod": "mkdir -p generated/zod && openapi-zod-client openapi.yaml -o ./generated/zod/schemas-temp.ts --export-schemas && node scripts/extract-schemas.js",
+    "generate:zod": "mkdir -p generated/zod && openapi-zod-client ./openapi.yaml -o ./generated/zod/schemas-temp.ts --export-schemas && node scripts/extract-schemas.js",
     "generate:client": "mkdir -p generated/client && node scripts/generate-client.js",
     "generate:types": "mkdir -p generated/types && node scripts/generate-types.js",
     "generate": "npm run generate:zod && npm run generate:client && npm run generate:types",
-    "test:schemas": "node test-schemas.js",
-    "test:client": "npm run build && node test-client.js",
-    "build": "tsc",
-    "clean": "rm -rf generated dist"
+    "test:schemas": "node test-schemas.js"
   },
   "dependencies": {
     "express": "^4.18.2",
