@@ -40,3 +40,7 @@ yarn-error.*
 coverage/
 
 app-example
+
+# Workspace and package-lock files
+package-lock.json
+packages/*/package-lock.json
