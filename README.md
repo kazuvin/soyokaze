@@ -1,50 +1,113 @@
-# Welcome to your Expo app 👋
+# Soyokaze
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Cross-platform mobile application built with Expo and React Native, organized as a monorepo with TypeScript support.
 
-## Get started
+## Project Overview
 
-1. Install dependencies
+This is a monorepo containing:
+- **Mobile Application** (`packages/mobile/`) - Cross-platform mobile app using Expo and React Native
+- **API Schemas** (`packages/schemas/`) - OpenAPI specifications and client code generation
+
+## Quick Start
+
+1. Install dependencies for all packages
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Start the mobile development server
 
    ```bash
-   npx expo start
+   npm run mobile:start
    ```
 
-In the output, you'll find options to open the app in a
+3. Run on specific platforms
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run mobile:ios      # iOS Simulator
+   npm run mobile:android  # Android Emulator
+   npm run mobile:web      # Web Browser
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Available Scripts
 
-## Get a fresh project
+### Mobile Development
 
-When you're ready, run:
+- `npm run mobile:start` - Start the development server
+- `npm run mobile:ios` - Run on iOS simulator
+- `npm run mobile:android` - Run on Android emulator
+- `npm run mobile:web` - Run web version
+- `npm run mobile:lint` - Run ESLint
+- `npm run mobile:test` - Run tests
+- `npm run mobile:test:watch` - Run tests in watch mode
+- `npm run mobile:test:ui` - Run tests with UI
+- `npm run mobile:reset-project` - Reset project to blank state
 
-```bash
-npm run reset-project
+### Schema Development
+
+- `npm run schemas:dev` - Start schema development server
+- `npm run schemas:generate` - Generate client code from OpenAPI specs
+- `npm run schemas:test` - Test schema validation
+- `npm run schemas:test:client` - Test generated client code
+
+### Monorepo Commands
+
+- `npm run lint` - Run linting (alias for mobile:lint)
+- `npm run test` - Run tests (alias for mobile:test)
+- `npm install` - Install all dependencies
+
+## Project Structure
+
+```
+soyokaze/
+├── packages/
+│   ├── mobile/          # Mobile application
+│   │   ├── app/         # Expo Router file-based routing
+│   │   ├── components/  # Reusable UI components
+│   │   ├── features/    # Feature-based organization
+│   │   ├── constants/   # Design tokens and themes
+│   │   ├── database/    # SQLite database layer
+│   │   ├── models/      # Zod schema definitions
+│   │   ├── services/    # Data services
+│   │   └── hooks/       # Custom React hooks
+│   └── schemas/         # OpenAPI specifications
+│       ├── components/  # Reusable OpenAPI components
+│       ├── paths/       # API endpoint definitions
+│       ├── generated/   # Auto-generated client code
+│       └── scripts/     # Code generation scripts
+├── CLAUDE.md           # Development guidelines
+└── DESIGN_SYSTEM.md    # Design system documentation
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- **Cross-platform**: iOS, Android, and Web support
+- **Type-safe**: Full TypeScript integration with Zod validation
+- **Design System**: Comprehensive design tokens and themed components
+- **Database**: SQLite with sync-ready architecture
+- **Navigation**: File-based routing with Expo Router
+- **Testing**: Vitest setup with UI testing capabilities
+- **API Integration**: OpenAPI schema-driven development
 
-To learn more about developing your project with Expo, look at the following resources:
+## Tech Stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **Frontend**: React Native, Expo SDK ~53.0.12
+- **Navigation**: Expo Router ~5.1.0
+- **Database**: SQLite with Expo SQLite
+- **Validation**: Zod for runtime type checking
+- **Styling**: Custom design system with light/dark themes
+- **Testing**: Vitest with React Native testing support
+- **Tooling**: TypeScript, ESLint, Metro bundler
 
-## Join the community
+## Development
 
-Join our community of developers creating universal apps.
+The project follows feature-based architecture with strict TypeScript and follows monorepo best practices. See `CLAUDE.md` for detailed development guidelines and architectural decisions.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For API development, schemas are defined in OpenAPI format and client code is automatically generated. See `packages/schemas/README.md` for schema-specific documentation.
+
+## Platform Support
+
+- **iOS**: Native iOS features including SF Symbols and blur effects
+- **Android**: Adaptive icons and edge-to-edge display
+- **Web**: Static site generation with Metro bundler
