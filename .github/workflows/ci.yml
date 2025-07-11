@@ -24,17 +24,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
-    - name: Install dependencies
+    - name: Install monorepo dependencies
       run: npm ci --legacy-peer-deps
     
-    - name: Clean mobile package dependencies
-      run: cd packages/mobile && rm -rf node_modules package-lock.json
-    
-    - name: Install mobile package dependencies
-      run: cd packages/mobile && npm install --legacy-peer-deps
-    
     - name: Run linting
-      run: cd packages/mobile && npm run lint
+      run: npm run lint
     
     - name: Run tests
-      run: cd packages/mobile && npm test
+      run: npm run test
