@@ -41,6 +41,6 @@ coverage/
 
 app-example
 
-# Workspace and package-lock files
+# Workspace management
+# Keep package-lock.json in individual packages but ignore root level lock file
 package-lock.json
-packages/*/package-lock.json
