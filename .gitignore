@@ -40,3 +40,7 @@ yarn-error.*
 coverage/
 
 app-example
+
+# Workspace management
+# Keep package-lock.json in individual packages but ignore root level lock file
+package-lock.json

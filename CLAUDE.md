@@ -4,22 +4,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a cross-platform mobile application built with Expo and React Native, using TypeScript for type safety. The app uses Expo Router for navigation with a tab-based structure and supports both iOS and Android platforms, with web support via Metro bundler.
+This is a monorepo containing a cross-platform mobile application built with Expo and React Native, using TypeScript for type safety. The app uses Expo Router for navigation with a tab-based structure and supports both iOS and Android platforms, with web support via Metro bundler.
+
+### Monorepo Structure
+
+- `/packages/mobile/` - Main mobile application package
+- Root level contains monorepo configuration and shared tooling
 
 ## Development Commands
 
-### Basic Commands
+### Monorepo Commands
+
+- `npm install` - Install dependencies for all packages
+- `npm run mobile:start` - Start the mobile development server
+- `npm run mobile:android` - Start on Android emulator
+- `npm run mobile:ios` - Start on iOS simulator
+- `npm run mobile:web` - Start web version
+- `npm run mobile:lint` - Run ESLint for mobile package
+- `npm run mobile:test` - Run tests for mobile package
+- `npm run mobile:test:watch` - Run tests in watch mode
+- `npm run mobile:test:ui` - Run tests with UI
+- `npm run mobile:reset-project` - Move starter code to app-example and create blank app directory
+- `npm run lint` - Run ESLint (alias for mobile:lint)
+- `npm run test` - Run tests (alias for mobile:test)
+
+### Working in Mobile Package
+
+When working directly in the mobile package (`packages/mobile/`), you can use the original commands:
 
 - `npm install` - Install dependencies
-- `npx expo start` - Start the development server
+- `npm start` - Start the development server
 - `npm run android` - Start on Android emulator
 - `npm run ios` - Start on iOS simulator
 - `npm run web` - Start web version
 - `npm run lint` - Run ESLint
-
-### Project Management
-
-- `npm run reset-project` - Move starter code to app-example and create blank app directory
 
 ### EAS (Expo Application Services) Commands
 
@@ -38,47 +56,47 @@ This is a cross-platform mobile application built with Expo and React Native, us
 
 The app uses Expo Router with file-based routing:
 
-- `/app/_layout.tsx` - Root layout with theme provider and navigation stack
-- `/app/(tabs)/_layout.tsx` - Tab navigation layout
-- `/app/(tabs)/index.tsx` - Home tab screen
-- `/app/(tabs)/explore.tsx` - Explore tab screen
-- `/app/(tabs)/design-system.tsx` - Design system showcase tab
-- `/app/+not-found.tsx` - 404 error screen
+- `/packages/mobile/app/_layout.tsx` - Root layout with theme provider and navigation stack
+- `/packages/mobile/app/(tabs)/_layout.tsx` - Tab navigation layout
+- `/packages/mobile/app/(tabs)/index.tsx` - Home tab screen
+- `/packages/mobile/app/(tabs)/explore.tsx` - Explore tab screen
+- `/packages/mobile/app/(tabs)/design-system.tsx` - Design system showcase tab
+- `/packages/mobile/app/+not-found.tsx` - 404 error screen
 
 ### Component Structure
 
-- `/components/` - Reusable UI components with themed variants
-  - `/components/ui/` - Design system UI components (Button, Card, TextArea, etc.)
-  - `/components/layouts/` - Layout components (Header, etc.)
-- `/constants/` - Design tokens, themes, and configuration
+- `/packages/mobile/components/` - Reusable UI components with themed variants
+  - `/packages/mobile/components/ui/` - Design system UI components (Button, Card, TextArea, etc.)
+  - `/packages/mobile/components/layouts/` - Layout components (Header, etc.)
+- `/packages/mobile/constants/` - Design tokens, themes, and configuration
   - `design-tokens.ts` - Core design system tokens
   - `theme.ts` - Light/dark theme configurations
   - `colors.ts` - Legacy color definitions
   - `styles.ts` - Common style utilities
-- `/hooks/` - Custom React hooks
+- `/packages/mobile/hooks/` - Custom React hooks
   - `use-theme.ts` - Theme and color scheme management
   - `use-color-scheme.ts` - Cross-platform color scheme detection
-- `/assets/` - Static assets (fonts, images, icons)
-- `/features/` - Feature-based code organization
-  - `/features/onboarding/` - User onboarding flow components and hooks
-  - `/features/journal/` - Journal and calendar related components
+- `/packages/mobile/assets/` - Static assets (fonts, images, icons)
+- `/packages/mobile/features/` - Feature-based code organization
+  - `/packages/mobile/features/onboarding/` - User onboarding flow components and hooks
+  - `/packages/mobile/features/journal/` - Journal and calendar related components
 
 ### Data Layer Structure
 
-- `/database/` - SQLite database initialization, schema definitions, and common query functions
-- `/models/` - Zod schema definitions for data validation and type generation
-- `/services/` - Service layer for database operations (CRUD functions)
+- `/packages/mobile/database/` - SQLite database initialization, schema definitions, and common query functions
+- `/packages/mobile/models/` - Zod schema definitions for data validation and type generation
+- `/packages/mobile/services/` - Service layer for database operations (CRUD functions)
 
 ### Feature Organization
 
 The app follows a feature-based architecture pattern:
 
-- **Onboarding Feature** (`/features/onboarding/`)
+- **Onboarding Feature** (`/packages/mobile/features/onboarding/`)
   - Components: `OnboardingWalkthrough` with step-by-step user introduction
   - Hooks: `useOnboarding` for onboarding state management
   - Integration: Automatically triggered for new users on app launch
 
-- **Journal Feature** (`/features/journal/`)
+- **Journal Feature** (`/packages/mobile/features/journal/`)
   - Components: `Calendar` component for date selection and journal entry visualization
   - Functionality: Monthly calendar view, date selection, journal entry markers
   - Integration: Calendar component available for use across the app
@@ -103,7 +121,7 @@ The app follows a feature-based architecture pattern:
 
 #### Feature Development Guidelines
 
-- **Feature Structure**: Organize features under `/features/` directory with clear separation of concerns
+- **Feature Structure**: Organize features under `/packages/mobile/features/` directory with clear separation of concerns
 - **Component Exports**: Each feature should export components through `index.ts` files for clean imports
 - **Reusability**: Design components to be reusable across different parts of the application
 - **Feature Integration**: Features should be easily integrable into existing app screens and flows
@@ -119,7 +137,7 @@ The app follows a feature-based architecture pattern:
 
 #### Design System Integration
 
-- **ALWAYS use design system tokens**: Import spacing, border radius, shadows, and other design tokens from `@/constants/design-tokens`
+- **ALWAYS use design system tokens**: Import spacing, border radius, shadows, and other design tokens from `@/constants/design-tokens` (when working in mobile package)
 - **Avoid hard-coded values**: Use `Spacing[4]`, `BorderRadius.lg`, `Shadow.base` instead of numeric values
 - **Consistent styling**: Use design tokens for all UI components to maintain consistency across the app
 - Example: `paddingHorizontal: Spacing[6]` instead of `paddingHorizontal: 24`
@@ -130,13 +148,13 @@ The app follows a feature-based architecture pattern:
 
 #### Database Development Guidelines
 
-- **Schema-First Design**: Always define Zod schemas in `/models/` before implementing services
+- **Schema-First Design**: Always define Zod schemas in `/packages/mobile/models/` before implementing services
 - **Type Safety**: Use Zod schema inference for TypeScript types - avoid creating separate type files
 - **Function-Based Services**: Use exported functions instead of classes for service implementations
-- **Common Query Functions**: Use shared `executeQuery` and `fetchQuery` functions from `/database/query.ts`
+- **Common Query Functions**: Use shared `executeQuery` and `fetchQuery` functions from `/packages/mobile/database/query.ts`
 - **Error Handling**: Define error types in common query module for consistency
 - **Sync-Ready Architecture**: Include `synced` and `last_modified` fields for future online synchronization
-- **Database Initialization**: Always use the centralized database initialization from `/database/index.ts`
+- **Database Initialization**: Always use the centralized database initialization from `/packages/mobile/database/index.ts`
 
 ## Key Dependencies
 
@@ -190,12 +208,13 @@ The app follows a feature-based architecture pattern:
 
 ## Configuration Files
 
-- `app.json` - Expo configuration with platform-specific settings
-- `eas.json` - EAS build and update profiles configuration (when EAS is set up)
-- `tsconfig.json` - TypeScript configuration with path aliases
-- `eslint.config.js` - ESLint configuration using Expo presets
-- `package.json` - Dependencies and scripts
-- `expo-env.d.ts` - Expo TypeScript environment declarations
+- `package.json` - Root monorepo configuration with workspaces
+- `packages/mobile/app.json` - Expo configuration with platform-specific settings
+- `packages/mobile/eas.json` - EAS build and update profiles configuration (when EAS is set up)
+- `packages/mobile/tsconfig.json` - TypeScript configuration with path aliases
+- `packages/mobile/eslint.config.js` - ESLint configuration using Expo presets
+- `packages/mobile/package.json` - Mobile package dependencies and scripts
+- `packages/mobile/expo-env.d.ts` - Expo TypeScript environment declarations
 
 ## GitHub Workflow
 
