@@ -6,7 +6,11 @@ OpenAPI定義書、Zodスキーマ、型安全なAPIクライアントを自動�
 
 このパッケージには以下が含まれています：
 
-- **OpenAPI 3.0.3 定義書** (`openapi.yaml`)
+- **分離されたOpenAPI 3.0.3 定義書** (`specs/`)
+  - メイン定義: `specs/openapi.yaml`
+  - パス定義: `specs/paths/`
+  - コンポーネント: `specs/components/`
+- **バンドルされた定義書** (`bundled/openapi.yaml`)
 - **Express.js モックサーバー** (`server.js`)
 - **Swagger UI** ドキュメント
 - **自動生成されたZodスキーマ** (`generated/zod/`)
@@ -24,6 +28,9 @@ npm install
 ### 2. スキーマとクライアントの生成
 
 ```bash
+# 分離された定義をバンドル
+npm run bundle:specs
+
 # すべて生成（推奨）
 npm run generate
 
@@ -31,6 +38,9 @@ npm run generate
 npm run generate:zod      # Zodスキーマのみ
 npm run generate:client   # Zodiosクライアントのみ  
 npm run generate:types    # TypeScript型のみ
+
+# OpenAPI定義の検証
+npm run validate
 
 # 生成されたスキーマをテスト
 npm run test:schemas
@@ -53,60 +63,6 @@ npm run dev
 - **API ドキュメント**: http://localhost:3000/api-docs
 - **サーバー情報**: http://localhost:3000/
 - **ヘルスチェック**: http://localhost:3000/health
-
-## API エンドポイント
-
-### ユーザー管理（CRUD対応）
-
-#### GET /users
-ユーザーの一覧を取得します（ページネーション対応）。
-
-**クエリパラメータ:**
-- `limit` (optional): 取得する最大件数 (1-100, デフォルト: 10)
-- `offset` (optional): スキップする件数 (デフォルト: 0)
-
-#### GET /users/{id}
-指定されたIDのユーザーを取得します。
-
-**パラメータ:**
-- `id` (path, required): ユーザーID (UUID形式)
-
-#### POST /users
-新しいユーザーを作成します。
-
-**リクエストボディ:**
-```json
-{
-  "email": "user@example.com",
-  "name": "User Name",
-  "avatar_url": "https://example.com/avatar.jpg",
-  "bio": "User biography",
-  "is_active": true
-}
-```
-
-#### PUT /users/{id}
-既存のユーザーを更新します。
-
-**パラメータ:**
-- `id` (path, required): ユーザーID (UUID形式)
-
-**リクエストボディ:** (すべてオプショナル)
-```json
-{
-  "email": "updated@example.com",
-  "name": "Updated Name",
-  "avatar_url": "https://example.com/new-avatar.jpg",
-  "bio": "Updated biography",
-  "is_active": false
-}
-```
-
-#### DELETE /users/{id}
-指定されたユーザーを削除します。
-
-**パラメータ:**
-- `id` (path, required): ユーザーID (UUID形式)
 
 ## モックデータ
 
