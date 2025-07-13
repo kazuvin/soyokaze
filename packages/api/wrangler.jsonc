@@ -1,13 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "app-template-api",
+  "name": "soyokaze-api",
   "main": "src/index.ts",
   "compatibility_date": "2025-05-29",
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
   "vars": {
-    "PROJECT_ID": "app-template",
+    "PROJECT_ID": "soyokaze",
     "PUBLIC_JWK_CACHE_KEY": "public-jwk-cache"
   },
   "kv_namespaces": [
@@ -20,7 +20,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "prod-app-template",
+      "database_name": "prod-soyokaze",
       "database_id": "07e17ce5-5238-405a-892f-a21600103952",
       "migrations_dir": "migrations"
     }
