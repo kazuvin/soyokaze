@@ -19,6 +19,11 @@
     "schemas:generate": "npm run generate --workspace=packages/schemas",
     "schemas:test": "npm run test:schemas --workspace=packages/schemas",
     "schemas:test:client": "npm run test:client --workspace=packages/schemas",
+    "api:dev": "npm run dev --workspace=packages/api",
+    "api:deploy": "npm run deploy --workspace=packages/api",
+    "api:generate": "npm run generate --workspace=packages/api",
+    "api:local:migration": "npm run local:migration --workspace=packages/api",
+    "api:remote:migration": "npm run remote:migration --workspace=packages/api",
     "lint": "npm run lint --workspace=packages/mobile",
     "test": "npm run test --workspace=packages/mobile",
     "install:all": "npm install"

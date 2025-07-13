@@ -1,0 +1,41 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "app-template-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-05-29",
+  // "compatibility_flags": [
+  //   "nodejs_compat"
+  // ],
+  "vars": {
+    "PROJECT_ID": "app-template",
+    "PUBLIC_JWK_CACHE_KEY": "public-jwk-cache"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "PUBLIC_JWK_CACHE_KV",
+      "id": "ead4b9155e644544af8fae6d699d7820"
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "prod-app-template",
+      "database_id": "07e17ce5-5238-405a-892f-a21600103952",
+      "migrations_dir": "migrations"
+    }
+  ]
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+  // "ai": {
+  //   "binding": "AI"
+  // },
+  // "observability": {
+  //   "enabled": true,
+  //   "head_sampling_rate": 1
+  // }
+}
