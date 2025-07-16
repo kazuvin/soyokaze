@@ -1,16 +1,18 @@
 {
-  "name": "api",
+  "name": "@soyokaze/api",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
     "generate": "drizzle-kit generate",
     "local:migration": "wrangler d1 migrations apply prod-soyokaze --local",
-    "remote:migration": "wrangler d1 migrations apply prod-soyokaze --remote"
+    "remote:migration": "wrangler d1 migrations apply prod-soyokaze --remote",
+    "setup": "chmod +x scripts/setup.sh && ./scripts/setup.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.18.0",
     "@hono/firebase-auth": "^1.4.2",
     "@hono/zod-validator": "^0.4.3",
+    "@soyokaze/schemas": "file:../schemas",
     "@types/uuid": "^10.0.0",
     "drizzle-orm": "^0.41.0",
     "hono": "^4.7.5",

@@ -17,6 +17,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
+    "src/**/*",
     "generated/**/*",
     "server.js",
     "test-schemas.js"
