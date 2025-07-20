@@ -1,53 +1,50 @@
 {
   "name": "@soyokaze/schemas",
   "version": "1.0.0",
-  "description": "OpenAPI schemas and mock server for Soyokaze API",
-  "main": "server.js",
-  "types": "dist/generated/client/index.d.ts",
+  "description": "Shared schemas and types for Soyokaze API",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/generated/client/index.d.ts",
-      "default": "./dist/generated/client/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     },
-    "./client": {
-      "types": "./dist/generated/client/index.d.ts",
-      "default": "./dist/generated/client/index.js"
+    "./db/schema": {
+      "types": "./src/db/schema.ts",
+      "default": "./src/db/schema.ts"
     },
-    "./zod": {
-      "types": "./dist/generated/zod/index.d.ts",
-      "default": "./dist/generated/zod/index.js"
+    "./db/types": {
+      "types": "./src/db/types.ts",
+      "default": "./src/db/types.ts"
     },
-    "./types": {
-      "types": "./dist/generated/types/index.d.ts",
-      "default": "./dist/generated/types/index.js"
+    "./api/validators": {
+      "types": "./src/api/validators.ts",
+      "default": "./src/api/validators.ts"
+    },
+    "./api/types": {
+      "types": "./src/api/types.ts",
+      "default": "./src/api/types.ts"
+    },
+    "./api/errors": {
+      "types": "./src/api/errors.ts",
+      "default": "./src/api/errors.ts"
     }
   },
   "scripts": {
-    "dev": "nodemon server.js",
-    "generate:zod": "mkdir -p generated/zod && openapi-zod-client ./openapi.yaml -o ./generated/zod/schemas-temp.ts --export-schemas && node scripts/extract-schemas.js",
-    "generate:client": "mkdir -p generated/client && node scripts/generate-client.js",
-    "generate:types": "mkdir -p generated/types && node scripts/generate-types.js",
-    "generate": "npm run generate:zod && npm run generate:client && npm run generate:types",
-    "test:schemas": "node test-schemas.js"
+    "build": "tsc"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "swagger-ui-express": "^5.0.0",
-    "yamljs": "^0.3.0",
-    "cors": "^2.8.5"
+    "drizzle-orm": "^0.41.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
-    "openapi-zod-client": "^1.18.3",
-    "typescript": "^5.0.0",
-    "zod": "^3.22.0",
-    "@zodios/core": "^10.9.6"
+    "typescript": "^5.0.0"
   },
   "keywords": [
-    "openapi",
-    "swagger",
-    "mock",
-    "api",
+    "schemas",
+    "types",
+    "zod",
+    "drizzle",
     "soyokaze"
   ],
   "author": "Soyokaze Team",

@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "soyokaze-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-05-29",
+  // "compatibility_flags": [
+  //   "nodejs_compat"
+  // ],
+  "vars": {
+    "PROJECT_ID": "soyokaze",
+    "PUBLIC_JWK_CACHE_KEY": "public-jwk-cache"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "PUBLIC_JWK_CACHE_KV",
+      "id": "ead4b9155e644544af8fae6d699d7820"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "prod-soyokaze",
+      "database_id": "fc31eced-121c-4871-a215-f7d4f32267f4",
+      "migrations_dir": "migrations"
+    }
+  ]
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+  // "ai": {
+  //   "binding": "AI"
+  // },
+  // "observability": {
+  //   "enabled": true,
+  //   "head_sampling_rate": 1
+  // }
+}

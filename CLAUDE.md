@@ -9,6 +9,8 @@ This is a monorepo containing a cross-platform mobile application built with Exp
 ### Monorepo Structure
 
 - `/packages/mobile/` - Main mobile application package
+- `/packages/api/` - Backend API service using Hono and Cloudflare Workers
+- `/packages/schemas/` - OpenAPI schemas and client generation
 - Root level contains monorepo configuration and shared tooling
 
 ## Development Commands
@@ -25,6 +27,11 @@ This is a monorepo containing a cross-platform mobile application built with Exp
 - `npm run mobile:test:watch` - Run tests in watch mode
 - `npm run mobile:test:ui` - Run tests with UI
 - `npm run mobile:reset-project` - Move starter code to app-example and create blank app directory
+- `npm run api:dev` - Start the API development server
+- `npm run api:deploy` - Deploy the API to production
+- `npm run api:generate` - Generate database migrations
+- `npm run api:local:migration` - Apply migrations to local database
+- `npm run api:remote:migration` - Apply migrations to remote database
 - `npm run lint` - Run ESLint (alias for mobile:lint)
 - `npm run test` - Run tests (alias for mobile:test)
 
@@ -38,6 +45,17 @@ When working directly in the mobile package (`packages/mobile/`), you can use th
 - `npm run ios` - Start on iOS simulator
 - `npm run web` - Start web version
 - `npm run lint` - Run ESLint
+
+### Working in API Package
+
+When working directly in the API package (`packages/api/`), you can use the original commands:
+
+- `npm install` - Install dependencies
+- `npm run dev` - Start the development server with Wrangler
+- `npm run deploy` - Deploy to Cloudflare Workers
+- `npm run generate` - Generate database migrations with Drizzle
+- `npm run local:migration` - Apply migrations to local D1 database
+- `npm run remote:migration` - Apply migrations to remote D1 database
 
 ### EAS (Expo Application Services) Commands
 
