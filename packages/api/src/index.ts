@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { cors } from 'hono/cors'
-import { users, posts } from './routes'
+import { users, posts, journals } from './routes'
 import { AppError } from '@soyokaze/schemas/api/errors'
 
 type Bindings = {
@@ -20,6 +20,7 @@ app.get("/", (c) => {
 
 app.route("/users", users);
 app.route("/posts", posts);
+app.route("/journals", journals);
 
 app.onError((err, c) => {
   console.error(err)
