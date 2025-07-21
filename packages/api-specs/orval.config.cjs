@@ -1,6 +1,18 @@
 const { defineConfig } = require('orval');
 
 module.exports = defineConfig({
+  // Zod Schemas
+  'zod': {
+    input: {
+      target: './generated/@typespec/openapi3/openapi.yaml',
+    },
+    output: {
+      mode: 'single',
+      target: './generated/zod/index.ts',
+      client: 'zod',
+    },
+  },
+
   // Native Fetch Client
   'native-fetch': {
     input: {

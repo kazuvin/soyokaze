@@ -9,7 +9,7 @@
     "api-specs:validate": "tsp compile . --no-emit",
     "api-specs:clean": "rimraf generated/",
     "api-specs:docs": "echo 'Swagger UI server not available. Please use external tool to view generated/openapi/openapi.yaml'",
-    "api-specs:generate": "npm run api-specs:compile && node scripts/generate-zod.js && orval --config orval.config.cjs",
+    "api-specs:generate": "npm run api-specs:compile && orval --config orval.config.cjs",
     "api-specs:generate-clients": "npm run api-specs:compile && orval --config orval.config.cjs"
   },
   "dependencies": {

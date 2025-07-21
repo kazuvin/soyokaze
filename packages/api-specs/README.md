@@ -158,8 +158,6 @@ packages/api-specs/
 │       ├── user-api.tsp
 │       ├── product-api.tsp
 │       └── order-api.tsp
-├── scripts/
-│   └── generate-zod.js    # Zodスキーマ生成スクリプト
 ├── generated/             # 自動生成されたファイル
 │   ├── @typespec/
 │   │   └── openapi3/
@@ -179,9 +177,14 @@ packages/api-specs/
 ## 開発ワークフロー
 
 1. `specs/` ディレクトリでTypeSpecファイルを編集
-2. `npm run api-specs:generate` で全てのスキーマとクライアントを生成
+2. `npm run api-specs:generate` で全ての成果物を一括生成
+   - TypeSpecコンパイル → OpenAPI仕様
+   - orvalによるZodスキーマ生成
+   - orvalによるAPIクライアント生成（Native Fetch & TanStack Query）
 3. 他パッケージで生成されたスキーマとAPIクライアントを利用
 4. 必要に応じて型定義、バリデーションスキーマ、APIクライアントを更新
+
+**すべてorval統合**: TypeSpecからOpenAPIを経て、Zod、APIクライアント全てを一つのツールチェーンで生成
 
 ## 互換性
 
