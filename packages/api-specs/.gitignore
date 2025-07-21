@@ -1,6 +1,5 @@
 node_modules/
 generated/
-!generated/clients/.gitkeep
 .tsp-cache/
 *.log
 .env

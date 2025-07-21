@@ -33,7 +33,8 @@
   "exports": {
     "./generated/openapi/*": "./generated/openapi/*",
     "./generated/json-schema/*": "./generated/json-schema/*",
-    "./generated/zod/*": "./generated/zod/*",
-    "./generated/clients/*": "./generated/clients/*"
+    "./generated/zod": "./generated/zod.ts",
+    "./generated/fetch": "./generated/fetch.ts",
+    "./generated/tanstack-query": "./generated/tanstack-query.ts"
   }
 }

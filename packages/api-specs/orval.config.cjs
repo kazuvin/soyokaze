@@ -1,45 +1,45 @@
-const { defineConfig } = require('orval');
+const { defineConfig } = require("orval");
 
 module.exports = defineConfig({
   // Zod Schemas
-  'zod': {
+  zod: {
     input: {
-      target: './generated/@typespec/openapi3/openapi.yaml',
+      target: "./generated/@typespec/openapi3/openapi.yaml",
     },
     output: {
-      mode: 'single',
-      target: './generated/zod/index.ts',
-      client: 'zod',
+      mode: "single",
+      target: "./generated/zod.ts",
+      client: "zod",
     },
   },
 
   // Native Fetch Client
-  'native-fetch': {
+  "native-fetch": {
     input: {
-      target: './generated/@typespec/openapi3/openapi.yaml',
+      target: "./generated/@typespec/openapi3/openapi.yaml",
     },
     output: {
-      mode: 'single',
-      target: './generated/clients/native-fetch.ts',
-      client: 'fetch',
+      mode: "single",
+      target: "./generated/fetch.ts",
+      client: "fetch",
       override: {
         mutator: {
-          path: './src/mutator/custom-fetch.ts',
-          name: 'customFetch',
+          path: "./src/mutator/custom-fetch.ts",
+          name: "customFetch",
         },
       },
     },
   },
 
   // TanStack Query Client
-  'tanstack-query': {
+  "tanstack-query": {
     input: {
-      target: './generated/@typespec/openapi3/openapi.yaml',
+      target: "./generated/@typespec/openapi3/openapi.yaml",
     },
     output: {
-      mode: 'single',
-      target: './generated/clients/tanstack-query.ts',
-      client: 'react-query',
+      mode: "single",
+      target: "./generated/tanstack-query.ts",
+      client: "react-query",
       override: {
         query: {
           useQuery: true,
@@ -51,5 +51,5 @@ module.exports = defineConfig({
       },
     },
   },
-
 });
+

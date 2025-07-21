@@ -10,9 +10,9 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 
 - **OpenAPI 3.0仕様**: `generated/@typespec/openapi3/openapi.yaml`
 - **JSON Schema**: `generated/json-schema/`
-- **Zodスキーマと型定義**: `generated/zod/index.ts`（z.inferで型も含む）
-- **ネイティブFetchクライアント**: `generated/clients/native-fetch.ts`
-- **TanStack Queryクライアント**: `generated/clients/tanstack-query.ts`
+- **Zodスキーマと型定義**: `generated/zod.ts`（z.inferで型も含む）
+- **ネイティブFetchクライアント**: `generated/fetch.ts`
+- **TanStack Queryクライアント**: `generated/tanstack-query.ts`
 
 ## 使用方法
 
@@ -51,27 +51,30 @@ npm run validate:schemas
 ```typescript
 // Zodスキーマの利用
 import { 
-  CommonErrorResponseSchema,
-  ModelsOrderAddressSchema 
+  createUserBody,
+  getUserResponse 
 } from '@soyokaze/api-specs/generated/zod';
 
 // バリデーション
-const result = CommonErrorResponseSchema.safeParse(data);
+const result = createUserBody.safeParse(data);
 ```
 
 ### packages/api での利用
 
 ```typescript
-// 型定義の利用  
-import type { 
-  CommonErrorResponse,
-  ModelsOrderAddress
+// 型定義の利用（z.inferから）
+import { 
+  createUserBody,
+  getUserResponse
 } from '@soyokaze/api-specs/generated/zod';
+import type { z } from 'zod';
 
 // API レスポンス型
-const response: CommonErrorResponse = {
-  code: "USER_NOT_FOUND",
-  message: "指定されたユーザーが見つかりません"
+type UserResponse = z.infer<typeof getUserResponse>;
+const response: UserResponse = {
+  id: "user123",
+  createdAt: "2024-01-01T00:00:00Z",
+  updatedAt: "2024-01-01T00:00:00Z"
 };
 ```
 
@@ -85,10 +88,7 @@ import {
   listUsers, 
   createUser, 
   getUser 
-} from '@soyokaze/api-specs/generated/clients/native-fetch';
-
-// または統合エクスポートから
-import { NativeFetch } from '@soyokaze/api-specs/generated/clients';
+} from '@soyokaze/api-specs/generated/fetch';
 
 // ユーザー一覧取得
 const users = await listUsers({ page: 1, limit: 20 });
@@ -111,10 +111,7 @@ import {
   useListUsers, 
   useCreateUser, 
   useGetUser 
-} from '@soyokaze/api-specs/generated/clients/tanstack-query';
-
-// または統合エクスポートから
-import { TanStackQuery } from '@soyokaze/api-specs/generated/clients';
+} from '@soyokaze/api-specs/generated/tanstack-query';
 
 function UserList() {
   // ユーザー一覧取得
@@ -162,11 +159,9 @@ packages/api-specs/
 │   ├── @typespec/
 │   │   └── openapi3/
 │   ├── json-schema/
-│   ├── zod/               # Zodスキーマと型定義（統合）
-│   └── clients/           # APIクライアント
-│       ├── index.ts       # 統合エクスポート
-│       ├── native-fetch.ts# ネイティブFetchクライアント
-│       └── tanstack-query.ts# TanStack Queryフック
+│   ├── zod.ts             # Zodスキーマと型定義（統合）
+│   ├── fetch.ts           # ネイティブFetchクライアント
+│   └── tanstack-query.ts  # TanStack Queryフック
 ├── src/
 │   └── mutator/
 │       └── custom-fetch.ts # カスタムFetch関数（Native Fetch用）
