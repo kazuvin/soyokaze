@@ -9,7 +9,8 @@
     "api-specs:validate": "tsp compile . --no-emit",
     "api-specs:clean": "rimraf generated/",
     "api-specs:docs": "echo 'Swagger UI server not available. Please use external tool to view generated/openapi/openapi.yaml'",
-    "api-specs:generate": "npm run api-specs:compile && node scripts/generate-zod.js"
+    "api-specs:generate": "npm run api-specs:compile && orval --config orval.config.cjs",
+    "api-specs:generate-clients": "npm run api-specs:compile && orval --config orval.config.cjs"
   },
   "dependencies": {
     "@typespec/compiler": "^0.62.0",
@@ -24,11 +25,16 @@
     "rimraf": "^6.0.1",
     "typescript": "^5.0.0",
     "js-yaml": "^4.1.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.0",
+    "orval": "^7.3.0",
+    "@tanstack/react-query": "^5.0.0",
+    "axios": "^1.6.0"
   },
   "exports": {
     "./generated/openapi/*": "./generated/openapi/*",
     "./generated/json-schema/*": "./generated/json-schema/*",
-    "./generated/zod/*": "./generated/zod/*"
+    "./generated/zod": "./generated/zod.ts",
+    "./generated/fetch": "./generated/fetch.ts",
+    "./generated/tanstack-query": "./generated/tanstack-query.ts"
   }
 }

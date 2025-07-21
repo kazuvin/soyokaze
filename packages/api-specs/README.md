@@ -10,14 +10,16 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 
 - **OpenAPI 3.0仕様**: `generated/@typespec/openapi3/openapi.yaml`
 - **JSON Schema**: `generated/json-schema/`
-- **Zodスキーマと型定義**: `generated/zod/index.ts`（z.inferで型も含む）
+- **Zodスキーマと型定義**: `generated/zod.ts`（z.inferで型も含む）
+- **ネイティブFetchクライアント**: `generated/fetch.ts`
+- **TanStack Queryクライアント**: `generated/tanstack-query.ts`
 
 ## 使用方法
 
 ### スキーマのコンパイルと生成
 
 ```bash
-# TypeSpecコンパイルとZodスキーマ生成
+# 全て生成（TypeSpec + Zod + APIクライアント）
 npm run api-specs:generate
 
 # TypeSpecのみコンパイル
@@ -28,6 +30,9 @@ npm run api-specs:watch
 
 # バリデーションのみ
 npm run api-specs:validate
+
+# APIクライアントのみ生成（Native Fetch + TanStack Query）
+npm run api-specs:generate-clients
 ```
 
 ### モノリポからの実行
@@ -46,28 +51,92 @@ npm run validate:schemas
 ```typescript
 // Zodスキーマの利用
 import { 
-  CommonErrorResponseSchema,
-  ModelsOrderAddressSchema 
+  createUserBody,
+  getUserResponse 
 } from '@soyokaze/api-specs/generated/zod';
 
 // バリデーション
-const result = CommonErrorResponseSchema.safeParse(data);
+const result = createUserBody.safeParse(data);
 ```
 
 ### packages/api での利用
 
 ```typescript
-// 型定義の利用  
-import type { 
-  CommonErrorResponse,
-  ModelsOrderAddress
+// 型定義の利用（z.inferから）
+import { 
+  createUserBody,
+  getUserResponse
 } from '@soyokaze/api-specs/generated/zod';
+import type { z } from 'zod';
 
 // API レスポンス型
-const response: CommonErrorResponse = {
-  code: "USER_NOT_FOUND",
-  message: "指定されたユーザーが見つかりません"
+type UserResponse = z.infer<typeof getUserResponse>;
+const response: UserResponse = {
+  id: "user123",
+  createdAt: "2024-01-01T00:00:00Z",
+  updatedAt: "2024-01-01T00:00:00Z"
 };
+```
+
+### APIクライアントの利用
+
+#### Native Fetch クライアント
+
+```typescript
+// Native Fetch クライアント
+import { 
+  listUsers, 
+  createUser, 
+  getUser 
+} from '@soyokaze/api-specs/generated/fetch';
+
+// ユーザー一覧取得
+const users = await listUsers({ page: 1, limit: 20 });
+
+// ユーザー作成
+const newUser = await createUser({
+  name: "田中太郎",
+  email: "tanaka@example.com"
+});
+
+// 単一ユーザー取得
+const user = await getUser("user123");
+```
+
+#### TanStack Query カスタムフック
+
+```typescript
+// React Query カスタムフック
+import { 
+  useListUsers, 
+  useCreateUser, 
+  useGetUser 
+} from '@soyokaze/api-specs/generated/tanstack-query';
+
+function UserList() {
+  // ユーザー一覧取得
+  const { data: users, isLoading } = useListUsers({ 
+    page: 1, 
+    limit: 20 
+  });
+
+  // ユーザー作成ミューテーション
+  const createUserMutation = useCreateUser();
+
+  const handleCreateUser = () => {
+    createUserMutation.mutate({
+      data: {
+        name: "田中太郎",
+        email: "tanaka@example.com"
+      }
+    });
+  };
+
+  // 単一ユーザー取得
+  const { data: user } = useGetUser("user123");
+
+  // ... コンポーントロジック
+}
 ```
 
 ## ファイル構造
@@ -86,22 +155,31 @@ packages/api-specs/
 │       ├── user-api.tsp
 │       ├── product-api.tsp
 │       └── order-api.tsp
-├── scripts/
-│   └── generate-zod.js    # Zodスキーマ生成スクリプト
 ├── generated/             # 自動生成されたファイル
 │   ├── @typespec/
 │   │   └── openapi3/
 │   ├── json-schema/
-│   └── zod/               # Zodスキーマと型定義（統合）
+│   ├── zod.ts             # Zodスキーマと型定義（統合）
+│   ├── fetch.ts           # ネイティブFetchクライアント
+│   └── tanstack-query.ts  # TanStack Queryフック
+├── src/
+│   └── mutator/
+│       └── custom-fetch.ts # カスタムFetch関数（Native Fetch用）
+├── orval.config.cjs       # Orval設定ファイル（CommonJS）
 └── tspconfig.yaml         # TypeSpecコンパイラ設定
 ```
 
 ## 開発ワークフロー
 
 1. `specs/` ディレクトリでTypeSpecファイルを編集
-2. `npm run api-specs:generate` でスキーマ生成
-3. 他パッケージで生成されたスキーマを利用
-4. 必要に応じて型定義やバリデーションスキーマを更新
+2. `npm run api-specs:generate` で全ての成果物を一括生成
+   - TypeSpecコンパイル → OpenAPI仕様
+   - orvalによるZodスキーマ生成
+   - orvalによるAPIクライアント生成（Native Fetch & TanStack Query）
+3. 他パッケージで生成されたスキーマとAPIクライアントを利用
+4. 必要に応じて型定義、バリデーションスキーマ、APIクライアントを更新
+
+**すべてorval統合**: TypeSpecからOpenAPIを経て、Zod、APIクライアント全てを一つのツールチェーンで生成
 
 ## 互換性
 
