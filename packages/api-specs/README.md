@@ -19,7 +19,7 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 ### スキーマのコンパイルと生成
 
 ```bash
-# TypeSpecコンパイルとZodスキーマ生成
+# 全て生成（TypeSpec + Zod + APIクライアント）
 npm run api-specs:generate
 
 # TypeSpecのみコンパイル
@@ -31,7 +31,7 @@ npm run api-specs:watch
 # バリデーションのみ
 npm run api-specs:validate
 
-# APIクライアント生成（Native Fetch + TanStack Query）
+# APIクライアントのみ生成（Native Fetch + TanStack Query）
 npm run api-specs:generate-clients
 ```
 
@@ -172,9 +172,9 @@ packages/api-specs/
 ## 開発ワークフロー
 
 1. `specs/` ディレクトリでTypeSpecファイルを編集
-2. `npm run api-specs:generate` でスキーマ生成
-3. 他パッケージで生成されたスキーマを利用
-4. 必要に応じて型定義やバリデーションスキーマを更新
+2. `npm run api-specs:generate` で全てのスキーマとクライアントを生成
+3. 他パッケージで生成されたスキーマとAPIクライアントを利用
+4. 必要に応じて型定義、バリデーションスキーマ、APIクライアントを更新
 
 ## 互換性
 
