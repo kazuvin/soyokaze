@@ -1,37 +1,17 @@
-import type { RequestConfig } from '../types';
-
+// Orval mutator function for custom fetch
 export const customFetch = <T>(
-  config: RequestConfig,
+  url: string,
+  config: RequestInit = {},
 ): Promise<T> => {
-  const { url, params, ...otherConfig } = config;
-  
-  // URLSearchParamsを使ってクエリパラメータを構築
-  const searchParams = new URLSearchParams();
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, String(value));
-      }
-    });
-  }
-
-  const fullUrl = searchParams.toString() 
-    ? `${url}?${searchParams.toString()}`
-    : url;
-
   const requestConfig: RequestInit = {
-    ...otherConfig,
+    ...config,
     headers: {
       'Content-Type': 'application/json',
-      ...otherConfig.headers,
+      ...config.headers,
     },
   };
 
-  if (otherConfig.data) {
-    requestConfig.body = JSON.stringify(otherConfig.data);
-  }
-
-  return fetch(fullUrl, requestConfig)
+  return fetch(url, requestConfig)
     .then(async (response) => {
       if (!response.ok) {
         const errorText = await response.text();

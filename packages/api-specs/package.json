@@ -27,7 +27,8 @@
     "js-yaml": "^4.1.0",
     "zod": "^3.22.0",
     "orval": "^7.3.0",
-    "@tanstack/react-query": "^5.0.0"
+    "@tanstack/react-query": "^5.0.0",
+    "axios": "^1.6.0"
   },
   "exports": {
     "./generated/openapi/*": "./generated/openapi/*",

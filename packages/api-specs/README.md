@@ -97,7 +97,7 @@ const newUser = await createUser({
 });
 
 // 単一ユーザー取得
-const user = await getUser({ id: "user123" });
+const user = await getUser("user123");
 ```
 
 #### TanStack Query カスタムフック
@@ -122,13 +122,15 @@ function UserList() {
 
   const handleCreateUser = () => {
     createUserMutation.mutate({
-      name: "田中太郎",
-      email: "tanaka@example.com"
+      data: {
+        name: "田中太郎",
+        email: "tanaka@example.com"
+      }
     });
   };
 
   // 単一ユーザー取得
-  const { data: user } = useGetUser({ id: "user123" });
+  const { data: user } = useGetUser("user123");
 
   // ... コンポーントロジック
 }
@@ -161,10 +163,8 @@ packages/api-specs/
 │       ├── native-fetch/  # ネイティブFetchクライアント
 │       └── tanstack-query/# TanStack Queryフック
 ├── src/
-│   ├── mutator/
-│   │   └── custom-fetch.ts # カスタムFetch関数
-│   └── types/
-│       └── index.ts       # 型定義
+│   └── mutator/
+│       └── custom-fetch.ts # カスタムFetch関数（Native Fetch用）
 ├── orval.config.cjs       # Orval設定ファイル
 └── tspconfig.yaml         # TypeSpecコンパイラ設定
 ```
