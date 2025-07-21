@@ -7,8 +7,8 @@ module.exports = defineConfig({
       target: './generated/@typespec/openapi3/openapi.yaml',
     },
     output: {
-      mode: 'split',
-      target: './generated/clients/native-fetch',
+      mode: 'single',
+      target: './generated/clients/native-fetch.ts',
       client: 'fetch',
       override: {
         mutator: {
@@ -19,14 +19,14 @@ module.exports = defineConfig({
     },
   },
 
-  // TanStack Query Client (without custom mutator for now)
+  // TanStack Query Client
   'tanstack-query': {
     input: {
       target: './generated/@typespec/openapi3/openapi.yaml',
     },
     output: {
-      mode: 'split',
-      target: './generated/clients/tanstack-query',
+      mode: 'single',
+      target: './generated/clients/tanstack-query.ts',
       client: 'react-query',
       override: {
         query: {
@@ -39,4 +39,5 @@ module.exports = defineConfig({
       },
     },
   },
+
 });

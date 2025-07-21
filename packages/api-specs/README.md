@@ -11,8 +11,8 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 - **OpenAPI 3.0仕様**: `generated/@typespec/openapi3/openapi.yaml`
 - **JSON Schema**: `generated/json-schema/`
 - **Zodスキーマと型定義**: `generated/zod/index.ts`（z.inferで型も含む）
-- **ネイティブFetchクライアント**: `generated/clients/native-fetch/`
-- **TanStack Queryクライアント**: `generated/clients/tanstack-query/`
+- **ネイティブFetchクライアント**: `generated/clients/native-fetch.ts`
+- **TanStack Queryクライアント**: `generated/clients/tanstack-query.ts`
 
 ## 使用方法
 
@@ -85,7 +85,10 @@ import {
   listUsers, 
   createUser, 
   getUser 
-} from '@soyokaze/api-specs/generated/clients/native-fetch/soyokazeAPI';
+} from '@soyokaze/api-specs/generated/clients/native-fetch';
+
+// または統合エクスポートから
+import { NativeFetch } from '@soyokaze/api-specs/generated/clients';
 
 // ユーザー一覧取得
 const users = await listUsers({ page: 1, limit: 20 });
@@ -108,7 +111,10 @@ import {
   useListUsers, 
   useCreateUser, 
   useGetUser 
-} from '@soyokaze/api-specs/generated/clients/tanstack-query/soyokazeAPI';
+} from '@soyokaze/api-specs/generated/clients/tanstack-query';
+
+// または統合エクスポートから
+import { TanStackQuery } from '@soyokaze/api-specs/generated/clients';
 
 function UserList() {
   // ユーザー一覧取得
@@ -160,8 +166,9 @@ packages/api-specs/
 │   ├── json-schema/
 │   ├── zod/               # Zodスキーマと型定義（統合）
 │   └── clients/           # APIクライアント
-│       ├── native-fetch/  # ネイティブFetchクライアント
-│       └── tanstack-query/# TanStack Queryフック
+│       ├── index.ts       # 統合エクスポート
+│       ├── native-fetch.ts# ネイティブFetchクライアント
+│       └── tanstack-query.ts# TanStack Queryフック
 ├── src/
 │   └── mutator/
 │       └── custom-fetch.ts # カスタムFetch関数（Native Fetch用）
