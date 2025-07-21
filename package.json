@@ -24,6 +24,12 @@
     "api:generate": "npm run generate --workspace=packages/api",
     "api:local:migration": "npm run local:migration --workspace=packages/api",
     "api:remote:migration": "npm run remote:migration --workspace=packages/api",
+    "api-specs:compile": "npm run api-specs:compile --workspace=packages/api-specs",
+    "api-specs:watch": "npm run api-specs:watch --workspace=packages/api-specs",
+    "api-specs:validate": "npm run api-specs:validate --workspace=packages/api-specs",
+    "api-specs:clean": "npm run api-specs:clean --workspace=packages/api-specs",
+    "api-specs:docs": "npm run api-specs:docs --workspace=packages/api-specs",
+    "api-specs:generate": "npm run api-specs:generate --workspace=packages/api-specs",
     "lint": "npm run lint --workspace=packages/mobile",
     "test": "npm run test --workspace=packages/mobile",
     "install:all": "npm install"
