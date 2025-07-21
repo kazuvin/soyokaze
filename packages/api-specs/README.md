@@ -165,7 +165,7 @@ packages/api-specs/
 ├── src/
 │   └── mutator/
 │       └── custom-fetch.ts # カスタムFetch関数（Native Fetch用）
-├── orval.config.cjs       # Orval設定ファイル
+├── orval.config.cjs       # Orval設定ファイル（CommonJS）
 └── tspconfig.yaml         # TypeSpecコンパイラ設定
 ```
 
