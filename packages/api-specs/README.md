@@ -11,6 +11,8 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 - **OpenAPI 3.0仕様**: `generated/@typespec/openapi3/openapi.yaml`
 - **JSON Schema**: `generated/json-schema/`
 - **Zodスキーマと型定義**: `generated/zod/index.ts`（z.inferで型も含む）
+- **ネイティブFetchクライアント**: `generated/clients/native-fetch/`
+- **TanStack Queryクライアント**: `generated/clients/tanstack-query/`
 
 ## 使用方法
 
@@ -28,6 +30,9 @@ npm run api-specs:watch
 
 # バリデーションのみ
 npm run api-specs:validate
+
+# APIクライアント生成（Native Fetch + TanStack Query）
+npm run api-specs:generate-clients
 ```
 
 ### モノリポからの実行
@@ -70,6 +75,65 @@ const response: CommonErrorResponse = {
 };
 ```
 
+### APIクライアントの利用
+
+#### Native Fetch クライアント
+
+```typescript
+// Native Fetch クライアント
+import { 
+  listUsers, 
+  createUser, 
+  getUser 
+} from '@soyokaze/api-specs/generated/clients/native-fetch/soyokazeAPI';
+
+// ユーザー一覧取得
+const users = await listUsers({ page: 1, limit: 20 });
+
+// ユーザー作成
+const newUser = await createUser({
+  name: "田中太郎",
+  email: "tanaka@example.com"
+});
+
+// 単一ユーザー取得
+const user = await getUser({ id: "user123" });
+```
+
+#### TanStack Query カスタムフック
+
+```typescript
+// React Query カスタムフック
+import { 
+  useListUsers, 
+  useCreateUser, 
+  useGetUser 
+} from '@soyokaze/api-specs/generated/clients/tanstack-query/soyokazeAPI';
+
+function UserList() {
+  // ユーザー一覧取得
+  const { data: users, isLoading } = useListUsers({ 
+    page: 1, 
+    limit: 20 
+  });
+
+  // ユーザー作成ミューテーション
+  const createUserMutation = useCreateUser();
+
+  const handleCreateUser = () => {
+    createUserMutation.mutate({
+      name: "田中太郎",
+      email: "tanaka@example.com"
+    });
+  };
+
+  // 単一ユーザー取得
+  const { data: user } = useGetUser({ id: "user123" });
+
+  // ... コンポーントロジック
+}
+```
+
 ## ファイル構造
 
 ```
@@ -92,7 +156,16 @@ packages/api-specs/
 │   ├── @typespec/
 │   │   └── openapi3/
 │   ├── json-schema/
-│   └── zod/               # Zodスキーマと型定義（統合）
+│   ├── zod/               # Zodスキーマと型定義（統合）
+│   └── clients/           # APIクライアント
+│       ├── native-fetch/  # ネイティブFetchクライアント
+│       └── tanstack-query/# TanStack Queryフック
+├── src/
+│   ├── mutator/
+│   │   └── custom-fetch.ts # カスタムFetch関数
+│   └── types/
+│       └── index.ts       # 型定義
+├── orval.config.cjs       # Orval設定ファイル
 └── tspconfig.yaml         # TypeSpecコンパイラ設定
 ```
 
