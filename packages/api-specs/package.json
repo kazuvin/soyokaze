@@ -9,13 +9,13 @@
     "api-specs:validate": "tsp compile . --no-emit",
     "api-specs:clean": "rimraf generated/",
     "api-specs:docs": "echo 'Swagger UI server not available. Please use external tool to view generated/openapi/openapi.yaml'",
-    "api-specs:generate": "npm run api-specs:compile && node scripts/generate-zod.js",
-    "postinstall": "npm run api-specs:generate"
+    "api-specs:generate": "npm run api-specs:compile && node scripts/generate-zod.js"
   },
   "dependencies": {
     "@typespec/compiler": "^0.62.0",
     "@typespec/http": "^0.62.0",
     "@typespec/rest": "^0.62.0",
+    "@typespec/openapi": "^0.62.0",
     "@typespec/openapi3": "^0.62.0",
     "@typespec/json-schema": "^0.62.0"
   },
