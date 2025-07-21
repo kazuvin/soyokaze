@@ -1,0 +1,34 @@
+{
+  "name": "@soyokaze/api-specs",
+  "version": "0.1.0",
+  "description": "TypeSpec definitions and schema generation for Soyokaze API",
+  "type": "module",
+  "scripts": {
+    "api-specs:compile": "tsp compile .",
+    "api-specs:watch": "tsp compile . --watch",
+    "api-specs:validate": "tsp compile . --no-emit",
+    "api-specs:clean": "rimraf generated/",
+    "api-specs:docs": "echo 'Swagger UI server not available. Please use external tool to view generated/openapi/openapi.yaml'",
+    "api-specs:generate": "npm run api-specs:compile && node scripts/generate-zod.js"
+  },
+  "dependencies": {
+    "@typespec/compiler": "^0.62.0",
+    "@typespec/http": "^0.62.0",
+    "@typespec/rest": "^0.62.0",
+    "@typespec/openapi": "^0.62.0",
+    "@typespec/openapi3": "^0.62.0",
+    "@typespec/json-schema": "^0.62.0"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.0.0",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.22.0"
+  },
+  "exports": {
+    "./generated/openapi/*": "./generated/openapi/*",
+    "./generated/json-schema/*": "./generated/json-schema/*",
+    "./generated/zod/*": "./generated/zod/*"
+  }
+}
