@@ -1,52 +1,18 @@
 {
-  "name": "@soyokaze/schemas",
-  "version": "1.0.0",
-  "description": "Shared schemas and types for Soyokaze API",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./db/schema": {
-      "types": "./src/db/schema.ts",
-      "default": "./src/db/schema.ts"
-    },
-    "./db/types": {
-      "types": "./src/db/types.ts",
-      "default": "./src/db/types.ts"
-    },
-    "./api/validators": {
-      "types": "./src/api/validators.ts",
-      "default": "./src/api/validators.ts"
-    },
-    "./api/types": {
-      "types": "./src/api/types.ts",
-      "default": "./src/api/types.ts"
-    },
-    "./api/errors": {
-      "types": "./src/api/errors.ts",
-      "default": "./src/api/errors.ts"
-    }
-  },
-  "scripts": {
-    "build": "tsc"
-  },
-  "dependencies": {
-    "drizzle-orm": "^0.41.0",
-    "zod": "^3.22.0"
+  "name": "schemas",
+  "version": "0.1.0",
+  "type": "module",
+  "peerDependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/rest": "latest",
+    "@typespec/openapi3": "latest"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/rest": "latest",
+    "@typespec/openapi3": "latest"
   },
-  "keywords": [
-    "schemas",
-    "types",
-    "zod",
-    "drizzle",
-    "soyokaze"
-  ],
-  "author": "Soyokaze Team",
-  "license": "MIT"
+  "private": true
 }
