@@ -20,28 +20,28 @@ TypeSpec定義による中央管理されたAPI仕様とスキーマ生成シス
 
 ```bash
 # 全て生成（TypeSpec + Zod + APIクライアント）
-npm run api-specs:generate
+pnpm run api-specs:generate
 
 # TypeSpecのみコンパイル
-npm run api-specs:compile
+pnpm run api-specs:compile
 
 # 監視モード
-npm run api-specs:watch
+pnpm run api-specs:watch
 
 # バリデーションのみ
-npm run api-specs:validate
+pnpm run api-specs:validate
 
 # APIクライアントのみ生成（Native Fetch + TanStack Query）
-npm run api-specs:generate-clients
+pnpm run api-specs:generate-clients
 ```
 
 ### モノリポからの実行
 
 ```bash
 # ルートから実行
-npm run compile:schemas
-npm run watch:schemas
-npm run validate:schemas
+pnpm run compile:schemas
+pnpm run watch:schemas
+pnpm run validate:schemas
 ```
 
 ## 他パッケージでの利用
@@ -172,7 +172,7 @@ packages/api-specs/
 ## 開発ワークフロー
 
 1. `specs/` ディレクトリでTypeSpecファイルを編集
-2. `npm run api-specs:generate` で全ての成果物を一括生成
+2. `pnpm run api-specs:generate` で全ての成果物を一括生成
    - TypeSpecコンパイル → OpenAPI仕様
    - orvalによるZodスキーマ生成
    - orvalによるAPIクライアント生成（Native Fetch & TanStack Query）

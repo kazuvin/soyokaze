@@ -13,49 +13,64 @@ This is a monorepo containing:
 1. Install dependencies for all packages
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. Start the mobile development server
 
    ```bash
-   npm run mobile:start
+   pnpm --filter mobile start
    ```
 
 3. Run on specific platforms
 
    ```bash
-   npm run mobile:ios      # iOS Simulator
-   npm run mobile:android  # Android Emulator
-   npm run mobile:web      # Web Browser
+   pnpm --filter mobile ios      # iOS Simulator
+   pnpm --filter mobile android  # Android Emulator
+   pnpm --filter mobile web      # Web Browser
    ```
 
 ## Available Scripts
 
-### Mobile Development
+### Using pnpm --filter
 
-- `npm run mobile:start` - Start the development server
-- `npm run mobile:ios` - Run on iOS simulator
-- `npm run mobile:android` - Run on Android emulator
-- `npm run mobile:web` - Run web version
-- `npm run mobile:lint` - Run ESLint
-- `npm run mobile:test` - Run tests
-- `npm run mobile:test:watch` - Run tests in watch mode
-- `npm run mobile:test:ui` - Run tests with UI
-- `npm run mobile:reset-project` - Reset project to blank state
+This monorepo uses pnpm workspaces. Use the `--filter` option to run commands in specific packages:
 
-### Schema Development
+```bash
+# Mobile development
+pnpm --filter mobile start          # Start the development server
+pnpm --filter mobile ios            # Run on iOS simulator
+pnpm --filter mobile android        # Run on Android emulator
+pnpm --filter mobile web            # Run web version
+pnpm --filter mobile lint           # Run ESLint
+pnpm --filter mobile test           # Run tests
+pnpm --filter mobile test:watch     # Run tests in watch mode
+pnpm --filter mobile test:ui        # Run tests with UI
+pnpm --filter mobile reset-project  # Reset project to blank state
 
-- `npm run schemas:dev` - Start schema development server
-- `npm run schemas:generate` - Generate client code from OpenAPI specs
-- `npm run schemas:test` - Test schema validation
-- `npm run schemas:test:client` - Test generated client code
+# API development
+pnpm --filter api dev                # Start API development server
+pnpm --filter api deploy            # Deploy API
+pnpm --filter api generate          # Generate database migrations
+pnpm --filter api local:migration   # Apply local migrations
+pnpm --filter api remote:migration  # Apply remote migrations
+
+# API Specs development
+pnpm --filter api-specs api-specs:compile    # Compile TypeSpec schemas
+pnpm --filter api-specs api-specs:watch     # Watch and compile TypeSpec
+pnpm --filter api-specs api-specs:validate  # Validate TypeSpec schemas
+pnpm --filter api-specs api-specs:clean     # Clean generated files
+pnpm --filter api-specs api-specs:generate  # Generate client code
+
+# Schema development (TypeSpec)
+pnpm --filter schemas dev                    # Start schema development server
+pnpm --filter schemas generate              # Generate client code
+```
 
 ### Monorepo Commands
 
-- `npm run lint` - Run linting (alias for mobile:lint)
-- `npm run test` - Run tests (alias for mobile:test)
-- `npm install` - Install all dependencies
+- `pnpm install` - Install all dependencies
+- `pnpm --filter [package-name] [script]` - Run any script in a specific package
 
 ## Project Structure
 

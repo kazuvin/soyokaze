@@ -9,16 +9,16 @@
     "api-specs:validate": "tsp compile . --no-emit",
     "api-specs:clean": "rimraf generated/",
     "api-specs:docs": "echo 'Swagger UI server not available. Please use external tool to view generated/openapi/openapi.yaml'",
-    "api-specs:generate": "npm run api-specs:compile && orval --config orval.config.cjs",
-    "api-specs:generate-clients": "npm run api-specs:compile && orval --config orval.config.cjs"
+    "api-specs:generate": "pnpm run api-specs:compile && orval --config orval.config.cjs",
+    "api-specs:generate-clients": "pnpm run api-specs:compile && orval --config orval.config.cjs"
   },
   "dependencies": {
-    "@typespec/compiler": "^0.62.0",
-    "@typespec/http": "^0.62.0",
-    "@typespec/rest": "^0.62.0",
-    "@typespec/openapi": "^0.62.0",
-    "@typespec/openapi3": "^0.62.0",
-    "@typespec/json-schema": "^0.62.0"
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/rest": "latest",
+    "@typespec/openapi": "latest",
+    "@typespec/openapi3": "latest",
+    "@typespec/json-schema": "latest"
   },
   "devDependencies": {
     "chokidar": "^4.0.1",
