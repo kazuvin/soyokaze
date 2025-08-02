@@ -2,9 +2,6 @@
 node_modules/
 .pnpm-debug.log*
 
-# Generated files
-generated/
-
 # Build outputs
 dist/
 build/
