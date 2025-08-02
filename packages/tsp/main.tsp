@@ -15,9 +15,3 @@ import "./services/auth.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.Rest;
-
-@service({
-  title: "Soyokaze API",
-  version: "3.1.0"
-})
-namespace SoyokazeAPI;
