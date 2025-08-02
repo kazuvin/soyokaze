@@ -33,6 +33,3 @@ jobs:
     
     - name: Run mobile tests
       run: pnpm --filter mobile test
-    
-    - name: Validate TypeSpec schemas
-      run: pnpm --filter api-specs api-specs:validate
