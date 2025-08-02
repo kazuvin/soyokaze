@@ -138,10 +138,10 @@ if [ -f "src/db/schemas/index.ts" ] && [ -s "src/db/schemas/index.ts" ]; then
     echo -e "${BLUE}📦 データベースマイグレーションを実行中...${NC}"
     
     # マイグレーションファイルを生成
-    npm run generate
+    pnpm run generate
     
     # ローカルマイグレーションを適用
-    npm run local:migration
+    pnpm run local:migration
     
     echo -e "${GREEN}✅ マイグレーションが完了しました${NC}"
 else
@@ -156,8 +156,8 @@ echo -e "  D1 Database ID: ${DATABASE_ID}"
 echo -e "  KV Namespace ID: ${KV_ID}"
 echo ""
 echo -e "${BLUE}🚀 次のステップ:${NC}"
-echo -e "  1. 開発サーバーを起動: ${YELLOW}npm run dev${NC}"
-echo -e "  2. 本番環境にデプロイ: ${YELLOW}npm run deploy${NC}"
+echo -e "  1. 開発サーバーを起動: ${YELLOW}pnpm run dev${NC}"
+echo -e "  2. 本番環境にデプロイ: ${YELLOW}pnpm run deploy${NC}"
 echo ""
 echo -e "${BLUE}💡 便利なコマンド:${NC}"
 echo -e "  - ログの確認: ${YELLOW}npx wrangler tail${NC}"

@@ -10,35 +10,26 @@ jobs:
   test:
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 'latest'
+    
+    - name: Setup Node.js 22 LTS
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        node-version: '22'
+        cache: 'pnpm'
     
-    - name: Clean and install dependencies
-      run: |
-        # Clean any existing installations
-        rm -rf node_modules package-lock.json
-        rm -rf packages/mobile/node_modules packages/mobile/package-lock.json
-        
-        # Install root dependencies
-        npm install --legacy-peer-deps
-        
-        # Install mobile package dependencies directly
-        cd packages/mobile
-        npm install --legacy-peer-deps
+    - name: Install dependencies
+      run: pnpm install
     
-    - name: Run linting
-      run: npm run lint
+    - name: Run mobile linting
+      run: pnpm --filter mobile lint
     
-    - name: Run tests
-      run: npm run test
+    - name: Run mobile tests
+      run: pnpm --filter mobile test
