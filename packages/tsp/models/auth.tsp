@@ -1,9 +1,6 @@
 import "./common.tsp";
 
-using SoyokazeAPI;
-
-namespace SoyokazeAPI;
-
+namespace SoyokazeAPI {
 // User models
 model User {
   id: string;

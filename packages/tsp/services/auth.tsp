@@ -5,14 +5,11 @@ import "../models/auth.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.Rest;
-using SoyokazeAPI;
-
-namespace SoyokazeAPI;
-
-// Authentication API
-@route("/auth")
-@tag("Authentication")
-interface AuthAPI {
+namespace SoyokazeAPI {
+  // Authentication API
+  @route("/auth")
+  @tag("Authentication")
+  interface AuthAPI {
   @post
   @route("/login")
   @summary("User login")
@@ -83,4 +80,5 @@ interface UserAPI {
   @summary("Delete user account")
   @doc("Permanently delete the authenticated user's account")
   deleteAccount(@header Authorization: string): SuccessResponse | ErrorResponse;
+  }
 }

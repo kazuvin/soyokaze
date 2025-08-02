@@ -17,7 +17,7 @@ export default defineConfig({
         },
         query: {
           useQuery: true,
-          useInfiniteQuery: true,
+          useInfinite: true,
           useMutation: true,
           signal: true,
         },
@@ -63,7 +63,6 @@ export default defineConfig({
       override: {
         mock: {
           type: 'msw',
-          properties: () => 'faker',
         },
       },
     },
